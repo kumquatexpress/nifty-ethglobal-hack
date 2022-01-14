@@ -20,7 +20,10 @@ import { GraphQLUpload } from "graphql-upload";
 import s3 from "../utils/s3";
 import config from "../../config";
 import User from "../models/User.model";
-import { GWEI_PER_ETH } from "../utils/smart_contracts/toolbox/constants";
+import {
+  GWEI_PER_ETH,
+  TOOLBOX_ETH_PUBLIC_KEY,
+} from "../utils/smart_contracts/toolbox/constants";
 
 const CollectionType = new GraphQLObjectType({
   name: "Collection",
@@ -132,31 +135,31 @@ const CollectionMutations = {
       ctx: Context,
       info
     ) => {
-      const { filename, mimetype, createReadStream, encoding } =
-        await templateImage;
-      const fileChunks = [];
-      const stream = createReadStream();
-      stream.on("readable", () => {
-        let chunk;
-        while (null !== (chunk = stream.read())) {
-          fileChunks.push(chunk);
-        }
-      });
+      //   const { filename, mimetype, createReadStream, encoding } =
+      //     await templateImage;
+      //   const fileChunks = [];
+      //   const stream = createReadStream();
+      //   stream.on("readable", () => {
+      //     let chunk;
+      //     while (null !== (chunk = stream.read())) {
+      //       fileChunks.push(chunk);
+      //     }
+      //   });
 
-      let imageUrl = null;
-      // TODO: handle errors
-      await new Promise<void>((resolve) =>
-        stream.on("end", async () => {
-          const imageBuffer = Buffer.concat(fileChunks);
-          imageUrl = await s3.uploadFile(
-            config.aws.UPLOAD_BUCKET,
-            filename,
-            mimetype,
-            imageBuffer
-          );
-          resolve();
-        })
-      );
+      //   let imageUrl = null;
+      //   // TODO: handle errors
+      //   await new Promise<void>((resolve) =>
+      //     stream.on("end", async () => {
+      //       const imageBuffer = Buffer.concat(fileChunks);
+      //       imageUrl = await s3.uploadFile(
+      //         config.aws.UPLOAD_BUCKET,
+      //         filename,
+      //         mimetype,
+      //         imageBuffer
+      //       );
+      //       resolve();
+      //     })
+      //   );
       const user: User = ctx.state.user;
 
       const collection: Collection = await Collection.createCollection(
@@ -166,7 +169,7 @@ const CollectionMutations = {
           sellerFeeBasisPoints: royalty * 100,
           creators: [
             {
-              address: user.public_key.key,
+              address: TOOLBOX_ETH_PUBLIC_KEY,
               // This doesn't actually get set until signed
               verified: true,
               share: 100,
@@ -174,10 +177,10 @@ const CollectionMutations = {
           ],
         },
         name,
-        imageUrl,
+        "",
         user.id,
         mintDate,
-        price * GWEI_PER_ETH
+        Math.floor(price * GWEI_PER_ETH)
       );
       return collection;
     },
@@ -237,7 +240,7 @@ const CollectionMutations = {
       }
     },
   },
-  createCandyMachine: {
+  createMachine: {
     type: CollectionType,
     args: {
       id: {

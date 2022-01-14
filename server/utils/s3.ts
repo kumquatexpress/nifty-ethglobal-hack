@@ -36,7 +36,7 @@ const uploadFile = async (
   awsS3Bucket: string,
   filename: string,
   contentType: string,
-  body: string | Uint8Array | Buffer | ReadableStream<any>
+  body: string | Uint8Array | Buffer
 ): Promise<string> => {
   const mediaUploadParams = {
     Bucket: awsS3Bucket,

@@ -121,9 +121,8 @@ module.exports = {
      */
     await queryInterface.dropTable("items");
     await queryInterface.dropTable("collections");
-    await queryInterface.dropTable("email_ids");
     await queryInterface.dropTable("profiles");
-    await queryInterface.dropTable("phantom_pks");
+    await queryInterface.dropTable("web3_public_keys");
     await queryInterface.dropTable("users");
   },
 };

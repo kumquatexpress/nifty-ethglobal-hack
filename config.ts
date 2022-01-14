@@ -61,6 +61,10 @@ const Config = {
     CONNECT_URI: env.DISCORD_USER_ID_URI,
     USER_REDIRECT_URI: env.DISCORD_USER_REDIRECT_URI,
   },
+  eth: {
+    KEY: env.ETH_KEY,
+    GETH_URL: env.ETH_GETH_URL,
+  },
 };
 
 export default Config;

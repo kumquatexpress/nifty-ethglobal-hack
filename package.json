@@ -9,7 +9,7 @@
     "start": "pm2 start",
     "start:server": "pm2 start --name server node ./build/app.js",
     "start:worker": "pm2 start --name worker node ./worker/build/worker/main.js",
-    "build": "tsc --project ./",
+    "build": "tsc --project ./ && tsc --project ./worker",
     "build:worker": "tsc --project ./worker",
     "restart": "pm2 restart all",
     "dev": "tsc-watch --onSuccess \"bash ./scripts/restart_dev.sh\"",
