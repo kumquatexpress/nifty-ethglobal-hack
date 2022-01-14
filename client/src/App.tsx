@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import "./styles/App.scss";
+import "styles/App.scss";
 import config from "./components/config";
 import machine from "./components/machine";
+import MetaMaskButton from "scripts/MetaMaskButton";
 import web3 from "./web3";
 
 const TO_GWEI = 10 ** 9;
@@ -69,6 +70,7 @@ function App() {
 
   return (
     <div className="App">
+      <MetaMaskButton />
       <div>Hey {val}</div>
       <label>URL</label>
       <input
