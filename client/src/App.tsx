@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
+import "./styles/App.scss";
 import config from "./components/config";
 import machine from "./components/machine";
 import web3 from "./web3";
-import "./App.css";
 
 const TO_GWEI = 10 ** 9;
 
