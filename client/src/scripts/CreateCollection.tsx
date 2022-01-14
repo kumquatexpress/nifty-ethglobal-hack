@@ -4,6 +4,7 @@ import Input from "@lib/inputs/Input";
 import Slider from "@lib/inputs/Slider";
 import DndFileUploader from "@lib/inputs/DndFileUploader";
 import InlineInput from "@lib/inputs/InlineInput";
+import { until } from "styles/mediaQueries";
 import { useAppSelector, useAppDispatch } from "scripts/redux/hooks";
 import {
   selectCollection,
@@ -25,7 +26,7 @@ const Royalties = forwardRef<HTMLDivElement, Props>(({}, ref) => {
 
   return (
     <div className={cx(styles.wrapper, "container")}>
-      <div className={cx(styles.container)}>
+      <div className={cx(styles.container, styles.containerVertical)}>
         <DndFileUploader />
         <div className={cx(styles.uploadControls)}>
           <div className={cx(styles.input)}>
@@ -92,6 +93,17 @@ const styles = {
       margin-bottom: 0;
     }
   `,
+  containerVertical: until(
+    "tablet",
+    css`
+      flex-direction: column;
+      & > .badger-dndfileuploader {
+        margin-bottom: 12px;
+        margin-top: 12px;
+        margin-right: 0;
+      }
+    `
+  ),
   uploadImage: css`
     width: 100px;
     height: 100px;
