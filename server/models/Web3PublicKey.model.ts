@@ -11,7 +11,7 @@ import User from "./User.model";
 
 @Table({
   timestamps: true,
-  tableName: "web3_public_key",
+  tableName: "web3_public_keys",
   underscored: true,
 })
 export default class Web3PublicKey extends Model {

@@ -9,9 +9,9 @@ const WORKER_MSG_QUEUES = {
     name: "createItemsFromTemplate",
     receive: "recv_create_images_from_template",
   },
-  addItemsToSolana: {
-    name: "addItemsToSolana",
-    receive: "recv_add_items_to_solana",
+  addItemsToMachine: {
+    name: "addItemsToMachine",
+    receive: "recv_add_items_to_machine",
   },
   syncCollectionToDiscord: {
     name: "syncCollectionToDiscord",

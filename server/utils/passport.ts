@@ -5,11 +5,11 @@ import { Strategy as JWTStrategy, ExtractJwt } from "passport-jwt";
 
 import config from "../../config";
 import User from "../models/User.model";
-import PhantomPK from "../models/PhantomPK.model";
+import Web3PublicKey from "../models/Web3PublicKey.model";
 
 const deserializeAccount = async function (id: string, done) {
   try {
-    const account = await User.findByPk(id, { include: PhantomPK });
+    const account = await User.findByPk(id, { include: Web3PublicKey });
     done(null, account);
   } catch (err) {
     done(err, false);
@@ -17,13 +17,13 @@ const deserializeAccount = async function (id: string, done) {
 };
 const LocalStrategy = new PassportLocal(
   {
-    usernameField: "phantomPk",
-    passwordField: "phantomPk",
+    usernameField: "key",
+    passwordField: "key",
   },
   (key, pw, cb) => {
-    PhantomPK.findByPk(key, { include: [{ model: User }] }).then(
-      async (phantomAccount) => {
-        deserializeAccount(phantomAccount.user.id, cb);
+    Web3PublicKey.findByPk(key, { include: [{ model: User }] }).then(
+      async (acc) => {
+        deserializeAccount(acc.user.id, cb);
       }
     );
   }

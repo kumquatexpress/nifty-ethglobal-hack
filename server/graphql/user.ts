@@ -6,7 +6,7 @@ import {
 } from "graphql";
 import { GraphQLJSONObject } from "graphql-type-json";
 import config from "../../config";
-import PhantomPK from "../models/Web3PublicKey.model";
+import Web3PublicKey from "../models/Web3PublicKey.model";
 import Profile from "../models/Profile.model";
 import User from "../models/User.model";
 
@@ -88,7 +88,7 @@ const UserQueries = {
     description: "Retrieves a list of all badge metadata for the user",
     resolve: async (parent, args, ctx, info) => {
       const user = await User.findByPk(ctx.state.user.id, {
-        include: PhantomPK,
+        include: Web3PublicKey,
       });
       return await user.getOwnedBadges();
     },
@@ -98,7 +98,7 @@ const UserQueries = {
     description: "Retrieves the QR code for this user's public wallet",
     resolve: async (parent, args, ctx, info) => {
       const user = await User.findByPk(ctx.state.user.id, {
-        include: PhantomPK,
+        include: Web3PublicKey,
       });
       const code = await user.getQRCodeHash();
       return `${config.app.CLIENT_HOSTNAME}/scan?code=${code}`;
