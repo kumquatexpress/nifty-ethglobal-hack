@@ -9,6 +9,7 @@ import { useAppSelector, useAppDispatch } from "scripts/redux/hooks";
 import {
   selectCollection,
   setNumBadges,
+  setName,
 } from "scripts/redux/slices/collectionSlice";
 
 type Props = {};
@@ -36,6 +37,8 @@ const Royalties = forwardRef<HTMLDivElement, Props>(({}, ref) => {
                 className={cx(styles.nameInput)}
                 placeholder="the Nifty Badger, 1st edition"
                 id="badgeCreate-name"
+                onChange={(e) => dispatch(setName(e.currentTarget.value))}
+                value={collection.name}
               />
             </div>
           </div>

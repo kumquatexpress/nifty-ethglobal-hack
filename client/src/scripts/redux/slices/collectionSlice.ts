@@ -6,9 +6,11 @@ export interface CollectionState {
   imgSrc: string | null;
   imgFile: File | null;
   canvasSize: number;
+  name: string;
 }
 
 const initialState: CollectionState = {
+  name: "",
   numBadges: 100,
   canvasSize: 150,
   imgFile: null,
@@ -20,6 +22,9 @@ export const collectionSlice = createSlice({
   initialState,
   // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
+    setName: (state, action: PayloadAction<string>) => {
+      state.name = action.payload;
+    },
     setNumBadges: (state, action: PayloadAction<number>) => {
       console.log(action);
       state.numBadges = action.payload;
@@ -29,6 +34,6 @@ export const collectionSlice = createSlice({
 
 export const selectCollection = (state: RootState) => state.collection;
 
-export const { setNumBadges } = collectionSlice.actions;
+export const { setNumBadges, setName } = collectionSlice.actions;
 
 export default collectionSlice.reducer;
