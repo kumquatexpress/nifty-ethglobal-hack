@@ -8,9 +8,9 @@
   },
   "scripts": {
     "test": "truffle test",
-    "test:polygon": "truffle test --config=truffle-config.polygon.js --network=$npm_config_network",
+    "test:polygon": "truffle test --config=truffle-config.polygon.js --network=polygon_infura_testnet",
     "compile:polygon": "truffle compile --config=truffle-config.polygon.js",
-    "migrate:polygon": "truffle migrate --config=truffle-config.polygon.js --network=$npm_config_network"
+    "migrate:polygon": "truffle migrate --config=truffle-config.polygon.js --network=polygon_infura_testnet"
   },
   "repository": {
     "type": "git",
@@ -34,5 +34,9 @@
     "@truffle/hdwallet-provider": "^1.4.2",
     "dotenv": "^9.0.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.4.2",
+    "hardhat": "^2.8.2",
+    "solc": "^0.8.4"
+  }
 }
