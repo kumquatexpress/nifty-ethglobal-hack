@@ -9,6 +9,7 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import DndFileUploader from "@lib/inputs/DndFileUploader";
 import CreateCollection from "scripts/CreateCollection";
+import PreviewCollection from "scripts/PreviewCollection";
 
 const TO_GWEI = 10 ** 9;
 
@@ -112,6 +113,7 @@ function App() {
 
         <div>
           <CreateCollection />
+          <PreviewCollection />
         </div>
       </div>
     </DndProvider>
