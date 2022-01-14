@@ -18,16 +18,14 @@ const initialState: CollectionState = {
   royalties: 10,
   cost: 5.0,
   percentCommon: 50,
-
   badgeData: {
     imgFile: null,
     imgSrc: null,
-    imgElID: null,
     colors: {
       fontStroke: {
-        r: 255,
-        g: 255,
-        b: 255,
+        r: 0,
+        g: 0,
+        b: 0,
         a: 1,
       },
       fontFill: {
@@ -99,9 +97,6 @@ export const collectionSlice = createSlice({
     setImageSrc: (state, action: PayloadAction<string>) => {
       state.badgeData.imgSrc = action.payload;
     },
-    setimgElID: (state, action: PayloadAction<string>) => {
-      state.badgeData.imgElID = action.payload;
-    },
   },
 });
 
@@ -115,6 +110,7 @@ export const {
   setPercentCommon,
   setColor,
   setHugImage,
+  setImageSrc,
 } = collectionSlice.actions;
 
 export default collectionSlice.reducer;

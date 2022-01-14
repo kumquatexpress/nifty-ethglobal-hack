@@ -16,7 +16,6 @@ export type BadgeDataColor =
 export type BadgeDataType = {
   imgSrc: string | null;
   imgFile: File | null;
-  imgElID: string | null;
   colors: {
     [key in BadgeDataColor]: RGBAColor;
   };

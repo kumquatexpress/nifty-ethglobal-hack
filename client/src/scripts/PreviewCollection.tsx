@@ -62,7 +62,7 @@ function CollectionPreview() {
               <CanvasImage
                 fontStrokeColor={fontStroke}
                 size={canvasSize}
-                hugCustomImage={hugImage}
+                hugImage={hugImage}
                 customImgSrc={collection.badgeData.imgSrc}
                 fontFillColor={fontFill}
                 bgColor={background}
@@ -84,7 +84,7 @@ function CollectionPreview() {
               <CanvasImage
                 fontStrokeColor={fontStroke}
                 size={canvasSize}
-                hugCustomImage={hugImage}
+                hugImage={hugImage}
                 customImgSrc={collection.badgeData.imgSrc}
                 fontFillColor={fontFill}
                 bgColor={background}
@@ -107,7 +107,7 @@ function CollectionPreview() {
             <div className="imgDisplay">
               <CanvasImage
                 fontStrokeColor={fontStroke}
-                hugCustomImage={hugImage}
+                hugImage={hugImage}
                 size={canvasSize}
                 customImgSrc={collection.badgeData.imgSrc}
                 fontFillColor={fontFill}
@@ -129,7 +129,7 @@ function CollectionPreview() {
             <div className="imgDisplay">
               <CanvasImage
                 fontStrokeColor={fontStroke}
-                hugCustomImage={hugImage}
+                hugImage={hugImage}
                 size={canvasSize}
                 customImgSrc={collection.badgeData.imgSrc}
                 fontFillColor={fontFill}

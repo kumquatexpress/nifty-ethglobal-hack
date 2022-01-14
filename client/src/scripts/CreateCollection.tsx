@@ -9,9 +9,10 @@ import { useAppSelector, useAppDispatch } from "scripts/redux/hooks";
 import {
   selectCollection,
   setNumBadges,
-  setName,
   setCost,
   setRoyalties,
+  setName,
+  setImageSrc,
 } from "scripts/redux/slices/collectionSlice";
 
 type Props = {};
@@ -27,67 +28,69 @@ const Royalties = forwardRef<HTMLDivElement, Props>(({}, ref) => {
   );
 
   return (
-    <div className={cx(styles.wrapper, "container")}>
-      <div className={cx(styles.container, styles.containerVertical)}>
-        <DndFileUploader />
-        <div className={cx(styles.uploadControls)}>
-          <div className={cx(styles.input)}>
-            <label htmlFor="badgeCreate-name">Name</label>
-            <div>
-              <Input
-                className={cx(styles.nameInput)}
-                placeholder="the Nifty Badger, 1st edition"
-                id="badgeCreate-name"
-                onChange={(e) => dispatch(setName(e.currentTarget.value))}
-                value={collection.name}
-              />
-            </div>
-          </div>
-          <div className={cx(styles.input)}>
-            <label># of Badges</label>
+    <div className={cx(styles.container, styles.containerVertical)}>
+      <DndFileUploader
+        onImgSrcLoaded={(imgSrc: string) => {
+          dispatch(setImageSrc(imgSrc));
+        }}
+      />
+      <div className={cx(styles.uploadControls)}>
+        <div className={cx(styles.input)}>
+          <label htmlFor="badgeCreate-name">Name</label>
+          <div>
             <Input
-              placeholder="100 in this collection"
-              onChange={(e) =>
-                dispatch(setNumBadges(e.currentTarget.valueAsNumber))
-              }
-              type="number"
-              value={collection.numBadges.toString()}
-              step={1}
-              className={cx(styles.badgeInput)}
+              className={cx(styles.nameInput)}
+              placeholder="the Nifty Badger, 1st edition"
+              onChange={(e) => dispatch(setName(e.currentTarget.value))}
+              value={collection.name}
+              id="badgeCreate-name"
             />
           </div>
-          <div className={cx(styles.input)}>
-            <label>Cost per Badge</label>
-            <Input
-              placeholder="5"
-              onChange={(e) => dispatch(setCost(e.currentTarget.valueAsNumber))}
-              type="number"
-              value={collection.cost.toString()}
-              step={1}
-              className={cx(styles.badgeInput)}
-            />
-          </div>
-          <div className={cx(styles.input)}>
-            <label htmlFor="badgeCreate-royal">Royalties (up to 50%)</label>
-            <Slider
-              step={1}
+        </div>
+        <div className={cx(styles.input)}>
+          <label># of Badges</label>
+          <Input
+            placeholder="100 in this collection"
+            onChange={(e) =>
+              dispatch(setNumBadges(e.currentTarget.valueAsNumber))
+            }
+            type="number"
+            value={collection.numBadges.toString()}
+            step={1}
+            className={cx(styles.badgeInput)}
+          />
+        </div>
+        <div className={cx(styles.input)}>
+          <label>Cost per Badge</label>
+          <Input
+            placeholder="5"
+            onChange={(e) => dispatch(setCost(e.currentTarget.valueAsNumber))}
+            type="number"
+            value={collection.cost.toString()}
+            step={0.25}
+            className={cx(styles.badgeInput)}
+          />
+        </div>
+        <div className={cx(styles.input)}>
+          <label htmlFor="badgeCreate-royal">Royalties (up to 50%)</label>
+          <Slider
+            step={1}
+            min={0}
+            max={50}
+            value={collection.royalties}
+            id="badgeCreate-royal"
+            onChange={onRoyaltyChanged}
+          />
+          <div>
+            You will receive&nbsp;
+            <InlineInput
+              value={collection.royalties}
+              onChange={onRoyaltyChanged}
               min={0}
               max={50}
-              value={collection.royalties}
-              id="badgeCreate-royal"
-              onChange={onRoyaltyChanged}
+              afterContent="%"
             />
-            <div>
-              You will receive&nbsp;
-              <InlineInput
-                value={collection.royalties}
-                onChange={onRoyaltyChanged}
-                min={0}
-                max={50}
-                afterContent="%"
-              />
-              of all subsequent sales
-            </div>
+            of all subsequent sales
           </div>
         </div>
       </div>
@@ -103,6 +106,7 @@ const styles = {
     display: flex;
     width: 100%;
     position: relative;
+    align-items: flex-start;
     & > .badger-dndfileuploader {
       margin-right: 36px;
       margin-bottom: 0;
@@ -112,6 +116,7 @@ const styles = {
     "tablet",
     css`
       flex-direction: column;
+      align-items: center;
       & > .badger-dndfileuploader {
         margin-bottom: 12px;
         margin-top: 12px;

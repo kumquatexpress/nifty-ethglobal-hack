@@ -14,7 +14,7 @@ type Props = {
   paddingColor?: RGBAColor;
   imgNumber?: number;
   customBorderSVGUrl?: string;
-  hugCustomImage?: boolean;
+  hugImage?: boolean;
 };
 
 var dpr = window.devicePixelRatio || 1;
@@ -49,7 +49,7 @@ export default function CanvasImage({
     a: 0,
   },
   imgNumber,
-  hugCustomImage = false,
+  hugImage = false,
 }: Props) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [svgBorder, setSVGBorder] = useState<HTMLImageElement | null>(null);
@@ -64,18 +64,18 @@ export default function CanvasImage({
       });
       img.src = customImgSrc;
     }
-  }, []);
+  }, [customImgSrc]);
 
   // setup preview img
   useEffect(() => {
-    if (previewImgSrc != null) {
+    if (previewImgSrc != null && customImgSrc == null) {
       const img = new Image();
       img.addEventListener("load", () => {
         setRenderedImg(img);
       });
       img.src = previewImgSrc;
     }
-  }, []);
+  }, [previewImgSrc]);
 
   // setup border svg
   useEffect(() => {
@@ -86,14 +86,14 @@ export default function CanvasImage({
       });
       img.src = customBorderSVGUrl;
     }
-  }, []);
+  }, [customBorderSVGUrl]);
 
   useEffect(() => {
     const sizeOfPaddingPerSide = 0.8 / 10;
     const canvas = canvasRef.current;
 
     // we need to account for the border
-    const sizeOfImage = hugCustomImage ? (8 / 10) * size : (6.4 / 10) * size;
+    const sizeOfImage = hugImage ? (8 / 10) * size : (6.4 / 10) * size;
     const borderRadius = (1 / 10) * size;
     const paddingRadius = (1 / 15) * size;
     const borderSize = (1 / 50) * size;
@@ -103,9 +103,7 @@ export default function CanvasImage({
     const sizeOfNumberMargin = (0.3 / 10) * size;
     const sizeOfHash = (0.8 / 10) * size;
     const sizeOfHashMargin = (0.1 / 10) * size;
-    const calculatedSizeOfPaddingPerSide = hugCustomImage
-      ? 0
-      : (0.8 / 10) * size;
+    const calculatedSizeOfPaddingPerSide = hugImage ? 0 : (0.8 / 10) * size;
     const renderedImgDrawPosX = paddingSize + calculatedSizeOfPaddingPerSide;
     const renderedImgDrawPosY = renderedImgDrawPosX;
 
@@ -134,9 +132,20 @@ export default function CanvasImage({
           size - paddingSize
         );
 
+        if (renderedImg != null) {
+          ctx.drawImage(
+            renderedImg,
+            renderedImgDrawPosX,
+            renderedImgDrawPosY,
+            sizeOfImage,
+            sizeOfImage
+          );
+        }
+        console.log(svgBorder == null);
         if (svgBorder != null) {
           ctx.drawImage(svgBorder, 0, 0, size, size);
         } else {
+          console.log("rendering border");
           if (paddingColor != null) {
             roundRect(
               ctx,
@@ -176,15 +185,6 @@ export default function CanvasImage({
         ctx.stroke();
 
         ctx.shadowColor = "transparent";
-        if (renderedImg != null) {
-          ctx.drawImage(
-            renderedImg,
-            renderedImgDrawPosX,
-            renderedImgDrawPosY,
-            sizeOfImage,
-            sizeOfImage
-          );
-        }
 
         ctx.font = `bold ${sizeOfNumber}px Itim`;
         var num = `${imgNumber != null ? imgNumber : ""}`;
@@ -231,7 +231,7 @@ export default function CanvasImage({
     paddingColor,
     bgColor,
     imgNumber,
-    hugCustomImage,
+    hugImage,
     fontStrokeColor,
   ]);
 

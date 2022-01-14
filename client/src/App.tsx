@@ -111,7 +111,7 @@ function App() {
           <button onClick={() => something()}>Do something</button>
         </div>
 
-        <div>
+        <div className="container">
           <CreateCollection />
           <PreviewCollection />
         </div>
