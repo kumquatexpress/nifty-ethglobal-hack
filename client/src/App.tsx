@@ -4,6 +4,9 @@ import config from "./components/config";
 import machine from "./components/machine";
 import MetaMaskButton from "scripts/MetaMaskButton";
 import web3 from "./web3";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import DndFileUploader from "@lib/inputs/DndFileUploader";
 
 const TO_GWEI = 10 ** 9;
 
@@ -69,39 +72,45 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <MetaMaskButton />
-      <div>Hey {val}</div>
-      <label>URL</label>
-      <input
-        type="text"
-        defaultValue={newVal}
-        onChange={(e) => setNewVal(e.target.value)}
-      ></input>
-      <button onClick={() => setConfigValue()}>Click me</button>
-      <button onClick={() => mintRandom()}>Mint</button>
-      <label>Name</label>
-      <input
-        type="text"
-        defaultValue={name}
-        onChange={(e) => setName(e.target.value)}
-      ></input>
-      <label>Symbol</label>
-      <input
-        type="text"
-        defaultValue={symbol}
-        onChange={(e) => setSymbol(e.target.value)}
-      ></input>
-      <label>Price</label>
-      <input
-        type="text"
-        defaultValue={price}
-        onChange={(e) => setPrice(Number(e.target.value))}
-      ></input>
-      <button onClick={() => createConfig()}>Create</button>
+    <DndProvider backend={HTML5Backend}>
+      <div className="App">
+        <MetaMaskButton />
+        <div>Hey {val}</div>
+        <label>URL</label>
+        <input
+          type="text"
+          defaultValue={newVal}
+          onChange={(e) => setNewVal(e.target.value)}
+        ></input>
+        <button onClick={() => setConfigValue()}>Click me</button>
+        <button onClick={() => mintRandom()}>Mint</button>
+        <label>Name</label>
+        <input
+          type="text"
+          defaultValue={name}
+          onChange={(e) => setName(e.target.value)}
+        ></input>
+        <label>Symbol</label>
+        <input
+          type="text"
+          defaultValue={symbol}
+          onChange={(e) => setSymbol(e.target.value)}
+        ></input>
+        <label>Price</label>
+        <input
+          type="text"
+          defaultValue={price}
+          onChange={(e) => setPrice(Number(e.target.value))}
+        ></input>
+        <button onClick={() => createConfig()}>Create</button>
 
-      <button onClick={() => something()}>Do something</button>
-    </div>
+        <button onClick={() => something()}>Do something</button>
+
+        <div>
+          <DndFileUploader />
+        </div>
+      </div>
+    </DndProvider>
   );
 }
 
