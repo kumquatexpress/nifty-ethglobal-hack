@@ -10,19 +10,20 @@ import {
   selectCollection,
   setNumBadges,
   setName,
+  setCost,
+  setRoyalties,
 } from "scripts/redux/slices/collectionSlice";
 
 type Props = {};
 const Royalties = forwardRef<HTMLDivElement, Props>(({}, ref) => {
   const collection = useAppSelector(selectCollection);
   const dispatch = useAppDispatch();
-  const [royalty, setRoyalty] = useState(10);
   const onRoyaltyChanged = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const newRoyalty = Math.min(e.currentTarget.valueAsNumber, 50) || 0;
-      setRoyalty(newRoyalty);
+      dispatch(setRoyalties(newRoyalty));
     },
-    [setRoyalty]
+    []
   );
 
   return (
@@ -56,19 +57,30 @@ const Royalties = forwardRef<HTMLDivElement, Props>(({}, ref) => {
             />
           </div>
           <div className={cx(styles.input)}>
+            <label>Cost per Badge</label>
+            <Input
+              placeholder="5"
+              onChange={(e) => dispatch(setCost(e.currentTarget.valueAsNumber))}
+              type="number"
+              value={collection.cost.toString()}
+              step={1}
+              className={cx(styles.badgeInput)}
+            />
+          </div>
+          <div className={cx(styles.input)}>
             <label htmlFor="badgeCreate-royal">Royalties (up to 50%)</label>
             <Slider
               step={1}
               min={0}
               max={50}
-              value={royalty}
+              value={collection.royalties}
               id="badgeCreate-royal"
               onChange={onRoyaltyChanged}
             />
             <div>
               You will receive&nbsp;
               <InlineInput
-                value={royalty}
+                value={collection.royalties}
                 onChange={onRoyaltyChanged}
                 min={0}
                 max={50}

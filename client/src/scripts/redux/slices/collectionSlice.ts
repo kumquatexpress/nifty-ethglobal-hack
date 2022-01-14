@@ -7,12 +7,16 @@ export interface CollectionState {
   imgFile: File | null;
   canvasSize: number;
   name: string;
+  royalties: number;
+  cost: number;
 }
 
 const initialState: CollectionState = {
   name: "",
   numBadges: 100,
   canvasSize: 150,
+  royalties: 10,
+  cost: 5.0,
   imgFile: null,
   imgSrc: null,
 };
@@ -26,14 +30,20 @@ export const collectionSlice = createSlice({
       state.name = action.payload;
     },
     setNumBadges: (state, action: PayloadAction<number>) => {
-      console.log(action);
       state.numBadges = action.payload;
+    },
+    setRoyalties: (state, action: PayloadAction<number>) => {
+      state.royalties = action.payload;
+    },
+    setCost: (state, action: PayloadAction<number>) => {
+      state.cost = action.payload;
     },
   },
 });
 
 export const selectCollection = (state: RootState) => state.collection;
 
-export const { setNumBadges, setName } = collectionSlice.actions;
+export const { setNumBadges, setName, setRoyalties, setCost } =
+  collectionSlice.actions;
 
 export default collectionSlice.reducer;
