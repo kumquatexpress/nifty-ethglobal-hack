@@ -1,0 +1,67 @@
+version: "3"
+services:
+  app:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: app
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    volumes:
+      - ${HOME_DIR}:/src
+    networks:
+      - webnet
+    environment:
+      - MYSQL_HOST=${MYSQL_HOST}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - REDIS_URL=${REDIS_URL}
+  mysql:
+    container_name: mysql
+    restart: always
+    image: mariadb:10.6.5
+    volumes:
+      - ${HOME_DIR}/database/mysql:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - webnet
+    environment:
+      - MARIADB_USER=${MYSQL_USER}
+      - MARIADB_PASSWORD=${MYSQL_PASSWORD}
+      - MARIADB_DATABASE=${MYSQL_DATABASE}
+      - MARIADB_RANDOM_ROOT_PASSWORD=yes
+  redis:
+    container_name: redis
+    restart: always
+    image: redis:3.2
+    ports:
+      - "6379:6379"
+    volumes:
+      - ${HOME_DIR}/database/redis:/data
+    networks:
+      - webnet
+  localstack:
+    container_name: localstack
+    restart: always
+    image: localstack/localstack:0.13.0.8
+    ports:
+      - "4566:4566"
+      - "4571:4571"
+    environment:
+      - SERVICES=s3
+      - DATA_DIR=/tmp/localstack/data
+      - HOST_TMP_FOLDER=/tmp/localstack
+      - DOCKER_HOST=unix:///var/run/docker.sock
+    volumes:
+      - ${HOME_DIR}/database/localstack:/tmp/localstack
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - webnet
+
+networks:
+  webnet:

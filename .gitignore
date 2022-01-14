@@ -1,0 +1,8 @@
+build/
+node_modules/
+database/
+
+*.log
+*.code-workspace
+.env*
+arweave-key-nftoolkit.json
