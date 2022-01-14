@@ -1,24 +1,68 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState, AppThunk } from "scripts/redux/store";
+import { RGBAColor, BadgeDataType, BadgeDataColor } from "scripts/types";
 
 export interface CollectionState {
-  numBadges: number;
-  imgSrc: string | null;
-  imgFile: File | null;
-  canvasSize: number;
   name: string;
+  numBadges: number;
   royalties: number;
   cost: number;
+  percentCommon: number;
+
+  badgeData: BadgeDataType;
 }
 
 const initialState: CollectionState = {
   name: "",
   numBadges: 100,
-  canvasSize: 150,
   royalties: 10,
   cost: 5.0,
-  imgFile: null,
-  imgSrc: null,
+  percentCommon: 50,
+
+  badgeData: {
+    imgFile: null,
+    imgSrc: null,
+    imgElID: null,
+    colors: {
+      fontStroke: {
+        r: 255,
+        g: 255,
+        b: 255,
+        a: 1,
+      },
+      fontFill: {
+        r: 0,
+        g: 0,
+        b: 0,
+        a: 1,
+      },
+      background: {
+        r: 255,
+        g: 255,
+        b: 255,
+        a: 1,
+      },
+      rare: {
+        r: 255,
+        g: 238,
+        b: 46,
+        a: 1,
+      },
+      common: {
+        r: 224,
+        g: 224,
+        b: 224,
+        a: 1,
+      },
+      uncommon: {
+        r: 51,
+        g: 166,
+        b: 255,
+        a: 1,
+      },
+    },
+    hugImage: false,
+  },
 };
 
 export const collectionSlice = createSlice({
@@ -38,12 +82,39 @@ export const collectionSlice = createSlice({
     setCost: (state, action: PayloadAction<number>) => {
       state.cost = action.payload;
     },
+
+    setPercentCommon: (state, action: PayloadAction<number>) => {
+      state.percentCommon = action.payload;
+    },
+    setColor: (
+      state,
+      action: PayloadAction<{ key: BadgeDataColor; color: RGBAColor }>
+    ) => {
+      state.badgeData.colors[action.payload.key] = action.payload.color;
+    },
+    setHugImage: (state, action: PayloadAction<boolean>) => {
+      state.badgeData.hugImage = action.payload;
+    },
+
+    setImageSrc: (state, action: PayloadAction<string>) => {
+      state.badgeData.imgSrc = action.payload;
+    },
+    setimgElID: (state, action: PayloadAction<string>) => {
+      state.badgeData.imgElID = action.payload;
+    },
   },
 });
 
 export const selectCollection = (state: RootState) => state.collection;
 
-export const { setNumBadges, setName, setRoyalties, setCost } =
-  collectionSlice.actions;
+export const {
+  setNumBadges,
+  setRoyalties,
+  setCost,
+  setName,
+  setPercentCommon,
+  setColor,
+  setHugImage,
+} = collectionSlice.actions;
 
 export default collectionSlice.reducer;
