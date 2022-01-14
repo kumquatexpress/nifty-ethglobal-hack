@@ -1,6 +1,6 @@
 @charset "utf-8";
-@import "./colors.scss";
-@import "./variables.scss";
+@import "./colors.module.scss";
+@import "./variables.module.scss";
 
 // Overrides for bulma
 
@@ -31,6 +31,7 @@ $gap: 32px;
 
 @include fullhd {
 }
+@debug $tablet;
 
 :export {
   tablet: $tablet;

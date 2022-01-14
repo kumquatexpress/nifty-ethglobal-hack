@@ -9,7 +9,7 @@ import React, {
 import { cx, css, ClassNamesArg } from "@emotion/css";
 import { DropTarget } from "./DropTarget";
 import * as Icon from "react-feather";
-import colors from "@modules/colors.scss";
+import colors from "@modules/colors.module.scss";
 
 type Props = {
   id?: string;
