@@ -134,7 +134,8 @@ const DndFileUploader: React.ForwardRefRenderFunction<
           css`
             width: ${size.width};
             height: ${size.height};
-          `
+          `,
+        "badger-dndfileuploader"
       )}
     >
       <DropTarget
