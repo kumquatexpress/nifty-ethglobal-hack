@@ -18,6 +18,22 @@ apiRouter.get("/status", async (ctx, next) => {
   next();
 });
 
+apiRouter.get("/collection/:collectionId/status", async (ctx, next) => {
+  const { collectionId } = ctx.params;
+
+  console.log("collectionready");
+  let collection: Collection = await Collection.findByPk(collectionId);
+  if (collection == null) {
+    ctx.status = 404;
+    return next();
+  } else {
+    ctx.status = 200;
+    ctx.body = {
+      status: collection.status,
+    };
+  }
+});
+
 /*
   "name": "test_stream",
   "profiles": [
