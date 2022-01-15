@@ -36,13 +36,27 @@ const authLink = setContext((_, { headers }) => {
   };
 });
 
-const splitLink = split(({ query }) => {
-  const definition = getMainDefinition(query);
-  return (
-    definition.kind === "OperationDefinition" &&
-    definition.operation === "subscription"
-  );
-}, from([errorLink, authLink, uploadLink]));
+const wsLink = new WebSocketLink({
+  uri: `${process.env.REACT_APP_WS_PROTOCOL}${process.env.REACT_APP_SERV_HOSTNAME}/graphql`,
+  options: {
+    reconnect: true,
+    connectionParams: {
+      Authorization: localStorage.getItem(getLocalStorageKey()),
+    },
+  },
+});
+
+const splitLink = split(
+  ({ query }) => {
+    const definition = getMainDefinition(query);
+    return (
+      definition.kind === "OperationDefinition" &&
+      definition.operation === "subscription"
+    );
+  },
+  wsLink,
+  from([errorLink, authLink, uploadLink])
+);
 
 const client = new ApolloClient({
   link: splitLink,

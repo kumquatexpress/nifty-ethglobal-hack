@@ -31,11 +31,14 @@ function Mint() {
   const collection = data?.collection;
   // query for status
   useEffect(() => {
-    let timeout = setTimeout(pollCollectionStatus, 1000);
+    let timeout: ReturnType<typeof setTimeout>;
+    if (id != null) {
+      timeout = setTimeout(pollCollectionStatus, 1000);
+    }
     let timeToCheck = 1000;
     function pollCollectionStatus() {
       APIClient()
-        .get(`/collection/${collection?.id}/status`)
+        .get(`/collection/${id}/status`)
         .then((resp) => {
           console.log("success", resp.data.status);
           setStatus(resp.data.status);
@@ -53,7 +56,7 @@ function Mint() {
     return () => {
       clearTimeout(timeout);
     };
-  }, [collection?.id, setStatus, status]);
+  }, [id, setStatus, status]);
 
   console.log("collection", collection);
   if (collection == null && !loading) {

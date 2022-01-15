@@ -21,7 +21,6 @@ apiRouter.get("/status", async (ctx, next) => {
 apiRouter.get("/collection/:collectionId/status", async (ctx, next) => {
   const { collectionId } = ctx.params;
 
-  console.log("collectionready");
   let collection: Collection = await Collection.findByPk(collectionId);
   if (collection == null) {
     ctx.status = 404;

@@ -141,11 +141,9 @@ export default function CanvasImage({
             sizeOfImage
           );
         }
-        console.log(svgBorder == null);
         if (svgBorder != null) {
           ctx.drawImage(svgBorder, 0, 0, size, size);
         } else {
-          console.log("rendering border");
           if (paddingColor != null) {
             roundRect(
               ctx,
