@@ -79,7 +79,7 @@ function Mint() {
     a: 1,
   };
   return (
-    <div className={cx("container", styles.container)}>
+    <div className={cx("container badger-page", styles.container)}>
       <div className={cx(styles.badgeImage)}>
         <CanvasImage
           fontStrokeColor={fontStroke}
