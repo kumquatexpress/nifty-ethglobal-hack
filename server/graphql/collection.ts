@@ -53,7 +53,7 @@ const CollectionType = new GraphQLObjectType({
       type: GraphQLDateTime,
     },
     price_gwei: {
-      type: GraphQLInt,
+      type: GraphQLFloat,
     },
     items: {
       type: new GraphQLList(ItemType),
