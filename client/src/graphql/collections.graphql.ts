@@ -30,3 +30,24 @@ export const CREATE_COLLECTION = gql`
     }
   }
 `;
+
+export const COLLECTION = gql`
+  query Collection($id: String!) {
+    collection(id: $id) {
+      id
+      metadata
+      status
+      machine_address
+      items {
+        id
+        ipfs_metadata
+        metadata
+        s3_url
+        status
+      }
+      mint_start_time
+      price_gwei
+      template_s3_url
+    }
+  }
+`;
