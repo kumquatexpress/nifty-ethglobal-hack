@@ -74,6 +74,9 @@ const Config = {
     SECRET: env.MORALIS_SECRET,
     URL: env.MORALIS_URL,
   },
+  livepeer: {
+    API_KEY: env.LIVEPEER_API_KEY,
+  },
 };
 
 export default Config;

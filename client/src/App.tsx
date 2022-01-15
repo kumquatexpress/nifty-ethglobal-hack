@@ -8,6 +8,7 @@ import Create from "./pages/Create";
 import Home from "./pages/Home";
 import Test from "./pages/Test";
 import Mint from "./pages/Mint";
+import Livestream from "./pages/Livestream";
 import { DiscordServerCallback, DiscordUserCallback } from "./pages/Discord";
 import Header from "@scripts/Header";
 
@@ -36,6 +37,7 @@ function App() {
               path="/discord/user/auth"
               element={<DiscordUserCallback />}
             />
+            <Route path="/livestream" element={<Livestream />} />
           </Routes>
         </div>
       </DndProvider>
