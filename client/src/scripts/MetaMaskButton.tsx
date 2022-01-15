@@ -16,7 +16,14 @@ export default function MetaMaskButton() {
 
   useEffect(() => {
     isMetaMaskInstalled().then((i) => {
-      setHasProvider(i);
+      if (i) {
+        setHasProvider(i);
+      } else {
+        // @ts-ignore
+        window.addEventListener("ethereum#initialized", setHasProvider(true), {
+          once: true,
+        });
+      }
     });
   }, [hasProvider]);
 
