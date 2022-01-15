@@ -8,6 +8,7 @@ import Create from "./pages/Create";
 import Home from "./pages/Home";
 import Test from "./pages/Test";
 import Mint from "./pages/Mint";
+import { DiscordServerCallback, DiscordUserCallback } from "./pages/Discord";
 
 import { ApolloProvider } from "@apollo/client";
 import GraphQLClient from "@graphql/GraphQLClient";
@@ -24,6 +25,14 @@ function App() {
             <Route path="/test" element={<Test />} />
             <Route path="collections/create" element={<Create />} />
             <Route path="collections/:id/mint" element={<Mint />} />
+            <Route
+              path="/discord/callback"
+              element={<DiscordServerCallback />}
+            />
+            <Route
+              path="/discord/user/auth"
+              element={<DiscordUserCallback />}
+            />
           </Routes>
         </div>
       </DndProvider>
