@@ -8,6 +8,7 @@ export const CREATE_COLLECTION = gql`
     $templateImage: Upload!
     $mintDate: DateTime!
     $price: Float!
+    $badgeMetadata: JSON!
   ) {
     createCollection(
       name: $name
@@ -17,6 +18,7 @@ export const CREATE_COLLECTION = gql`
       templateImage: $templateImage
       price: $price
       mintDate: $mintDate
+      badgeMetadata: $badgeMetadata
     ) {
       id
       metadata

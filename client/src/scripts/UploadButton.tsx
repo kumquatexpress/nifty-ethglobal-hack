@@ -48,6 +48,15 @@ export default function UploadButton() {
               templateImage: imageFile,
               price: collection.cost,
               mintDate: new Date(),
+              badgeMetadata: {
+                hugImage: collection.badgeData.hugImage,
+                bgColor: collection.badgeData.colors.background,
+                fontStrokeColor: collection.badgeData.colors.fontStroke,
+                fontFillColor: collection.badgeData.colors.fontFill,
+                rareColor: collection.badgeData.colors.rare,
+                uncommonColor: collection.badgeData.colors.uncommon,
+                commonColor: collection.badgeData.colors.common,
+              },
             },
           });
         } else {

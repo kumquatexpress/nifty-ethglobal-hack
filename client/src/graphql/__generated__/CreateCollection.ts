@@ -56,4 +56,5 @@ export interface CreateCollectionVariables {
   templateImage: any;
   mintDate: any;
   price: number;
+  badgeMetadata: any;
 }
