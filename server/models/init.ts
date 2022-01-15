@@ -6,6 +6,7 @@ import Web3PublicKey from "./Web3PublicKey.model";
 import Item from "./Item.model";
 import Profile from "./Profile.model";
 import DiscordGuild from "./DiscordGuild.model";
+import LivepeerCollections from "./LivepeerCollections.model";
 
 export default function init() {
   const sequelize = new Sequelize(
@@ -31,6 +32,7 @@ export default function init() {
     Web3PublicKey,
     Profile,
     DiscordGuild,
+    LivepeerCollections,
   ]);
   postInit();
   return sequelize;

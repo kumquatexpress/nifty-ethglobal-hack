@@ -4,6 +4,8 @@ import authRouter from "./auth";
 import fetch from "node-fetch";
 import config from "../../config";
 import logger from "../utils/logger";
+import Collection from "../models/Collection.model";
+import LivepeerCollections from "../models/LivepeerCollections.model";
 
 const apiRouter = new Router({
   prefix: "/api",
@@ -57,9 +59,15 @@ apiRouter.get("/status", async (ctx, next) => {
   }
 */
 apiRouter.post("/livepeerStream", async (ctx, next) => {
-  const { name, profiles } = ctx.request.body;
+  const { name, profiles, collectionIds } = ctx.request.body;
 
-  console.log("Asdf");
+  const collections = await Collection.findAll({
+    where: { id: collectionIds },
+  });
+  if (collections.some((c) => c.user_id !== ctx.state.user.id)) {
+    ctx.status = 401;
+    return next();
+  }
   try {
     const createStreamResponse = await fetch(
       "https://livepeer.com/api/stream",
@@ -78,7 +86,15 @@ apiRouter.post("/livepeerStream", async (ctx, next) => {
 
     if (createStreamResponse) {
       const body = await createStreamResponse.json();
-      console.log("body", body);
+
+      await Promise.all(
+        collections.map((c) => {
+          return LivepeerCollections.create({
+            livepeer_stream_id: body.id,
+            collection_id: c.id,
+          });
+        })
+      );
       ctx.status = 200;
       ctx.body = body;
     }

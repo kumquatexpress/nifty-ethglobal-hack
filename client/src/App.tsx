@@ -37,7 +37,7 @@ function App() {
               path="/discord/user/auth"
               element={<DiscordUserCallback />}
             />
-            <Route path="/livestream" element={<Livestream />} />
+            <Route path="/livestream/:streamId" element={<Livestream />} />
           </Routes>
         </div>
       </DndProvider>

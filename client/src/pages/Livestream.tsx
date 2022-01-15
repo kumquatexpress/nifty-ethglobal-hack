@@ -5,33 +5,46 @@ import "videojs-contrib-quality-levels";
 import "videojs-hls-quality-selector";
 import "video.js/dist/video-js.min.css";
 import { APIClient } from "../utils/api_client";
+import { useParams } from "react-router-dom";
 
-const name = "test_stream";
-const profiles = [
-  {
-    name: "720p",
-    bitrate: 2000000,
-    fps: 30,
-    width: 1280,
-    height: 720,
-  },
-  {
-    name: "480p",
-    bitrate: 1000000,
-    fps: 30,
-    width: 854,
-    height: 480,
-  },
-  {
-    name: "360p",
-    bitrate: 500000,
-    fps: 30,
-    width: 640,
-    height: 360,
-  },
-];
+export async function startLivestream(
+  name: string,
+  collectionIds: string[]
+): Promise<any> {
+  const profiles = [
+    {
+      name: "720p",
+      bitrate: 2000000,
+      fps: 30,
+      width: 1280,
+      height: 720,
+    },
+    {
+      name: "480p",
+      bitrate: 1000000,
+      fps: 30,
+      width: 854,
+      height: 480,
+    },
+    {
+      name: "360p",
+      bitrate: 500000,
+      fps: 30,
+      width: 640,
+      height: 360,
+    },
+  ];
+
+  const resp = await APIClient().post("/livepeerStream", {
+    name: name,
+    profiles: profiles,
+    collectionIds,
+  });
+  return resp.data;
+}
 
 export default function Livestream() {
+  let { streamId } = useParams<{ streamId: string }>();
   const [videoEl, setVideoEl] = useState(null);
   const [playbackId, setPlaybackId] = useState<string | null>(null);
   const [streamKey, setStreamKey] = useState<string | null>(null);
@@ -41,19 +54,26 @@ export default function Livestream() {
     setVideoEl(el);
   }, []);
 
-  useEffect(() => {
+  const interval = setInterval(() => {
+    if (isLive) {
+      clearInterval(interval);
+      return;
+    }
     APIClient()
-      .post("/livepeerStream", {
-        name: name,
-        profiles: profiles,
-      })
+      .get("/livepeerStream/" + streamId)
       .then((resp) => {
-        setIsLive(resp.data.isActive);
-        setPlaybackId(resp.data.playbackId);
-        setStreamKey(resp.data.streamKey);
+        if (resp.data.isActive) {
+          setIsLive(resp.data.isActive);
+          setPlaybackId(resp.data.playbackId);
+          setStreamKey(resp.data.streamKey);
+          clearInterval(interval);
+        }
       });
+  }, 3000);
+
+  useEffect(() => {
     if (videoEl == null) return;
-    if (playbackId) {
+    if (playbackId && isLive) {
       const player = videojs(videoEl, {
         autoplay: true,
         controls: true,
@@ -64,14 +84,11 @@ export default function Livestream() {
         ],
       });
 
-      // @ts-ignore
-      player.hlsQualitySelector();
-
       player.on("error", () => {
         player.src(`https://cdn.livepeer.com/hls/${playbackId}/index.m3u8`);
       });
     }
-  }, [isLive, playbackId, videoEl]);
+  }, [isLive]);
 
   return (
     <div className="container w-full flex flex-col items-center overflow-auto pb-14">

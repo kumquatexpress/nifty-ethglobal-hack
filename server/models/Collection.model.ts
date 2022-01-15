@@ -118,6 +118,9 @@ export default class Collection extends Model {
   @Column(DataType.STRING)
   discord_role_id: string;
 
+  @Column(DataType.STRING)
+  livepeer_stream_id: string;
+
   @ForeignKey(() => User)
   @Column(DataType.UUID)
   user_id: string;
