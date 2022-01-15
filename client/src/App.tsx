@@ -24,21 +24,23 @@ function App() {
           <Header>
             <MetaMaskButton />
           </Header>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/test" element={<Test />} />
-            <Route path="collection/create" element={<Create />} />
-            <Route path="collection/:id/mint" element={<Mint />} />
-            <Route
-              path="/discord/callback"
-              element={<DiscordServerCallback />}
-            />
-            <Route
-              path="/discord/user/auth"
-              element={<DiscordUserCallback />}
-            />
-            <Route path="/livestream/:streamId" element={<Livestream />} />
-          </Routes>
+          <div className="container badger-page">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/test" element={<Test />} />
+              <Route path="collection/create" element={<Create />} />
+              <Route path="collection/:id/mint" element={<Mint />} />
+              <Route
+                path="/discord/callback"
+                element={<DiscordServerCallback />}
+              />
+              <Route
+                path="/discord/user/auth"
+                element={<DiscordUserCallback />}
+              />
+              <Route path="/livestream/:streamId" element={<Livestream />} />
+            </Routes>
+          </div>
         </div>
       </DndProvider>
     </ApolloProvider>

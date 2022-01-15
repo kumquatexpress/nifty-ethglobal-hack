@@ -16,11 +16,11 @@ function Create() {
     []
   );
   return (
-    <div className="container badger-page">
+    <>
       <CreateCollection />
       <PreviewCollection />
       <UploadButton size="large" onSuccess={onUploadSuccess} />
-    </div>
+    </>
   );
 }
 

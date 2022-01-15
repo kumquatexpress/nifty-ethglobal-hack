@@ -30,6 +30,7 @@ function Mint() {
   if (collection == null && !loading) {
     return <div>No collection found with id: {id}</div>;
   }
+
   if (error) {
     return (
       <div>
@@ -38,48 +39,31 @@ function Mint() {
     );
   }
 
-  // TODO: TEMP DEFAULTS
-  let metadata = collection?.metadata;
+  if (collection?.badge_metadata == null) {
+    return (
+      <div>
+        Error getting badge metadata for collection with id: {id}, error:{" "}
+        {error}
+      </div>
+    );
+  }
 
-  const hugImage = metadata?.hugImage || true;
-  const fontStroke = metadata?.fontStroke || {
-    r: 255,
-    g: 255,
-    b: 255,
-    a: 1,
-  };
-  const fontFill = metadata?.fontFill || {
-    r: 0,
-    g: 0,
-    b: 0,
-    a: 1,
-  };
-  const background = metadata?.background || {
-    r: 255,
-    g: 255,
-    b: 255,
-    a: 1,
-  };
-  const common = metadata?.background || {
-    r: 224,
-    g: 224,
-    b: 224,
-    a: 1,
-  };
-  const uncommon = metadata?.background || {
-    r: 51,
-    g: 166,
-    b: 255,
-    a: 1,
-  };
-  const rare = metadata?.background || {
-    r: 255,
-    g: 238,
-    b: 46,
-    a: 1,
-  };
+  // TODO: TEMP DEFAULTS
+  const {
+    hugImage,
+    bgColor: background,
+    fontStrokeColor: fontStroke,
+    fontFillColor: fontFill,
+    rarityMapping: {
+      rare: { pct: rarePercent, color: rare },
+      common: { pct: commonPercent, color: common },
+      uncommon: { pct: uncommonPercent, color: uncommon },
+    },
+  } = collection?.badge_metadata || {};
+  console.log("jjj", background);
+
   return (
-    <div className={cx("container badger-page", styles.container)}>
+    <div className={cx(styles.container)}>
       <div className={cx(styles.badgeImage)}>
         <CanvasImage
           fontStrokeColor={fontStroke}
