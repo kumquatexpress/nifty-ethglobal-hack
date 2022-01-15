@@ -106,6 +106,8 @@ function Button({
         href={href}
         target={target}
         onClick={onClick}
+        // @ts-ignore bulma requires this, is-disabled is deprecated
+        disabled
       >
         {featherIcon}
         <span>{children}</span>
@@ -113,7 +115,7 @@ function Button({
     );
   } else {
     return (
-      <button className={buttonClasses} onClick={onClick}>
+      <button disabled className={buttonClasses} onClick={onClick}>
         {icon}
         <span>{children}</span>
       </button>

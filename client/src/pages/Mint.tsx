@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 import MintButton from "@scripts/MintButton";
 import CanvasImage from "@scripts/CanvasImage";
 import Text from "@lib/Text";
+import { APIClient } from "../utils/api_client";
 
 import { COLLECTION } from "@graphql/collections.graphql";
 
@@ -14,9 +15,11 @@ import {
   CollectionVariables,
 } from "@gqlt/Collection";
 import { gweiToMatic } from "@utils/mint";
+import { BadgerCollectionStatus } from "@scripts/types";
 
 function Mint() {
   let { id } = useParams<{ id: string }>();
+  const [status, setStatus] = useState<BadgerCollectionStatus>(0);
   const { data, loading, error } = useQuery<
     CollectionType,
     CollectionVariables
@@ -25,8 +28,33 @@ function Mint() {
       id: id!,
     },
   });
-
   const collection = data?.collection;
+  // query for status
+  useEffect(() => {
+    let timeout = setTimeout(pollCollectionStatus, 1000);
+    let timeToCheck = 1000;
+    function pollCollectionStatus() {
+      APIClient()
+        .get(`/collection/${collection?.id}/status`)
+        .then((resp) => {
+          console.log("success", resp.data.status);
+          setStatus(resp.data.status);
+        })
+        .catch((error) => {
+          console.error("Error fetching status:", error);
+        })
+        .finally(() => {
+          if (status !== BadgerCollectionStatus.READY_TO_MINT)
+            // basic exponential backoff
+            timeToCheck *= 1.1;
+          timeout = setTimeout(pollCollectionStatus, timeToCheck);
+        });
+    }
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [collection?.id, setStatus, status]);
+
   console.log("collection", collection);
   if (collection == null && !loading) {
     return <div>No collection found with id: {id}</div>;
@@ -62,6 +90,7 @@ function Mint() {
     },
   } = collection?.badge_metadata || {};
 
+  const readyToMint = status === BadgerCollectionStatus.READY_TO_MINT;
   return (
     <div className={cx(styles.container)}>
       <div className={cx(styles.badgeImage)}>
@@ -74,7 +103,11 @@ function Mint() {
           bgColor={background}
           imgNumber={1}
         />
-        <MintButton size="large" className={cx(styles.mintButton)} />
+        <MintButton
+          readyToMint={readyToMint}
+          size="large"
+          className={cx(styles.mintButton)}
+        />
       </div>
 
       <div className={cx(styles.badgeMetadata)}>
