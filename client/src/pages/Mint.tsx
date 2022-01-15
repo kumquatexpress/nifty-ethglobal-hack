@@ -79,8 +79,7 @@ function Mint() {
 
       <div className={cx(styles.badgeMetadata)}>
         <Text type="h1" className={cx(styles.title)}>
-          {" "}
-          Collection Name{" "}
+          {collection.name}
         </Text>
         <div className={cx(styles.subMetadata)}>
           <div className={cx(styles.pricing)}>

@@ -33,6 +33,10 @@ const CollectionType = new GraphQLObjectType({
       type: new GraphQLNonNull(GraphQLString),
       description: "The uuid of this collection",
     },
+    name: {
+      type: new GraphQLNonNull(GraphQLString),
+      description: "The name of this collection",
+    },
     metadata: {
       type: GraphQLJSON,
       description: "The metadata of this collection",
