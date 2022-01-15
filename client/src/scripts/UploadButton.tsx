@@ -18,8 +18,11 @@ import {
 import { useMutation } from "@apollo/client";
 import { CREATE_COLLECTION } from "@graphql/collections.graphql";
 
-type Props = { className?: ClassNamesArg } & ButtonProps;
-export default function UploadButton(props: Props) {
+type Props = {
+  className?: ClassNamesArg;
+  onSuccess: (mutationResp: CreateCollection["createCollection"]) => void;
+} & ButtonProps;
+export default function UploadButton({ onSuccess, ...props }: Props) {
   const collection = useAppSelector(selectCollection);
   const dispatch = useAppDispatch();
 
@@ -29,6 +32,7 @@ export default function UploadButton(props: Props) {
   ] = useMutation<CreateCollection, CreateCollectionVariables>(
     CREATE_COLLECTION
   );
+
   return (
     <Button
       {...props}
@@ -73,6 +77,11 @@ export default function UploadButton(props: Props) {
               },
             },
           });
+          if (collectionResp?.data?.createCollection) {
+            onSuccess(collectionResp?.data?.createCollection);
+          }
+          console.log("coll", collectionResp);
+          // call onsuccess
         } else {
           // TODO: handle errors
           alert(`Invalid inputs!`);
