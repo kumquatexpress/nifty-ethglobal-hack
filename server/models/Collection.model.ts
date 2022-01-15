@@ -57,9 +57,20 @@ export interface BadgeMetadata {
   bgColor: { r: number; g: number; b: number; a: number };
   fontStrokeColor: { r: number; g: number; b: number; a: number };
   fontFillColor: { r: number; g: number; b: number; a: number };
-  rareColor: { r: number; g: number; b: number; a: number };
-  uncommonColor: { r: number; g: number; b: number; a: number };
-  commonColor: { r: number; g: number; b: number; a: number };
+  rarityMapping: {
+    ["common"]: {
+      pct: number;
+      color: { r: number; g: number; b: number; a: number };
+    };
+    ["uncommon"]: {
+      pct: number;
+      color: { r: number; g: number; b: number; a: number };
+    };
+    ["rare"]: {
+      pct: number;
+      color: { r: number; g: number; b: number; a: number };
+    };
+  };
 }
 
 @Table({
@@ -254,25 +265,7 @@ export default class Collection extends Model {
     const toUpload = items
       .concat(existingItems)
       .filter((item) => item && item.status === ItemStatus.NOT_IN_IPFS);
-    let numUploaded = 0;
-    const uploadPromises = await Promise.allSettled(
-      toUpload.map((item) =>
-        pl8(
-          async () =>
-            await item.addToCloudStorage("pinata").then((res) => {
-              numUploaded += 1;
-              redis.pubsub.publish(UPLOAD_ITEMS_PUBSUB_KEY(this.id), {
-                statusMessage: `Uploaded ${numUploaded} out of ${toUpload.length}`,
-              });
-              return res;
-            })
-        )
-      )
-    );
-
-    return uploadPromises
-      .filter((m) => m.status === "fulfilled")
-      .map((m) => (m as any).value);
+    return await Item.addForCollectionWithRarity("pinata", toUpload, this);
   }
 
   /*

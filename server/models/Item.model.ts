@@ -15,8 +15,10 @@ import fetch from "node-fetch";
 import { uploadToCloudFS } from "../utils/smart_contracts/toolbox/collections";
 import { UploadResult } from "../utils/smart_contracts/toolbox/collections";
 import { NFTManifest } from "../utils/smart_contracts/toolbox/types";
-import Collection from "./Collection.model";
+import Collection, { UPLOAD_ITEMS_PUBSUB_KEY } from "./Collection.model";
 import { createCanvas, Image } from "canvas";
+import redis from "../utils/redis";
+import { pl8 } from "../utils/helpers";
 
 export enum ItemStatus {
   UNKNOWN = 0,
@@ -66,17 +68,15 @@ export default class Item extends Model {
   @BelongsTo(() => Collection, "collection_id")
   collection: Collection;
 
-  async drawBadge(): Promise<Buffer | null> {
+  async drawBadge(
+    rarity: "common" | "uncommon" | "rare"
+  ): Promise<Buffer | null> {
     const collection = await this.$get("collection");
-    const {
-      size,
-      hugImage,
-      bgColor,
-      fontStrokeColor,
-      fontFillColor,
-      svgBorder,
-      paddingColor,
-    } = collection.badge_metadata;
+    const { hugImage, bgColor, fontStrokeColor, fontFillColor, rarityMapping } =
+      collection.badge_metadata;
+
+    const size = 256;
+    const paddingColor = rarityMapping[rarity].color;
 
     function RGBAColorToString(color: any): string {
       return `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`;
@@ -167,39 +167,43 @@ export default class Item extends Model {
               sizeOfImage,
               sizeOfImage
             );
+            console.log("image drawn", {
+              renderedImgDrawPosX,
+              renderedImgDrawPosY,
+              sizeOfImage,
+            });
             resolve(image);
           };
         });
 
-        if (svgBorder != null) {
-          ctx.drawImage(svgBorder, 0, 0, size, size);
-        } else {
-          console.log("rendering border");
-          if (paddingColor != null) {
-            roundRect(
-              ctx,
-              paddingSize / 2,
-              paddingSize / 2,
-              size - paddingSize,
-              size - paddingSize,
-              paddingRadius
-            );
-            ctx.lineWidth = paddingSize;
-            ctx.strokeStyle = RGBAColorToString(paddingColor);
-            ctx.stroke();
-          }
+        // if (svgBorder != null) {
+        //   ctx.drawImage(svgBorder, 0, 0, size, size);
+        // } else {
+        console.log("rendering border");
+        if (paddingColor != null) {
           roundRect(
             ctx,
-            borderSize / 2,
-            borderSize / 2,
-            size - borderSize,
-            size - borderSize,
-            borderRadius
+            paddingSize / 2,
+            paddingSize / 2,
+            size - paddingSize,
+            size - paddingSize,
+            paddingRadius
           );
-          ctx.lineWidth = borderSize;
-          ctx.strokeStyle = "black";
+          ctx.lineWidth = paddingSize;
+          ctx.strokeStyle = RGBAColorToString(paddingColor);
           ctx.stroke();
         }
+        roundRect(
+          ctx,
+          borderSize / 2,
+          borderSize / 2,
+          size - borderSize,
+          size - borderSize,
+          borderRadius
+        );
+        ctx.lineWidth = borderSize;
+        ctx.strokeStyle = "black";
+        ctx.stroke();
 
         roundRect(
           ctx,
@@ -253,14 +257,15 @@ export default class Item extends Model {
   }
 
   async addToCloudStorage(
-    provider: "pinata" | "arweave" | "aws"
+    provider: "pinata" | "arweave" | "aws",
+    rarity: "common" | "uncommon" | "rare" = "common"
   ): Promise<Item> {
     if (!this.metadata) {
       return;
     }
     let contents;
     try {
-      contents = await this.drawBadge();
+      contents = await this.drawBadge(rarity);
     } catch (e) {
       console.log("error", e);
       throw e;
@@ -275,8 +280,64 @@ export default class Item extends Model {
       provider
     );
     this.ipfs_metadata = result;
+    this.metadata.attributes = [
+      ...this.metadata.attributes,
+      { trait_type: "rarity", value: rarity },
+    ];
     this.status = ItemStatus.UPLOADED_TO_IPFS;
-    this.save();
+    await this.save();
     return this;
+  }
+
+  static async addForCollectionWithRarity(
+    provider: "pinata" | "arweave" | "aws",
+    items: Item[],
+    collection: Collection
+  ): Promise<Item[]> {
+    console.log("this many items", items.length);
+    let numUploaded = 0;
+    const rarity = Array(items.length);
+    const { common, uncommon, rare } = collection.badge_metadata.rarityMapping;
+    const modifier = items.length / (common.pct + uncommon.pct + rare.pct);
+    const [commonIdx, uncommonIdx, rareIdx] = [
+      Math.round(common.pct * modifier),
+      Math.round(uncommon.pct * modifier),
+      Math.round(rare.pct * modifier),
+    ];
+    items.forEach((v, idx) => {
+      if (idx < commonIdx) {
+        rarity[idx] = "common";
+      } else if (idx < commonIdx + uncommonIdx) {
+        rarity[idx] = "uncommon";
+      } else if (idx < commonIdx + uncommonIdx + rareIdx) {
+        rarity[idx] = "rare";
+      } else {
+        rarity[idx] = "common";
+      }
+    });
+    // Shuffle this
+    for (let i = rarity.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [rarity[i], rarity[j]] = [rarity[j], rarity[i]];
+    }
+    console.log("rarity", rarity);
+
+    const uploadPromises = await Promise.allSettled(
+      items.map((item, idx) =>
+        pl8(
+          async () =>
+            await item.addToCloudStorage(provider, rarity[idx]).then((res) => {
+              numUploaded += 1;
+              redis.pubsub.publish(UPLOAD_ITEMS_PUBSUB_KEY(collection.id), {
+                statusMessage: `Uploaded ${numUploaded} out of ${items.length}`,
+              });
+              return res;
+            })
+        )
+      )
+    );
+    return uploadPromises
+      .filter((m) => m.status === "fulfilled")
+      .map((m) => (m as any).value);
   }
 }

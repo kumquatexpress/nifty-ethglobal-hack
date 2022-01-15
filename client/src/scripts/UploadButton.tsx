@@ -56,9 +56,20 @@ export default function UploadButton(props: Props) {
                 bgColor: collection.badgeData.colors.background,
                 fontStrokeColor: collection.badgeData.colors.fontStroke,
                 fontFillColor: collection.badgeData.colors.fontFill,
-                rareColor: collection.badgeData.colors.rare,
-                uncommonColor: collection.badgeData.colors.uncommon,
-                commonColor: collection.badgeData.colors.common,
+                rarityMapping: {
+                  common: {
+                    color: collection.badgeData.colors.common,
+                    pct: collection.percentCommon,
+                  },
+                  uncommon: {
+                    color: collection.badgeData.colors.rare,
+                    pct: collection.percentCommon / 2,
+                  },
+                  rare: {
+                    color: collection.badgeData.colors.uncommon,
+                    pct: collection.percentCommon / 4,
+                  },
+                },
               },
             },
           });
