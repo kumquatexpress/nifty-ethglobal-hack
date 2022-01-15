@@ -56,6 +56,10 @@ export interface Collection_collection {
    * The s3 url of the template image
    */
   template_s3_url: string | null;
+  /**
+   * The badge metadata of this collection
+   */
+  badge_metadata: any | null;
 }
 
 export interface Collection {

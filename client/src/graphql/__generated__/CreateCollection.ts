@@ -41,6 +41,10 @@ export interface CreateCollection_createCollection {
    * An integer corresponding to a status enum
    */
   status: number;
+  /**
+   * The badge metadata of this collection
+   */
+  badge_metadata: any | null;
   items: (CreateCollection_createCollection_items | null)[] | null;
 }
 

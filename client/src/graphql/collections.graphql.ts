@@ -23,6 +23,7 @@ export const CREATE_COLLECTION = gql`
       id
       metadata
       status
+      badge_metadata
       items {
         id
         ipfs_metadata
@@ -50,6 +51,7 @@ export const COLLECTION = gql`
       mint_start_time
       price_gwei
       template_s3_url
+      badge_metadata
     }
   }
 `;
