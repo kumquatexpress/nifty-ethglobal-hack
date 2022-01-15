@@ -1,4 +1,5 @@
 import {
+  GraphQLBoolean,
   GraphQLList,
   GraphQLNonNull,
   GraphQLObjectType,
@@ -9,7 +10,8 @@ import config from "../../config";
 import Web3PublicKey from "../models/Web3PublicKey.model";
 import Profile from "../models/Profile.model";
 import User from "../models/User.model";
-import { getTokensOwnedByAccount } from "../utils/smart_contracts/toolbox/machine";
+import LivepeerCollections from "../models/LivepeerCollections.model";
+import Collection from "../models/Collection.model";
 
 const ProfileType = new GraphQLObjectType({
   name: "Profile",
@@ -92,6 +94,37 @@ const UserQueries = {
         include: Web3PublicKey,
       });
       return await user.getOwnedBadges();
+    },
+  },
+  joinLivestream: {
+    type: GraphQLBoolean,
+    args: {
+      streamId: {
+        type: new GraphQLNonNull(GraphQLString),
+      },
+    },
+    description: "Tries to join a livestream based on badges",
+    resolve: async (parent, args, ctx, info) => {
+      const user = await User.findByPk(ctx.state.user.id, {
+        include: Web3PublicKey,
+      });
+      const livestreams = await LivepeerCollections.findAll({
+        where: { livepeer_stream_id: args.streamId },
+      });
+      const collections = await Collection.findAll({
+        where: { id: livestreams.map((l) => l.collection_id) },
+      });
+      const ownedTokens = await user.getOwnedBadges();
+      console.log("owned", ownedTokens);
+      collections.forEach(async (c) => {
+        const match = await c.getNFTsMatchingOwnedTokens(
+          ownedTokens.map((t) => t.token_address)
+        );
+        if (match.length) {
+          return true;
+        }
+      });
+      return false;
     },
   },
   getQRCode: {

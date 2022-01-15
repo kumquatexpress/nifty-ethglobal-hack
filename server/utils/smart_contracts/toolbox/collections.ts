@@ -108,7 +108,7 @@ export async function uploadToCloudFS(
       );
     } else {
       const manifestHash = await pinataUploadFile(manifestName, manifestBytes);
-      imgUrl = `ipfs://${manifestHash}`;
+      manifestUrl = `ipfs://${manifestHash}`;
     }
     if (manifestUrl) {
       return {
@@ -128,6 +128,7 @@ export async function addLinksToCollection(
   // public key of this machine
   machineAddr: string
 ) {
+  logger.info("addLinksToCollection: ", { items });
   const ConfigContract = mintConfigContract(machineAddr);
   const transaction = ConfigContract.methods.addBatch(items.map((i) => i.link));
   const tx = {

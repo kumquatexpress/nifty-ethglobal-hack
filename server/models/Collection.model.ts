@@ -280,36 +280,36 @@ export default class Collection extends Model {
       logger.error(message);
       throw new InvalidCollectionStatus(message);
     }
-    const items = await this.$get("items");
-    const eligibleItems = items.filter(
-      (i) => i.status == ItemStatus.UPLOADED_TO_IPFS
-    );
-    const itemMetadata = eligibleItems.map((i) => {
-      return {
-        link: i.ipfs_metadata.link,
-        name: i.ipfs_metadata.name,
-        onChain: false,
-      };
-    });
     try {
+      const items = await this.$get("items");
+      const eligibleItems = items.filter(
+        (i) => i.status == ItemStatus.UPLOADED_TO_IPFS
+      );
+      const itemMetadata = eligibleItems.map((i) => {
+        return {
+          link: i.ipfs_metadata.link,
+          name: i.ipfs_metadata.name,
+          onChain: false,
+        };
+      });
       await addLinksToCollection(itemMetadata, this.machine_address);
+      // Set item statuses and upsert
+      await Item.update(
+        { status: ItemStatus.IN_MACHINE },
+        {
+          where: {
+            id: eligibleItems.map((i) => i.id),
+          },
+        }
+      );
+      // Set collection status
+      this.status = CollectionStatus.READY_TO_MINT;
+      await this.save();
+      return this;
     } catch (e) {
       logger.error("addLinksToCollection failed, ", e);
       throw e;
     }
-    // Set item statuses and upsert
-    await Item.update(
-      { status: ItemStatus.IN_MACHINE },
-      {
-        where: {
-          id: { [Op.in]: eligibleItems.map((i) => i.id) },
-        },
-      }
-    );
-    // Set collection status
-    this.status = CollectionStatus.READY_TO_MINT;
-    this.save();
-    return this;
   }
 
   async createMachine(): Promise<Collection> {
@@ -327,7 +327,25 @@ export default class Collection extends Model {
     return;
   }
 
-  async getNFTsInWallet(walletPublicKey: string): Promise<string[]> {
+  /*
+  "result": [
+    {
+      "token_address": "0x057Ec652A4F150f7FF94f089A38008f49a0DF88e",
+      "token_id": "15",
+      "contract_type": "ERC721",
+      "owner_of": "0x057Ec652A4F150f7FF94f089A38008f49a0DF88e",
+      "block_number": "88256",
+      "block_number_minted": "88256",
+      "token_uri": "string",
+      "metadata": "string",
+      "synced_at": "string",
+      "amount": "1",
+      "name": "CryptoKitties",
+      "symbol": "RARI"
+    }
+  ]
+  */
+  async getNFTsInWallet(walletPublicKey: string): Promise<any[]> {
     const addresses = await getAllTokensForWalletAndContract(
       walletPublicKey,
       this.machine_address
@@ -335,9 +353,12 @@ export default class Collection extends Model {
     return addresses;
   }
 
-  async getNFTsMatchingOwnedTokens(ownedTokens: string[]): Promise<string[]> {
-    const mintAddrs = await getTokensFromMachine(this.machine_address);
-    const matchingAddrs = mintAddrs.filter((v) => ownedTokens.includes(v));
+  async getNFTsMatchingOwnedTokens(ownedTokens: string[]): Promise<any[]> {
+    const mints = await getTokensFromMachine(this.machine_address);
+    console.log("mints", mints);
+    const matchingAddrs = mints
+      .map((m) => m.token_address)
+      .filter((v) => ownedTokens.includes(v));
     return matchingAddrs;
   }
 }
