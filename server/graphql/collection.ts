@@ -22,6 +22,8 @@ import {
   GWEI_PER_ETH,
   TOOLBOX_ETH_PUBLIC_KEY,
 } from "../utils/smart_contracts/toolbox/constants";
+import s3 from "../utils/s3";
+import config from "../../config";
 
 const CollectionType = new GraphQLObjectType({
   name: "Collection",
@@ -149,12 +151,12 @@ const CollectionMutations = {
       await new Promise<void>((resolve) =>
         stream.on("end", async () => {
           const imageBuffer = Buffer.concat(fileChunks);
-          // imageUrl = await s3.uploadFile(
-          //   config.aws.UPLOAD_BUCKET,
-          //   filename,
-          //   mimetype,
-          //   imageBuffer
-          // );
+          imageUrl = await s3.uploadFile(
+            config.aws.UPLOAD_BUCKET,
+            filename,
+            mimetype,
+            imageBuffer
+          );
           resolve();
         })
       );

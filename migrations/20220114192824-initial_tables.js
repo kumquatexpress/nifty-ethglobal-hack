@@ -79,7 +79,7 @@ module.exports = {
       status: Sequelize.DataTypes.INTEGER,
       machine_address: Sequelize.DataTypes.STRING,
       mint_start_time: Sequelize.DataTypes.DATE,
-      price_gwei: Sequelize.DataTypes.INTEGER,
+      price_gwei: Sequelize.DataTypes.BIGINT,
       name: Sequelize.DataTypes.STRING,
       template_s3_url: Sequelize.DataTypes.STRING,
       user_id: Sequelize.DataTypes.UUID,

@@ -44,7 +44,7 @@ const Config = {
     UPLOAD_KEY: env.UPLOAD_S3_KEY,
     UPLOAD_SECRET: env.UPLOAD_S3_SECRET,
     REGION: env.UPLOAD_REGION || "us-west-1",
-    UPLOAD_BUCKET: env.UPLOAD_BUCKET || "badger-uploads",
+    UPLOAD_BUCKET: env.UPLOAD_BUCKET || "nifty-hacks",
   },
   stripe: {
     SECRET_KEY: env.STRIPE_SECRET_KEY,
