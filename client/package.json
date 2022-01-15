@@ -18,6 +18,7 @@
     "@types/video.js": "^7.3.29",
     "apollo-upload-client": "^17.0.0",
     "bulma": "^0.9.3",
+    "craco": "^0.0.3",
     "graphql": "^15.8.0",
     "openpgp": "^5.0.1",
     "qs": "^6.10.3",
