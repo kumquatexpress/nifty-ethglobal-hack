@@ -10,7 +10,7 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "useDefineForClassFields": false,
-    "resolveJsonModule": true,
+    "resolveJsonModule": true
   },
-  "exclude": ["node_modules", "worker", "client"],
+  "exclude": ["node_modules", "worker", "client"]
 }

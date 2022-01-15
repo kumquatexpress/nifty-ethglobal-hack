@@ -1,7 +1,6 @@
 import { MachineData } from "./collections";
 import MachineContract, { address } from "../machine";
 import { web3, account } from "../web3";
-import { GWEI_PER_ETH } from "./constants";
 import logger from "../../logger";
 
 export async function createMachine(
@@ -9,10 +8,7 @@ export async function createMachine(
 ): Promise<{ machineAddress: string }> {
   logger.info("createMachine", [data]);
   const ts = Math.floor(Number(Date.now() / 1000) + 5000);
-  const priceWei = web3.utils.toWei(
-    web3.utils.toBN(data.price * GWEI_PER_ETH),
-    "gwei"
-  );
+  const priceWei = web3.utils.toWei(web3.utils.toBN(data.priceGwei), "gwei");
   const transaction = MachineContract.methods.create(
     data.name,
     data.symbol,

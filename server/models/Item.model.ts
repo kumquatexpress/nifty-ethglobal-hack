@@ -65,7 +65,9 @@ export default class Item extends Model {
   @BelongsTo(() => Collection, "collection_id")
   collection: Collection;
 
-  async addToCloudStorage(provider: "arweave" | "aws"): Promise<Item> {
+  async addToCloudStorage(
+    provider: "pinata" | "arweave" | "aws"
+  ): Promise<Item> {
     if (!this.metadata) {
       return;
     }

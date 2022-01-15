@@ -5111,7 +5111,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.4",
-  "updatedAt": "2022-01-14T18:42:58.219Z",
+  "updatedAt": "2022-01-14T23:16:57.876Z",
   "devdoc": {
     "details": "String operations.",
     "kind": "dev",
@@ -5131,7 +5131,7 @@
       "id": "0x0cbf5f7dd692d0b3a0ea764c454f5161fdbd2ab96918e1b2ef7d9044bcc81325"
     },
     "contract": {
-      "id": "0x26c133f7e80927cf3a62f74b8beef25c1bb8e885e31745a752a481cb0ce30bd7"
+      "id": "0xcc79c6be55d68f61f5c503c64450e6bc2f8a738494f3cb49bf210da9b2d78451"
     }
   }
 }

@@ -601,7 +601,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.4",
-  "updatedAt": "2022-01-14T18:42:58.222Z",
+  "updatedAt": "2022-01-14T23:16:57.882Z",
   "devdoc": {
     "details": "Implementation of the {IERC165} interface. Contracts that want to implement ERC165 should inherit from this contract and override {supportsInterface} to check for the additional interface id that will be supported. For example: ```solidity function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {     return interfaceId == type(MyInterface).interfaceId || super.supportsInterface(interfaceId); } ``` Alternatively, {ERC165Storage} provides an easier to use but more expensive implementation.",
     "kind": "dev",
@@ -625,7 +625,7 @@
       "id": "0x2cdc5c5f756f555319272af6740217ecb0d9451b44e748689b42eb518eb5ef1b"
     },
     "contract": {
-      "id": "0x32563c2f290177194c3e5ee6530d597bcaa76dd778079b80430598cf26772af4"
+      "id": "0xcb14b6804e4734eac69d0f2344fba85d0682c06c2d243b45cf68e351368e4f78"
     }
   }
 }

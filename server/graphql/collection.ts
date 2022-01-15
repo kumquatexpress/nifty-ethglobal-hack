@@ -17,8 +17,6 @@ import Collection, {
 import logger from "../utils/logger";
 import { ItemType } from "./item";
 import { GraphQLUpload } from "graphql-upload";
-import s3 from "../utils/s3";
-import config from "../../config";
 import User from "../models/User.model";
 import {
   GWEI_PER_ETH,
@@ -195,9 +193,10 @@ const CollectionMutations = {
     },
     resolve: async (parent, args, ctx, info) => {
       let collection: Collection = await Collection.findByPk(args.id);
-      if (!collection || collection.user_id !== ctx.state.user.id) {
-        throw new Error("Collection not found");
-      }
+      // TODO AUTH
+      //   if (!collection || collection.user_id !== ctx.state.user.id) {
+      //     throw new Error("Collection not found");
+      //   }
       await redis.redisClient.rpush(
         redis.WORKER_LISTEN_QUEUE,
         JSON.stringify({
@@ -221,9 +220,10 @@ const CollectionMutations = {
     resolve: async (parent, args, ctx, info) => {
       try {
         let collection: Collection = await Collection.findByPk(args.id);
-        if (!collection || collection.user_id !== ctx.state.user.id) {
-          throw new Error("Collection not found");
-        }
+        // TODO AUTH
+        // if (!collection || collection.user_id !== ctx.state.user.id) {
+        //   throw new Error("Collection not found");
+        // }
         await redis.redisClient.rpush(
           redis.WORKER_LISTEN_QUEUE,
           JSON.stringify({

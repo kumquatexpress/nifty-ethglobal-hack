@@ -8,6 +8,7 @@ import config from "../../../../config";
 import Collection from "../../../models/Collection.model";
 import mintConfigContract from "../config";
 import { account, web3 } from "../web3";
+import { pinataUploadFile } from "../upload/pinata";
 
 export interface UploadResult {
   link: string;
@@ -21,7 +22,7 @@ export interface MachineData {
   uuid: null | string;
   symbol: string;
   sellerFeeBasisPoints: number;
-  price: BN;
+  priceGwei: BN;
   goLiveDate: null | BN;
   creators: {
     address: string;
@@ -44,7 +45,7 @@ export function machineDataFromCollection(collection: Collection): MachineData {
     uuid: null,
     symbol: metadata.symbol,
     sellerFeeBasisPoints: metadata.sellerFeeBasisPoints,
-    price: Web3.utils.toBN(collection.price_gwei),
+    priceGwei: Web3.utils.toBN(collection.price_gwei),
     goLiveDate: Web3.utils.toBN(secondsSinceEpoch),
     creators: metadata.creators.map((creator) => {
       return {
@@ -60,7 +61,7 @@ export async function uploadToCloudFS(
   filename: string,
   imageBytes: Buffer,
   manifest: NFTManifest,
-  provider: "arweave" | "aws"
+  provider: "arweave" | "aws" | "pinata"
 ): Promise<UploadResult> {
   logger.info("uploadToCloudFS: ", {
     filename,
@@ -71,13 +72,16 @@ export async function uploadToCloudFS(
     let imgUrl;
     if (provider === "arweave") {
       imgUrl = await nativeArweaveUploadFile(filename, "image/png", imageBytes);
-    } else {
+    } else if (provider === "aws") {
       imgUrl = await awsUploadFile(
         filename,
         "image/png",
         imageBytes,
         config.aws.UPLOAD_BUCKET
       );
+    } else {
+      const imgHash = await pinataUploadFile(imageBytes);
+      imgUrl = `ipfs://${imgHash}`;
     }
     // Edit the manifest json with the newly uploaded image url
     manifest.image = imgUrl;
@@ -88,19 +92,23 @@ export async function uploadToCloudFS(
     // This is just to set the manifest filename to {imagename}.json
     const manifestName = `${filename}.json`;
     let manifestUrl;
+    const manifestBytes = Buffer.from(JSON.stringify({ ...manifest }));
     if (provider === "arweave") {
       manifestUrl = await nativeArweaveUploadFile(
         manifestName,
         "application/json",
-        Buffer.from(JSON.stringify({ ...manifest }))
+        manifestBytes
       );
-    } else {
+    } else if (provider === "aws") {
       manifestUrl = await awsUploadFile(
         manifestName,
         "application/json",
-        Buffer.from(JSON.stringify({ ...manifest })),
+        manifestBytes,
         config.aws.UPLOAD_BUCKET
       );
+    } else {
+      const manifestHash = await pinataUploadFile(manifestBytes);
+      imgUrl = `ipfs://${manifestHash}`;
     }
     if (manifestUrl) {
       return {

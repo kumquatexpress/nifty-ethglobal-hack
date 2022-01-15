@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "es6",
-    "lib": ["es2021"],
+    "lib": ["es2021", "dom"],
     "module": "commonjs",
     "rootDir": "../",
     "outDir": "./build",
@@ -10,11 +10,12 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "useDefineForClassFields": false,
+    "resolveJsonModule": true
   },
   "include": [
-      "../server/models/**/*",
-      "../server/utils/**/*",
-      "../discord_bot/commands/**/*",
-      "main.ts"
-    ]
+    "../server/models/**/*",
+    "../server/utils/**/*",
+    "../discord_bot/commands/**/*",
+    "main.ts"
+  ]
 }

@@ -174,10 +174,11 @@ export default class Collection extends Model {
    * and adds each item to this collection.
    */
   async generateItemsFromTemplate(): Promise<Item[]> {
-    const user = await User.findByPk(this.user_id, {
-      include: Profile,
-    });
-    const creatorName = user.profile?.fullname;
+    //TODO AUTH
+    // const user = await User.findByPk(this.user_id, {
+    //   include: Profile,
+    // });
+    const creatorName = "blah"; //user.profile?.fullname;
     const itemMetadatas = [...Array(this.metadata.totalNFTs).keys()].map(
       (itemNum) => {
         const metadata: NFTManifest = {
@@ -243,7 +244,7 @@ export default class Collection extends Model {
       toUpload.map((item) =>
         pl8(
           async () =>
-            await item.addToCloudStorage("aws").then((res) => {
+            await item.addToCloudStorage("pinata").then((res) => {
               numUploaded += 1;
               redis.pubsub.publish(UPLOAD_ITEMS_PUBSUB_KEY(this.id), {
                 statusMessage: `Uploaded ${numUploaded} out of ${toUpload.length}`,

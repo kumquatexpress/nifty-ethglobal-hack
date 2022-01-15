@@ -8147,7 +8147,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.4",
-  "updatedAt": "2022-01-14T18:42:58.227Z",
+  "updatedAt": "2022-01-14T23:16:57.893Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},
@@ -8166,7 +8166,7 @@
       "id": "0xcae71f23ad70537bd2ff85f31f1ede67d7a781c21d2be54a01045ba302436f30"
     },
     "contract": {
-      "id": "0xc03f92c86e64d157c600548629a2d8596cd357a2bb5a68aef4580a03fe7cef4a"
+      "id": "0x29a1c7b0d0dfeb7d94d758c8a91882bb07ce0bd5457d4f844d4f6483665e03fb"
     }
   }
 }

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { cx, css } from "@emotion/css/macro";
 import "styles/App.scss";
-import config from "./components/config";
+import mintConfigContract from "./components/config";
 import machine from "./components/machine";
 import MetaMaskButton from "scripts/MetaMaskButton";
 import web3 from "./web3";
@@ -12,8 +12,10 @@ import CreateCollection from "scripts/CreateCollection";
 import PreviewCollection from "scripts/PreviewCollection";
 
 const TO_GWEI = 10 ** 9;
+const CONTRACT_ADDR = "0x75b925f04697c16561570d0cf8dbb516bb576aae";
 
 function App() {
+  const config = mintConfigContract(CONTRACT_ADDR);
   const [val, setVal] = useState<string[]>([]);
   const [newVal, setNewVal] = useState<string>("");
   const [name, setName] = useState<string>("");
@@ -21,11 +23,12 @@ function App() {
   const [price, setPrice] = useState<number>(0);
 
   const mintRandom = async () => {
+    const priceWei = await config.methods.priceWei().call();
     const accounts = await web3.eth.getAccounts();
     try {
       const v = await config.methods.mintRandom().send({
         from: accounts[0],
-        value: web3.utils.toWei(web3.utils.toBN(0.05 * TO_GWEI), "gwei"),
+        value: web3.utils.toBN(priceWei),
       });
       console.log("random", v);
       const { sender, url, tokenId } = v.events.Mint.returnValues;
