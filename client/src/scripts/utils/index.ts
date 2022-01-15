@@ -1,7 +1,9 @@
+import detectEthereumProvider from "@metamask/detect-provider";
 import { RGBAColor } from "scripts/types";
-export function isMetaMaskInstalled() {
-  // @ts-ignore
-  return Boolean(ethereum && ethereum.isMetaMask);
+
+export async function isMetaMaskInstalled() {
+  const provider = await detectEthereumProvider();
+  return Boolean(provider);
 }
 
 export function RGBAColorToString(color: RGBAColor): string {

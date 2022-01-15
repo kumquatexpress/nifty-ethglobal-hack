@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "@lib/button";
 
 import { useAppSelector, useAppDispatch } from "@scripts/redux/hooks";
@@ -12,15 +12,23 @@ import { getOrCreateUser } from "../utils/users_api";
 export default function MetaMaskButton() {
   const address = useAppSelector(selectAddress);
   const dispatch = useAppDispatch();
+  const [hasProvider, setHasProvider] = useState(false);
+
+  useEffect(() => {
+    isMetaMaskInstalled().then((i) => {
+      setHasProvider(i);
+    });
+  }, [hasProvider]);
 
   return (
     <Button
       onClick={async () => {
-        if (isMetaMaskInstalled()) {
+        if (hasProvider && !address) {
           try {
             // Will open the MetaMask UI
             // You should disable this button while the request is pending!
-            const accounts = await eth.request({
+            // @ts-ignore
+            const accounts = await eth!.request({
               method: "eth_requestAccounts",
             });
             const signature = await web3.eth.personal.sign(
@@ -40,7 +48,7 @@ export default function MetaMaskButton() {
     >
       {address !== ""
         ? address
-        : isMetaMaskInstalled()
+        : hasProvider
         ? "Connect to MetaMask"
         : "Install MetaMask"}
     </Button>
