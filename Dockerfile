@@ -7,7 +7,8 @@ RUN apt-get update && apt-get install -y \
 	vim \
 	redis-tools \
 	default-mysql-client \
-	lsof
+	lsof \
+  libpango1.0-dev
 
 RUN npm i -g pm2 kill-port
 
