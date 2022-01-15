@@ -177,7 +177,7 @@ const CollectionMutations = {
           ],
         },
         name,
-        "",
+        imageUrl,
         user.id,
         mintDate,
         Math.floor(price * GWEI_PER_ETH)
