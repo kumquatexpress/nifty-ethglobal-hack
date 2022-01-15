@@ -80,7 +80,7 @@ export async function uploadToCloudFS(
         config.aws.UPLOAD_BUCKET
       );
     } else {
-      const imgHash = await pinataUploadFile(imageBytes);
+      const imgHash = await pinataUploadFile(filename, imageBytes);
       imgUrl = `ipfs://${imgHash}`;
     }
     // Edit the manifest json with the newly uploaded image url
@@ -107,7 +107,7 @@ export async function uploadToCloudFS(
         config.aws.UPLOAD_BUCKET
       );
     } else {
-      const manifestHash = await pinataUploadFile(manifestBytes);
+      const manifestHash = await pinataUploadFile(manifestName, manifestBytes);
       imgUrl = `ipfs://${manifestHash}`;
     }
     if (manifestUrl) {
@@ -117,8 +117,9 @@ export async function uploadToCloudFS(
         onChain: false,
       };
     }
-  } catch (er) {
-    logger.error("uploadToCloudFS: ", er);
+  } catch (err) {
+    logger.error("uploadToCloudFS: ", { err });
+    throw err;
   }
 }
 
