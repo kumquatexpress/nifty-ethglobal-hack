@@ -56,34 +56,28 @@ authRouter.post("/create", async (ctx, next) => {
   if (decryptedKey.toLowerCase() === key.toLowerCase()) {
     try {
       return await Web3PublicKey.findByPk(key).then(async (account) => {
+        let existing;
         if (account) {
-          const existing = await User.findByPk(account.user_id, {
+          existing = await User.findByPk(account.user_id, {
             include: Profile,
           });
-          if (!existing.profile) {
-            await Profile.create({
-              image_url:
-                "https://badger-uploads-staging.s3.us-west-1.amazonaws.com/neopet.png",
-              fullname: "Anonymous",
-              user_id: existing.id,
-            });
-          }
-          return _authFunc("local")(ctx, next);
         } else {
           // Create account object
-          const newUser = await User.create({
-            Profile: {
-              image_url:
-                "https://badger-uploads-staging.s3.us-west-1.amazonaws.com/neopet.png",
-              fullname: "Anonymous",
-            },
-          });
+          existing = await User.create();
           await Web3PublicKey.create({
             key: key,
-            user_id: newUser.id,
+            user_id: existing.id,
           });
-          return _authFunc("local")(ctx, next);
         }
+        if (!existing.profile) {
+          await Profile.create({
+            image_url:
+              "https://badger-uploads-staging.s3.us-west-1.amazonaws.com/neopet.png",
+            fullname: "Anonymous",
+            user_id: existing.id,
+          });
+        }
+        return _authFunc("local")(ctx, next);
       });
     } catch (err) {
       logger.error("/create", [err]);
