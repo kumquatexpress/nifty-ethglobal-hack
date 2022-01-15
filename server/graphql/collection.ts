@@ -193,10 +193,9 @@ const CollectionMutations = {
     },
     resolve: async (parent, args, ctx, info) => {
       let collection: Collection = await Collection.findByPk(args.id);
-      // TODO AUTH
-      //   if (!collection || collection.user_id !== ctx.state.user.id) {
-      //     throw new Error("Collection not found");
-      //   }
+      if (!collection || collection.user_id !== ctx.state.user.id) {
+        throw new Error("Collection not found");
+      }
       await redis.redisClient.rpush(
         redis.WORKER_LISTEN_QUEUE,
         JSON.stringify({
@@ -220,10 +219,9 @@ const CollectionMutations = {
     resolve: async (parent, args, ctx, info) => {
       try {
         let collection: Collection = await Collection.findByPk(args.id);
-        // TODO AUTH
-        // if (!collection || collection.user_id !== ctx.state.user.id) {
-        //   throw new Error("Collection not found");
-        // }
+        if (!collection || collection.user_id !== ctx.state.user.id) {
+          throw new Error("Collection not found");
+        }
         await redis.redisClient.rpush(
           redis.WORKER_LISTEN_QUEUE,
           JSON.stringify({

@@ -51,8 +51,8 @@ authRouter.get("/current_user", async (ctx, next) => {
 authRouter.post("/create", async (ctx, next) => {
   // password is a Buffer, key is a base58 encoded string
   const { password, key } = ctx.request.body;
-  const enc = new TextEncoder();
-  if (web3.eth.personal.ecRecover(ENCRYPTED_MSG, password) === key) {
+  const decryptedKey = await web3.eth.accounts.recover(ENCRYPTED_MSG, password);
+  if (decryptedKey.toLowerCase() === key.toLowerCase()) {
     try {
       return await Web3PublicKey.findByPk(key).then(async (account) => {
         if (account) {

@@ -88,15 +88,10 @@ const UserQueries = {
     type: new GraphQLList(GraphQLJSONObject),
     description: "Retrieves a list of all badge metadata for the user",
     resolve: async (parent, args, ctx, info) => {
-      //TODO AUTH
-      //   const user = await User.findByPk(ctx.state.user.id, {
-      //     include: Web3PublicKey,
-      //   });
-      //      return await user.getOwnedBadges();
-      const tokens = await getTokensOwnedByAccount(
-        "0xfa439Fe07B407e34435787f2a185cEEA0Bf5e41B"
-      );
-      return tokens;
+      const user = await User.findByPk(ctx.state.user.id, {
+        include: Web3PublicKey,
+      });
+      return await user.getOwnedBadges();
     },
   },
   getQRCode: {

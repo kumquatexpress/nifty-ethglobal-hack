@@ -17,7 +17,6 @@ import redis from "../utils/redis";
 import logger from "../utils/logger";
 import {
   createMachine,
-  getTokensOwnedByAccount,
   getTokensFromMachine,
 } from "../utils/smart_contracts/toolbox/machine";
 
@@ -175,11 +174,10 @@ export default class Collection extends Model {
    * and adds each item to this collection.
    */
   async generateItemsFromTemplate(): Promise<Item[]> {
-    //TODO AUTH
-    // const user = await User.findByPk(this.user_id, {
-    //   include: Profile,
-    // });
-    const creatorName = "blah"; //user.profile?.fullname;
+    const user = await User.findByPk(this.user_id, {
+      include: Profile,
+    });
+    const creatorName = user.profile?.fullname || "blah";
     const itemMetadatas = [...Array(this.metadata.totalNFTs).keys()].map(
       (itemNum) => {
         const metadata: NFTManifest = {

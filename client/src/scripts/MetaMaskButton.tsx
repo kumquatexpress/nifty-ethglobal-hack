@@ -24,8 +24,7 @@ export default function MetaMaskButton() {
             const accounts = await eth.request({
               method: "eth_requestAccounts",
             });
-            console.log(accounts);
-            const signature = web3.eth.personal.sign(
+            const signature = await web3.eth.personal.sign(
               "Open sesame!",
               accounts[0]
             );
