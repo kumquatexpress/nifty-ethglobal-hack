@@ -29,7 +29,7 @@ export default async function InitializeDiscordServerTask(
   if (!guild.main_channel_id) {
     const category = await newCategoryForGuild(
       guild.guild_id,
-      "NiftyBadgers Start Here"
+      "NiftyHax Start Here"
     );
     const channel = await newChannelForGuild(
       guild.guild_id,
@@ -47,7 +47,7 @@ export default async function InitializeDiscordServerTask(
   if (!guild.collections_category_id) {
     const collectionsCategory = await newCategoryForGuild(
       guild.guild_id,
-      "NiftyBadger Collections"
+      "NiftyHax Collections"
     );
     guild.collections_category_id = collectionsCategory.id;
   }
