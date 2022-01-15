@@ -9,6 +9,7 @@ import Text from "@lib/Text";
 import { APIClient } from "../utils/api_client";
 
 import { COLLECTION } from "@graphql/collections.graphql";
+import { BORDER_LEGENDARY_SVG_URL } from "@utils/constants";
 
 import {
   Collection as CollectionType,
@@ -105,6 +106,7 @@ function Mint() {
           fontFillColor={fontFill}
           bgColor={background}
           imgNumber={1}
+          customBorderSVGUrl={BORDER_LEGENDARY_SVG_URL}
         />
         <MintButton
           readyToMint={readyToMint}
@@ -183,6 +185,7 @@ function Mint() {
                 fontFillColor={fontFill}
                 bgColor={background}
                 imgNumber={1}
+                customBorderSVGUrl={BORDER_LEGENDARY_SVG_URL}
               />
               <Text>0 legendary</Text>
             </div>

@@ -18,6 +18,7 @@ import {
   setColor,
   setHugImage,
 } from "@scripts/redux/slices/collectionSlice";
+import { BORDER_LEGENDARY_SVG_URL } from "@utils/constants";
 
 import { until } from "@styles/mediaQueries";
 import { BadgeDataType } from "@scripts/types";
@@ -135,6 +136,7 @@ function CollectionPreview() {
                 fontFillColor={fontFill}
                 bgColor={background}
                 imgNumber={numberCommon + numberUncommon + numberRare + 1}
+                customBorderSVGUrl={BORDER_LEGENDARY_SVG_URL}
               />
               <div className="customColor">
                 <Text>Legendary</Text>
