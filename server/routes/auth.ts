@@ -65,13 +65,14 @@ authRouter.post("/create", async (ctx, next) => {
               image_url:
                 "https://badger-uploads-staging.s3.us-west-1.amazonaws.com/neopet.png",
               fullname: "Anonymous",
+              user_id: existing.id,
             });
           }
           return _authFunc("local")(ctx, next);
         } else {
           // Create account object
           const newUser = await User.create({
-            profile: {
+            Profile: {
               image_url:
                 "https://badger-uploads-staging.s3.us-west-1.amazonaws.com/neopet.png",
               fullname: "Anonymous",
