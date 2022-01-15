@@ -28,9 +28,6 @@ export default class DiscordGuild extends Model {
   main_channel_id: string; // the channel where users register/interact with the bot
 
   @Column(DataType.STRING)
-  event_category_id: string; // the category under which we put events
-
-  @Column(DataType.STRING)
   collections_category_id: string; // the category under which we put collections
 
   @PrimaryKey

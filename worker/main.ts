@@ -7,9 +7,9 @@ import logger from "../server/utils/logger";
 import redis from "../server/utils/redis";
 import createItemsFromTemplateTask from "./tasks/createItemsFromTemplate";
 import addItemsToMachineTask from "./tasks/addItemsToMachine";
-// import syncCollectionToDiscordTask from "./tasks/syncCollectionToDiscord";
-// import initializeDiscordServerTask from "./tasks/initializeDiscordServer";
-// import CheckAndJoinDiscordChannelsTask from "./tasks/checkAndJoinDiscordChannels";
+import syncCollectionToDiscordTask from "./tasks/syncCollectionToDiscord";
+import initializeDiscordServerTask from "./tasks/initializeDiscordServer";
+import CheckAndJoinDiscordChannelsTask from "./tasks/checkAndJoinDiscordChannels";
 
 Sentry.init({
   dsn: "https://5504983dab14488ea98faa202ce94ec6@o1099620.ingest.sentry.io/6124364",
@@ -22,9 +22,9 @@ const queues = redis.WORKER_MSG_QUEUES;
 const tasks = {
   [queues.createItemsFromTemplate.name]: createItemsFromTemplateTask,
   [queues.addItemsToMachine.name]: addItemsToMachineTask,
-  //  [queues.syncCollectionToDiscord.name]: syncCollectionToDiscordTask,
-  //   [queues.initializeDiscordServer.name]: initializeDiscordServerTask,
-  // [queues.checkAndJoinDiscordChannels.name]: CheckAndJoinDiscordChannelsTask,
+  [queues.syncCollectionToDiscord.name]: syncCollectionToDiscordTask,
+  [queues.initializeDiscordServer.name]: initializeDiscordServerTask,
+  [queues.checkAndJoinDiscordChannels.name]: CheckAndJoinDiscordChannelsTask,
 };
 
 async function main() {

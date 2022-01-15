@@ -30,19 +30,22 @@ fs.stat(envFilePath, (err, stats) => {
   if (stats && stats.isFile) {
     console.log("Not writing .env because it exists already");
     process.exit(0);
-  }
-});
-
-const outputEnvString = Object.keys(env).reduce((memo, key) => {
-  return memo + key + "=" + env[key] + "\n";
-}, "");
-
-fs.writeFile(envFilePath, outputEnvString, "utf8", (err) => {
-  if (err) {
-    console.error(
-      "[ERROR] There was an error generating your .env file. Please double check your .env file before running docker."
-    );
   } else {
-    console.log("\x1b[32m", "Successfully generated env file: " + envFilePath);
+    const outputEnvString = Object.keys(env).reduce((memo, key) => {
+      return memo + key + "=" + env[key] + "\n";
+    }, "");
+
+    fs.writeFile(envFilePath, outputEnvString, "utf8", (err) => {
+      if (err) {
+        console.error(
+          "[ERROR] There was an error generating your .env file. Please double check your .env file before running docker."
+        );
+      } else {
+        console.log(
+          "\x1b[32m",
+          "Successfully generated env file: " + envFilePath
+        );
+      }
+    });
   }
 });

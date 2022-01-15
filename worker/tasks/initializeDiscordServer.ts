@@ -44,13 +44,6 @@ export default async function InitializeDiscordServerTask(
     );
     guild.main_channel_id = channel.id;
   }
-  if (!guild.event_category_id) {
-    const eventsCategory = await newCategoryForGuild(
-      guild.guild_id,
-      "NiftyBadger Events"
-    );
-    guild.event_category_id = eventsCategory.id;
-  }
   if (!guild.collections_category_id) {
     const collectionsCategory = await newCategoryForGuild(
       guild.guild_id,

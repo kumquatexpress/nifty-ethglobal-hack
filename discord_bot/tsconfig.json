@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "lib": ["es2021", "dom"],
+    "module": "commonjs",
+    "rootDir": "../",
+    "outDir": "./build",
+    "esModuleInterop": true,
+    "typeRoots": ["../node_modules/@types"],
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "resolveJsonModule": true,
+    "useDefineForClassFields": false,
+    "baseUrl": "../",
+    "paths": {
+      "@models/*": ["server/models/*"],
+      "@utils/*": ["server/utils/*"]
+    }
+  },
+  "include": ["../server/models/**/*", "../server/utils/**/*", "main.ts"]
+}
