@@ -6,16 +6,6 @@ import { WebSocketLink } from "@apollo/client/link/ws";
 import { getMainDefinition } from "@apollo/client/utilities";
 import { getLocalStorageKey } from "../utils/api_client";
 
-const wsLink = new WebSocketLink({
-  uri: `${process.env.REACT_APP_WS_PROTOCOL}${process.env.REACT_APP_SERV_HOSTNAME}/graphql`,
-  options: {
-    reconnect: true,
-    connectionParams: {
-      Authorization: localStorage.getItem(getLocalStorageKey()),
-    },
-  },
-});
-
 // TODO: fix this to not be hardcoded to localhost
 const uploadLink = createUploadLink({
   uri: `${process.env.REACT_APP_SERV_PROTOCOL}${process.env.REACT_APP_SERV_HOSTNAME}/graphql`,
@@ -46,17 +36,13 @@ const authLink = setContext((_, { headers }) => {
   };
 });
 
-const splitLink = split(
-  ({ query }) => {
-    const definition = getMainDefinition(query);
-    return (
-      definition.kind === "OperationDefinition" &&
-      definition.operation === "subscription"
-    );
-  },
-  wsLink,
-  from([errorLink, authLink, uploadLink])
-);
+const splitLink = split(({ query }) => {
+  const definition = getMainDefinition(query);
+  return (
+    definition.kind === "OperationDefinition" &&
+    definition.operation === "subscription"
+  );
+}, from([errorLink, authLink, uploadLink]));
 
 const client = new ApolloClient({
   link: splitLink,

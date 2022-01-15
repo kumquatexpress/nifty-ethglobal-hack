@@ -16,6 +16,7 @@ import DiscordGuild from "../models/DiscordGuild.model";
 import redis from "../utils/redis";
 import logger from "../utils/logger";
 import { web3 } from "../utils/smart_contracts/web3";
+import Profile from "../models/Profile.model";
 
 const authRouter = new Router({
   prefix: "/auth",
@@ -56,10 +57,26 @@ authRouter.post("/create", async (ctx, next) => {
     try {
       return await Web3PublicKey.findByPk(key).then(async (account) => {
         if (account) {
+          const existing = await User.findByPk(account.user_id, {
+            include: Profile,
+          });
+          if (!existing.profile) {
+            await Profile.create({
+              image_url:
+                "https://badger-uploads-staging.s3.us-west-1.amazonaws.com/neopet.png",
+              fullname: "Anonymous",
+            });
+          }
           return _authFunc("local")(ctx, next);
         } else {
           // Create account object
-          const newUser = await User.create();
+          const newUser = await User.create({
+            profile: {
+              image_url:
+                "https://badger-uploads-staging.s3.us-west-1.amazonaws.com/neopet.png",
+              fullname: "Anonymous",
+            },
+          });
           await Web3PublicKey.create({
             key: key,
             user_id: newUser.id,
