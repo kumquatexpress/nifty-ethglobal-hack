@@ -6,10 +6,9 @@ import PreviewCollection from "@scripts/PreviewCollection";
 
 function Home() {
   return (
-    <div className="container">
-      This is actuallly home page
-      <CreateCollection />
-      <PreviewCollection />
+    <div className="container badger-page">
+      This is actuallly home page, go to{" "}
+      <a href="/collection/create">create collection</a>
     </div>
   );
 }

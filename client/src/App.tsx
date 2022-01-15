@@ -27,8 +27,8 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/test" element={<Test />} />
-            <Route path="collections/create" element={<Create />} />
-            <Route path="collections/:id/mint" element={<Mint />} />
+            <Route path="collection/create" element={<Create />} />
+            <Route path="collection/:id/mint" element={<Mint />} />
             <Route
               path="/discord/callback"
               element={<DiscordServerCallback />}
