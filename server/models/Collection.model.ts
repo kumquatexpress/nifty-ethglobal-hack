@@ -51,6 +51,16 @@ export enum CollectionStatus {
   MINTING_COMPLETE_SUPPLY_EXHAUSTED = 5,
 }
 
+export interface BadgeMetadata {
+  size: number;
+  hugImage: boolean;
+  bgColor: { r: number; g: number; b: number; a: number };
+  fontStrokeColor: { r: number; g: number; b: number; a: number };
+  fontFillColor: { r: number; g: number; b: number; a: number };
+  paddingColor: { r: number; g: number; b: number; a: number };
+  svgBorder: any;
+}
+
 @Table({
   timestamps: true,
   tableName: "collections",
@@ -67,6 +77,9 @@ export default class Collection extends Model {
 
   @Column(DataType.JSON)
   metadata: CollectionMetadata;
+
+  @Column(DataType.JSON)
+  badge_metadata: BadgeMetadata;
 
   @Column(DataType.STRING)
   template_s3_url: string;
