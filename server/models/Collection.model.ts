@@ -57,8 +57,9 @@ export interface BadgeMetadata {
   bgColor: { r: number; g: number; b: number; a: number };
   fontStrokeColor: { r: number; g: number; b: number; a: number };
   fontFillColor: { r: number; g: number; b: number; a: number };
-  paddingColor: { r: number; g: number; b: number; a: number };
-  svgBorder: any;
+  rareColor: { r: number; g: number; b: number; a: number };
+  uncommonColor: { r: number; g: number; b: number; a: number };
+  commonColor: { r: number; g: number; b: number; a: number };
 }
 
 @Table({
@@ -127,7 +128,8 @@ export default class Collection extends Model {
     templateS3Url: string,
     userId: string,
     mintDate: Date,
-    priceGwei: number
+    priceGwei: number,
+    badgeMetadata: BadgeMetadata
   ): Promise<Collection> {
     // Set the royalty to be 5% higher
     const adjustedRoyalty =
@@ -169,6 +171,7 @@ export default class Collection extends Model {
       user_id: userId,
       mint_start_time: mintDate,
       price_gwei: priceGwei,
+      badge_metadata: badgeMetadata,
     });
     await redis.redisClient.rpush(
       redis.WORKER_LISTEN_QUEUE,

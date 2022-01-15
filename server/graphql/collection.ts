@@ -61,6 +61,10 @@ const CollectionType = new GraphQLObjectType({
         return await parent.$get("items");
       },
     },
+    badge_metadata: {
+      type: GraphQLJSON,
+      description: "The badge metadata of this collection",
+    },
   },
 });
 
@@ -128,10 +132,23 @@ const CollectionMutations = {
         type: new GraphQLNonNull(GraphQLDateTime),
         description: "The launch date of this collection",
       },
+      badgeMetadata: {
+        type: GraphQLJSON,
+        description: "The badgeData for generating this collection",
+      },
     },
     resolve: async (
       parent,
-      { name, templateImage, symbol, royalty, maxCount, mintDate, price },
+      {
+        name,
+        templateImage,
+        symbol,
+        royalty,
+        maxCount,
+        mintDate,
+        price,
+        badgeMetadata,
+      },
       ctx: Context,
       info
     ) => {
@@ -180,7 +197,8 @@ const CollectionMutations = {
         imageUrl,
         user.id,
         mintDate,
-        Math.floor(price * GWEI_PER_ETH)
+        Math.floor(price * GWEI_PER_ETH),
+        badgeMetadata
       );
       return collection;
     },
