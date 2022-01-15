@@ -9,6 +9,7 @@ import Home from "./pages/Home";
 import Test from "./pages/Test";
 import Mint from "./pages/Mint";
 import { DiscordServerCallback, DiscordUserCallback } from "./pages/Discord";
+import Header from "@scripts/Header";
 
 import { ApolloProvider } from "@apollo/client";
 import GraphQLClient from "@graphql/GraphQLClient";
@@ -19,7 +20,9 @@ function App() {
     <ApolloProvider client={GraphQLClient}>
       <DndProvider backend={HTML5Backend}>
         <div className={cx("App", styles.container)}>
-          <MetaMaskButton />
+          <Header>
+            <MetaMaskButton />
+          </Header>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/test" element={<Test />} />
