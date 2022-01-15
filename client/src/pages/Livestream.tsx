@@ -72,7 +72,6 @@ export default function Livestream() {
   }, 3000);
 
   useEffect(() => {
-    startLivestream("hi", ["7caf3863-aef8-4334-945d-12971322beb8"]);
     if (videoEl == null) return;
     if (playbackId && isLive) {
       const player = videojs(videoEl, {
