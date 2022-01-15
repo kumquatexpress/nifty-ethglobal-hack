@@ -7,7 +7,8 @@
       "@utils/*": ["scripts/utils/*"],
       "@scripts/*": ["scripts/*"],
       "@styles/*": ["styles/*"],
-      "@graphql/*": ["graphql/*"]
+      "@graphql/*": ["graphql/*"],
+      "@gqlt/*": ["graphql/__generated__/*"]
     }
   }
 }
