@@ -30,6 +30,10 @@ export interface CreateCollection_createCollection_items {
 export interface CreateCollection_createCollection {
   __typename: "Collection";
   /**
+   * The name of this collection
+   */
+  name: string;
+  /**
    * The uuid of this collection
    */
   id: string;

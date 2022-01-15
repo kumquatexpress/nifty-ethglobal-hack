@@ -34,6 +34,10 @@ export interface Collection_collection_items {
 export interface Collection_collection {
   __typename: "Collection";
   /**
+   * The name of this collection
+   */
+  name: string;
+  /**
    * The uuid of this collection
    */
   id: string;

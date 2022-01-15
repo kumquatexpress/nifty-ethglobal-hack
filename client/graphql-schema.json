@@ -273,6 +273,22 @@
             "deprecationReason": null
           },
           {
+            "name": "name",
+            "description": "The name of this collection",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "metadata",
             "description": "The metadata of this collection",
             "args": [],
@@ -360,18 +376,6 @@
                 "name": "Item",
                 "ofType": null
               }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "livepeer_streamid",
-            "description": "The streamid for the livepeer stream",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null

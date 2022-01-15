@@ -20,6 +20,7 @@ export const CREATE_COLLECTION = gql`
       mintDate: $mintDate
       badgeMetadata: $badgeMetadata
     ) {
+      name
       id
       metadata
       status
@@ -37,6 +38,7 @@ export const CREATE_COLLECTION = gql`
 export const COLLECTION = gql`
   query Collection($id: String!) {
     collection(id: $id) {
+      name
       id
       metadata
       status
