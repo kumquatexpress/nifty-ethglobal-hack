@@ -1,6 +1,6 @@
 import React, { forwardRef, useEffect, useRef, useState } from "react";
 import { cx, css, ClassNamesArg } from "@emotion/css/macro";
-import { until } from "styles/mediaQueries";
+import { until } from "@styles/mediaQueries";
 import { RGBAColor } from "@lib/ColorPicker";
 import { RGBAColorToString } from "@utils/index";
 

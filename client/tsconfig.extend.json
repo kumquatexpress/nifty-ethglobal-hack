@@ -5,8 +5,9 @@
       "@modules/*": ["styles/modules/*"],
       "@lib/*": ["scripts/lib/*"],
       "@utils/*": ["scripts/utils/*"],
-      "scripts/*": ["scripts/*"],
-      "styles/*": ["styles/*"]
+      "@scripts/*": ["scripts/*"],
+      "@styles/*": ["styles/*"],
+      "@graphql/*": ["graphql/*"]
     }
   }
 }

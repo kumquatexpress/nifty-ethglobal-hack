@@ -11,16 +11,16 @@ import CanvasImage from "./CanvasImage";
 import ColorPicker, { RGBAColor } from "@lib/ColorPicker";
 import InlineInput from "@lib/inputs/InlineInput";
 import Checkbox from "@lib/inputs/Checkbox";
-import { useAppSelector, useAppDispatch } from "scripts/redux/hooks";
+import { useAppSelector, useAppDispatch } from "@scripts/redux/hooks";
 import {
   selectCollection,
   setPercentCommon,
   setColor,
   setHugImage,
-} from "scripts/redux/slices/collectionSlice";
+} from "@scripts/redux/slices/collectionSlice";
 
-import { until } from "styles/mediaQueries";
-import { BadgeDataType } from "scripts/types";
+import { until } from "@styles/mediaQueries";
+import { BadgeDataType } from "@scripts/types";
 type Props = {};
 
 function draw(context: CanvasRenderingContext2D, frameCount: number) {}

@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import Button from "@lib/button";
 
-import { useAppSelector, useAppDispatch } from "scripts/redux/hooks";
-import { selectAddress, setAddressTo } from "scripts/redux/slices/ethSlice";
+import { useAppSelector, useAppDispatch } from "@scripts/redux/hooks";
+import { selectAddress, setAddressTo } from "@scripts/redux/slices/ethSlice";
 import styles from "./Counter.module.css";
-import { isMetaMaskInstalled } from "scripts/utils";
 import web3 from "../web3";
+import { isMetaMaskInstalled } from "@scripts/utils";
 import eth from "@utils/eth";
 import { getOrCreateUser } from "../utils/users_api";
 

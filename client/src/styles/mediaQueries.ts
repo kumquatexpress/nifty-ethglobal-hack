@@ -1,4 +1,4 @@
-import bulma from "styles/modules/bulma.module.scss";
+import bulma from "@styles/modules/bulma.module.scss";
 import { css } from "@emotion/css/macro";
 console.log(bulma);
 

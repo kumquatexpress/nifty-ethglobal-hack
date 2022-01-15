@@ -4,8 +4,8 @@ import Input from "@lib/inputs/Input";
 import Slider from "@lib/inputs/Slider";
 import DndFileUploader from "@lib/inputs/DndFileUploader";
 import InlineInput from "@lib/inputs/InlineInput";
-import { until } from "styles/mediaQueries";
-import { useAppSelector, useAppDispatch } from "scripts/redux/hooks";
+import { until } from "@styles/mediaQueries";
+import { useAppSelector, useAppDispatch } from "@scripts/redux/hooks";
 import {
   selectCollection,
   setNumBadges,
@@ -13,7 +13,7 @@ import {
   setRoyalties,
   setName,
   setImageSrc,
-} from "scripts/redux/slices/collectionSlice";
+} from "@scripts/redux/slices/collectionSlice";
 
 type Props = {};
 const Royalties = forwardRef<HTMLDivElement, Props>(({}, ref) => {

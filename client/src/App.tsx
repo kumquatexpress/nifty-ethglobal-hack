@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { cx, css } from "@emotion/css/macro";
-import "styles/App.scss";
+import "@styles/App.scss";
 import mintConfigContract from "./components/config";
 import machine from "./components/machine";
-import MetaMaskButton from "scripts/MetaMaskButton";
+import MetaMaskButton from "@scripts/MetaMaskButton";
 import web3 from "./web3";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import DndFileUploader from "@lib/inputs/DndFileUploader";
-import CreateCollection from "scripts/CreateCollection";
-import PreviewCollection from "scripts/PreviewCollection";
+import CreateCollection from "@scripts/CreateCollection";
+import PreviewCollection from "@scripts/PreviewCollection";
+
+import { ApolloProvider } from "@apollo/client";
+import GraphQLClient from "@graphql/GraphQLClient";
 
 const TO_GWEI = 10 ** 9;
 const CONTRACT_ADDR = "0x75b925f04697c16561570d0cf8dbb516bb576aae";
@@ -78,48 +81,50 @@ function App() {
   };
 
   return (
-    <DndProvider backend={HTML5Backend}>
-      <div className={cx("App", styles.container)}>
-        <div>
-          <MetaMaskButton />
-          <div>Hey {val}</div>
-          <label>URL</label>
-          <input
-            type="text"
-            defaultValue={newVal}
-            onChange={(e) => setNewVal(e.target.value)}
-          ></input>
-          <button onClick={() => setConfigValue()}>Click me</button>
-          <button onClick={() => mintRandom()}>Mint</button>
-          <label>Name</label>
-          <input
-            type="text"
-            defaultValue={name}
-            onChange={(e) => setName(e.target.value)}
-          ></input>
-          <label>Symbol</label>
-          <input
-            type="text"
-            defaultValue={symbol}
-            onChange={(e) => setSymbol(e.target.value)}
-          ></input>
-          <label>Price</label>
-          <input
-            type="text"
-            defaultValue={price}
-            onChange={(e) => setPrice(Number(e.target.value))}
-          ></input>
-          <button onClick={() => createConfig()}>Create</button>
+    <ApolloProvider client={GraphQLClient}>
+      <DndProvider backend={HTML5Backend}>
+        <div className={cx("App", styles.container)}>
+          <div>
+            <MetaMaskButton />
+            <div>Hey {val}</div>
+            <label>URL</label>
+            <input
+              type="text"
+              defaultValue={newVal}
+              onChange={(e) => setNewVal(e.target.value)}
+            ></input>
+            <button onClick={() => setConfigValue()}>Click me</button>
+            <button onClick={() => mintRandom()}>Mint</button>
+            <label>Name</label>
+            <input
+              type="text"
+              defaultValue={name}
+              onChange={(e) => setName(e.target.value)}
+            ></input>
+            <label>Symbol</label>
+            <input
+              type="text"
+              defaultValue={symbol}
+              onChange={(e) => setSymbol(e.target.value)}
+            ></input>
+            <label>Price</label>
+            <input
+              type="text"
+              defaultValue={price}
+              onChange={(e) => setPrice(Number(e.target.value))}
+            ></input>
+            <button onClick={() => createConfig()}>Create</button>
 
-          <button onClick={() => something()}>Do something</button>
-        </div>
+            <button onClick={() => something()}>Do something</button>
+          </div>
 
-        <div className="container">
-          <CreateCollection />
-          <PreviewCollection />
+          <div className="container">
+            <CreateCollection />
+            <PreviewCollection />
+          </div>
         </div>
-      </div>
-    </DndProvider>
+      </DndProvider>
+    </ApolloProvider>
   );
 }
 
