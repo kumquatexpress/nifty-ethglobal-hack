@@ -5,7 +5,6 @@ import Collection from "./Collection.model";
 import Web3PublicKey from "./Web3PublicKey.model";
 import Item from "./Item.model";
 import Profile from "./Profile.model";
-import StripePayment from "./StripePayment.model";
 import DiscordGuild from "./DiscordGuild.model";
 
 export default function init() {
@@ -31,7 +30,6 @@ export default function init() {
     Collection,
     Web3PublicKey,
     Profile,
-    StripePayment,
     DiscordGuild,
   ]);
   postInit();
@@ -47,7 +45,5 @@ function postInit() {
   User.Collections = User.hasMany(Collection);
   User.DiscordGuilds = User.hasMany(DiscordGuild);
   Profile.User = Profile.belongsTo(User);
-  StripePayment.User = StripePayment.belongsTo(User);
-  StripePayment.Collection = StripePayment.belongsTo(Collection);
   DiscordGuild.User = DiscordGuild.belongsTo(User);
 }

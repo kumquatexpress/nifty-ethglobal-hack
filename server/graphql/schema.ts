@@ -6,25 +6,14 @@ import {
 } from "./collection";
 import { ItemMutations, ItemQueries } from "./item";
 import { UserQueries, UserMutations } from "./user";
-import { PaymentQueries, PaymentMutations } from "./payment";
 
 const rootQuery = new GraphQLObjectType({
   name: "RootQuery",
-  fields: Object.assign(
-    CollectionQueries,
-    ItemQueries,
-    PaymentQueries,
-    UserQueries
-  ),
+  fields: Object.assign(CollectionQueries, ItemQueries, UserQueries),
 });
 const rootMutation = new GraphQLObjectType({
   name: "RootMutation",
-  fields: Object.assign(
-    CollectionMutations,
-    ItemMutations,
-    PaymentMutations,
-    UserMutations
-  ),
+  fields: Object.assign(CollectionMutations, ItemMutations, UserMutations),
 });
 
 let schema = new GraphQLSchema({
