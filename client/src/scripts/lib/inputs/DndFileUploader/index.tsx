@@ -15,6 +15,7 @@ type Props = {
   id?: string;
   name?: string;
   className?: ClassNamesArg;
+  onImgFileLoaded?: (url: string) => void;
   onImgSrcLoaded?: (src: string) => void;
   onError?: (error: DropTargetError) => void;
   onSuccess?: (file: File) => void;
@@ -46,6 +47,7 @@ const DndFileUploader: React.ForwardRefRenderFunction<
 > = (
   {
     onImgSrcLoaded,
+    onImgFileLoaded,
     onSuccess,
     onError,
     onIsActiveChanged,
@@ -102,15 +104,16 @@ const DndFileUploader: React.ForwardRefRenderFunction<
       fr.removeEventListener("load", handleFileReader);
       imgRef.current?.removeEventListener("load", handleImageLoaded);
     }; // ... and to false on unmount
-  }, []);
+  }, [onImgSrcLoaded, onUpdateImageRef]);
 
   const setFileStateAndLoad = useCallback(
     (file) => {
       setFile(file);
+      onImgFileLoaded && onImgFileLoaded(window.URL.createObjectURL(file));
       setImgSrcLoaded(false);
       fr.readAsDataURL(file);
     },
-    [setFile]
+    [setFile, onImgFileLoaded]
   );
 
   const onManualInputChanged = useCallback(
@@ -122,7 +125,7 @@ const DndFileUploader: React.ForwardRefRenderFunction<
         setFileStateAndLoad(manualInputRef.current?.files[0]);
       }
     },
-    []
+    [setFileStateAndLoad]
   );
 
   const dropIsActive = isActive && error == null;

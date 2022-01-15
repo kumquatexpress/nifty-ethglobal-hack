@@ -13,7 +13,9 @@ import {
   setRoyalties,
   setName,
   setImageSrc,
+  setImageFile,
 } from "@scripts/redux/slices/collectionSlice";
+import UploadButton from "@scripts/UploadButton";
 
 type Props = {};
 const Royalties = forwardRef<HTMLDivElement, Props>(({}, ref) => {
@@ -24,12 +26,15 @@ const Royalties = forwardRef<HTMLDivElement, Props>(({}, ref) => {
       const newRoyalty = Math.min(e.currentTarget.valueAsNumber, 50) || 0;
       dispatch(setRoyalties(newRoyalty));
     },
-    []
+    [dispatch]
   );
 
   return (
     <div className={cx(styles.container, styles.containerVertical)}>
       <DndFileUploader
+        onImgFileLoaded={(imgFileURL: string) => {
+          dispatch(setImageFile(imgFileURL));
+        }}
         onImgSrcLoaded={(imgSrc: string) => {
           dispatch(setImageSrc(imgSrc));
         }}
@@ -94,6 +99,7 @@ const Royalties = forwardRef<HTMLDivElement, Props>(({}, ref) => {
           </div>
         </div>
       </div>
+      <UploadButton />
     </div>
   );
 });

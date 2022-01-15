@@ -12,7 +12,6 @@ import { getOrCreateUser } from "../utils/users_api";
 export default function MetaMaskButton() {
   const address = useAppSelector(selectAddress);
   const dispatch = useAppDispatch();
-  console.log(address);
 
   return (
     <Button

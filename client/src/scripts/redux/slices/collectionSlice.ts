@@ -97,6 +97,9 @@ export const collectionSlice = createSlice({
     setImageSrc: (state, action: PayloadAction<string>) => {
       state.badgeData.imgSrc = action.payload;
     },
+    setImageFile: (state, action: PayloadAction<string>) => {
+      state.badgeData.imgFile = action.payload;
+    },
   },
 });
 
@@ -111,6 +114,7 @@ export const {
   setColor,
   setHugImage,
   setImageSrc,
+  setImageFile,
 } = collectionSlice.actions;
 
 export default collectionSlice.reducer;
