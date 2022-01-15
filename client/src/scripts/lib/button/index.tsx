@@ -28,7 +28,7 @@ type ButtonSizeString = keyof typeof ButtonSize;
 
 type ButtonState = "normal" | "hovered" | "focused" | "active" | "loading";
 
-type Props = {
+export type ButtonProps = {
   inverted?: boolean;
   outlined?: boolean;
   text?: string;
@@ -67,7 +67,7 @@ function Button({
   href,
   target,
   ...props
-}: PropsWithChildren<Props>) {
+}: PropsWithChildren<ButtonProps>) {
   let featherIconSize = 16;
   switch (size) {
     case ButtonSize.small:
