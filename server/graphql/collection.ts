@@ -133,31 +133,31 @@ const CollectionMutations = {
       ctx: Context,
       info
     ) => {
-      //   const { filename, mimetype, createReadStream, encoding } =
-      //     await templateImage;
-      //   const fileChunks = [];
-      //   const stream = createReadStream();
-      //   stream.on("readable", () => {
-      //     let chunk;
-      //     while (null !== (chunk = stream.read())) {
-      //       fileChunks.push(chunk);
-      //     }
-      //   });
+      const { filename, mimetype, createReadStream, encoding } =
+        await templateImage;
+      const fileChunks = [];
+      const stream = createReadStream();
+      stream.on("readable", () => {
+        let chunk;
+        while (null !== (chunk = stream.read())) {
+          fileChunks.push(chunk);
+        }
+      });
 
-      //   let imageUrl = null;
-      //   // TODO: handle errors
-      //   await new Promise<void>((resolve) =>
-      //     stream.on("end", async () => {
-      //       const imageBuffer = Buffer.concat(fileChunks);
-      //       imageUrl = await s3.uploadFile(
-      //         config.aws.UPLOAD_BUCKET,
-      //         filename,
-      //         mimetype,
-      //         imageBuffer
-      //       );
-      //       resolve();
-      //     })
-      //   );
+      let imageUrl = null;
+      // TODO: handle errors
+      await new Promise<void>((resolve) =>
+        stream.on("end", async () => {
+          const imageBuffer = Buffer.concat(fileChunks);
+          // imageUrl = await s3.uploadFile(
+          //   config.aws.UPLOAD_BUCKET,
+          //   filename,
+          //   mimetype,
+          //   imageBuffer
+          // );
+          resolve();
+        })
+      );
       const user: User = ctx.state.user;
 
       const collection: Collection = await Collection.createCollection(
