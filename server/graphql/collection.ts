@@ -200,6 +200,8 @@ const CollectionMutations = {
         Math.floor(price * GWEI_PER_ETH),
         badgeMetadata
       );
+
+      await collection.createMachine();
       return collection;
     },
   },
