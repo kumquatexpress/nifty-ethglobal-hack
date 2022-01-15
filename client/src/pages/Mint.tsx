@@ -13,6 +13,7 @@ import {
   Collection as CollectionType,
   CollectionVariables,
 } from "@gqlt/Collection";
+import { gweiToMatic } from "@utils/mint";
 
 function Mint() {
   let { id } = useParams<{ id: string }>();
@@ -60,7 +61,6 @@ function Mint() {
       uncommon: { pct: uncommonPercent, color: uncommon },
     },
   } = collection?.badge_metadata || {};
-  console.log("jjj", background);
 
   return (
     <div className={cx(styles.container)}>
@@ -85,7 +85,10 @@ function Mint() {
         <div className={cx(styles.subMetadata)}>
           <div className={cx(styles.pricing)}>
             <Text>Mint Price: </Text>
-            <Text type="h3">0.8 MATIC</Text>
+            <Text type="h3">
+              {collection?.price_gwei ? gweiToMatic(collection?.price_gwei) : 0}{" "}
+              MATIC
+            </Text>
           </div>
           <div className={cx(styles.owner)}>
             <Text>Creator </Text>

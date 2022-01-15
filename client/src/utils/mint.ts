@@ -1,6 +1,7 @@
 import web3 from "../web3";
 
 import mintConfigContract from "../components/config";
+import * as constants from "./constants";
 
 const mintRandom = async (addy: string) => {
   const config = mintConfigContract(addy);
@@ -20,3 +21,7 @@ const mintRandom = async (addy: string) => {
     console.log("err", e);
   }
 };
+
+export function gweiToMatic(gwei: number) {
+  return gwei / constants.TO_GWEI;
+}
