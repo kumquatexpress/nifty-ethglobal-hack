@@ -6,7 +6,8 @@
       "@lib/*": ["scripts/lib/*"],
       "@utils/*": ["scripts/utils/*"],
       "scripts/*": ["scripts/*"],
-      "styles/*": ["styles/*"]
+      "styles/*": ["styles/*"],
+      "graphql/*": ["graphql/*"]
     }
   }
 }

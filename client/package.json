@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@apollo/client": "^3.5.7",
     "@craco/craco": "^6.4.3",
     "@emotion/css": "^11.7.1",
     "@reduxjs/toolkit": "^1.7.1",
@@ -14,6 +15,7 @@
     "@types/react": "^17.0.20",
     "@types/react-dom": "^17.0.9",
     "bulma": "^0.9.3",
+    "graphql": "^15.8.0",
     "react": "^17.0.2",
     "react-colorful": "^5.5.1",
     "react-dnd": "^14.0.5",
@@ -27,11 +29,16 @@
     "web-vitals": "^2.1.0",
     "web3": "^1.6.1"
   },
+  "resolutions": {
+    "graphql": "^15.8.0"
+  },
   "scripts": {
     "start": "craco start",
     "build": "craco build",
     "test": "craco test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "schema": "apollo client:download-schema --endpoint=http://localhost:8080/graphql graphql-schema.json",
+    "generate-types": "apollo client:codegen --localSchemaFile=graphql-schema.json --target=typescript --tagName=gql"
   },
   "eslintConfig": {
     "extends": [
