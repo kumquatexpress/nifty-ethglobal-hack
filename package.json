@@ -55,6 +55,7 @@
     "koa-router": "^7.4.0",
     "lodash": "^4.14.161",
     "mariadb": "^2.5.5",
+    "moralis": "^0.0.184",
     "mysql2": "^2.2.5",
     "node-fetch": "2",
     "nodemon": "^2.0.4",

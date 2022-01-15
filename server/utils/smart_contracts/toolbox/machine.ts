@@ -2,6 +2,7 @@ import { MachineData } from "./collections";
 import MachineContract, { address } from "../machine";
 import { web3, account } from "../web3";
 import logger from "../../logger";
+import { getAllTokensForWallet, getTokenIdsForContract } from "../moralis";
 
 export async function createMachine(
   data: MachineData
@@ -63,13 +64,13 @@ export async function createMachine(
     machineAddress: address,
   };
 }
-export function getTokensOwnedByAccount(address: string): string[] {
-  // TODO call something to get the tokens for this public key
-  return [];
+export async function getTokensOwnedByAccount(address: string): Promise<any[]> {
+  return await getAllTokensForWallet(address);
 }
-export function getTokensFromMachine(address: string): string[] {
-  // TODO call something to get the tokens for this machine
-  return [];
+export async function getTokensFromMachine(
+  contractAddr: string
+): Promise<any[]> {
+  return await getTokenIdsForContract(contractAddr);
 }
 
 export function getMetadataForToken(address: string): any {

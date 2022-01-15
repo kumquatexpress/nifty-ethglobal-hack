@@ -37,6 +37,7 @@ import Item, { ItemStatus } from "./Item.model";
 import User from "./User.model";
 import Profile from "./Profile.model";
 import { numberToNthString, pl13, pl8 } from "../utils/helpers";
+import { getAllTokensForWalletAndContract } from "../utils/smart_contracts/moralis";
 
 export const UPLOAD_ITEMS_PUBSUB_KEY = (collectionId: string) => {
   return `${collectionId}-upload-items`;
@@ -320,10 +321,11 @@ export default class Collection extends Model {
   }
 
   async getNFTsInWallet(walletPublicKey: string): Promise<string[]> {
-    const addresses = await getTokensOwnedByAccount(walletPublicKey);
-    const matchingAddrs = this.getNFTsMatchingOwnedTokens(addresses);
-    this.save();
-    return matchingAddrs;
+    const addresses = await getAllTokensForWalletAndContract(
+      walletPublicKey,
+      this.machine_address
+    );
+    return addresses;
   }
 
   async getNFTsMatchingOwnedTokens(ownedTokens: string[]): Promise<string[]> {

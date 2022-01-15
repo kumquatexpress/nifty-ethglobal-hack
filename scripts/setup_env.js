@@ -29,6 +29,7 @@ const envFilePath = currDir + "/.env";
 fs.stat(envFilePath, (err, stats) => {
   if (stats && stats.isFile) {
     console.log("Not writing .env because it exists already");
+    process.exit(0);
   }
 });
 

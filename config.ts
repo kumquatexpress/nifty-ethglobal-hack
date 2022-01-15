@@ -69,6 +69,11 @@ const Config = {
     KEY: env.PINATA_KEY,
     SECRET: env.PINATA_SECRET,
   },
+  moralis: {
+    ID: env.MORALIS_ID,
+    SECRET: env.MORALIS_SECRET,
+    URL: env.MORALIS_URL,
+  },
 };
 
 export default Config;

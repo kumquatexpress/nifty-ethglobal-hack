@@ -15,12 +15,8 @@ import Web3PublicKey from "./Web3PublicKey.model";
 import Profile from "./Profile.model";
 import * as crypto from "../utils/crypto";
 import Collection from "./Collection.model";
-import { pl13 } from "../utils/helpers";
 import DiscordGuild from "./DiscordGuild.model";
-import {
-  getMetadataForToken,
-  getTokensOwnedByAccount,
-} from "../utils/smart_contracts/toolbox/machine";
+import { getTokensOwnedByAccount } from "../utils/smart_contracts/toolbox/machine";
 
 @Table({
   timestamps: true,
@@ -74,13 +70,7 @@ export default class User extends Model {
 
   async getOwnedBadges() {
     const tokens = await getTokensOwnedByAccount(this.public_key.key);
-    let metadataPromise = await Promise.allSettled(
-      tokens.map((token) => pl13(async () => await getMetadataForToken(token)))
-    );
-    const metadata: any[] = metadataPromise
-      .filter((m) => m.status === "fulfilled")
-      .map((m) => (m as any).value);
-    return metadata;
+    return tokens;
   }
 
   /*

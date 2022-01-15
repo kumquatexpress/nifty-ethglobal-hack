@@ -9,6 +9,7 @@ import config from "../../config";
 import Web3PublicKey from "../models/Web3PublicKey.model";
 import Profile from "../models/Profile.model";
 import User from "../models/User.model";
+import { getTokensOwnedByAccount } from "../utils/smart_contracts/toolbox/machine";
 
 const ProfileType = new GraphQLObjectType({
   name: "Profile",
@@ -87,10 +88,15 @@ const UserQueries = {
     type: new GraphQLList(GraphQLJSONObject),
     description: "Retrieves a list of all badge metadata for the user",
     resolve: async (parent, args, ctx, info) => {
-      const user = await User.findByPk(ctx.state.user.id, {
-        include: Web3PublicKey,
-      });
-      return await user.getOwnedBadges();
+      //TODO AUTH
+      //   const user = await User.findByPk(ctx.state.user.id, {
+      //     include: Web3PublicKey,
+      //   });
+      //      return await user.getOwnedBadges();
+      const tokens = await getTokensOwnedByAccount(
+        "0xfa439Fe07B407e34435787f2a185cEEA0Bf5e41B"
+      );
+      return tokens;
     },
   },
   getQRCode: {
