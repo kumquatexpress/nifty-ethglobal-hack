@@ -279,10 +279,12 @@ const styles = {
   percentages: css`
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
     & b {
       font-weight: 500;
     }
     & .badger-text {
+      text-align: left;
       margin-bottom: 8px;
     }
   `,

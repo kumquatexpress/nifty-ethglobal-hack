@@ -15,7 +15,6 @@ import {
   setImageSrc,
   setImageFile,
 } from "@scripts/redux/slices/collectionSlice";
-import UploadButton from "@scripts/UploadButton";
 
 type Props = {};
 const Royalties = forwardRef<HTMLDivElement, Props>(({}, ref) => {
@@ -99,7 +98,6 @@ const Royalties = forwardRef<HTMLDivElement, Props>(({}, ref) => {
           </div>
         </div>
       </div>
-      <UploadButton />
     </div>
   );
 });

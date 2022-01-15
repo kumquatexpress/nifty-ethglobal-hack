@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import Button from "@lib/button";
+import Button, { ButtonProps } from "@lib/button";
+import { ClassNamesArg } from "@emotion/css";
 
 import { useAppSelector, useAppDispatch } from "@scripts/redux/hooks";
 import { selectAddress, setAddressTo } from "@scripts/redux/slices/ethSlice";
@@ -17,7 +18,8 @@ import {
 import { useMutation } from "@apollo/client";
 import { CREATE_COLLECTION } from "@graphql/collections.graphql";
 
-export default function UploadButton() {
+type Props = { className?: ClassNamesArg } & ButtonProps;
+export default function UploadButton(props: Props) {
   const collection = useAppSelector(selectCollection);
   const dispatch = useAppDispatch();
 
@@ -29,6 +31,7 @@ export default function UploadButton() {
   );
   return (
     <Button
+      {...props}
       onClick={async () => {
         if (collection.badgeData.imgFile != null && collection.cost > 0) {
           const imageFile = await fetch(collection.badgeData.imgFile)

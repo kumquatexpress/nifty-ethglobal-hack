@@ -1,5 +1,12 @@
 // Shared variables between css and js
 $desktop-gap: 80px;
+$max-container-width-large: 1080px;
+$max-container-width-med: 768px;
+$header-small-height: 44px;
+$header-full-height: 80px;
+
 :export {
   desktopGap: $desktop-gap;
+  headerFullHeight: $header-full-height;
+  headerSmallHeight: $header-small-height;
 }

@@ -1,11 +1,12 @@
 import React, { PropsWithChildren, forwardRef } from "react";
 import { cx, css, ClassNamesArg } from "@emotion/css/macro";
 import variables from "@modules/variables.module.scss";
-import rrr from "@modules/bulma.scss";
 import { until } from "@styles/mediaQueries";
 
-export const HEADER_FULL_HEIGHT = 80;
-export const HEADER_SMALL_HEIGHT = 44;
+import {
+  headerFullHeight,
+  headerSmallHeight,
+} from "@modules/variables.module.scss";
 
 type Props = PropsWithChildren<{ className?: ClassNamesArg }>;
 
@@ -47,7 +48,7 @@ const styles = {
   view: css`
     display: flex;
     align-items: center;
-    height: ${HEADER_FULL_HEIGHT}px;
+    height: ${headerFullHeight};
     box-shadow: rgb(0 0 0 / 8%) 0px 1px 12px !important;
     padding: 0 ${variables.desktopGap};
   `,
@@ -55,7 +56,7 @@ const styles = {
     "tablet",
     css`
       padding: 0 32px;
-      height: ${HEADER_SMALL_HEIGHT}px;
+      height: ${headerSmallHeight};
     `
   ),
   firstHeaderItem: css`

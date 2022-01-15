@@ -3,15 +3,38 @@
 @import "./variables.module.scss";
 
 // Overrides for bulma
+$family-sans-serif: "Nunito", sans-serif;
 
+$footer-background-color: white;
+$footer-padding: 3rem 1.5rem;
 $gap: 32px;
+$container-max-width: (2 * $gap) + $max-container-width-large;
 
 @import "~bulma/bulma.sass";
 
+.badger-page {
+  margin-top: $header-full-height;
+  padding-top: 72px;
+
+  @include until($tablet) {
+    margin-top: $header-small-height;
+    padding-top: 44px;
+  }
+}
+
 @include touch {
+  .container {
+    padding-left: $gap;
+    padding-right: $gap;
+  }
 }
 
 @include tablet {
+  .container.container {
+    max-width: $max-container-width-med;
+    padding-left: $desktop-gap;
+    padding-right: $desktop-gap;
+  }
 }
 
 @include desktop {

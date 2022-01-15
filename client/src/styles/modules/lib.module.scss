@@ -1,0 +1,81 @@
+$slider-color: $badger-blue;
+
+$slider-max: 800px;
+$slider-size: 20px;
+$slider-offset: $slider-max - $slider-size / 2;
+
+input[type="range"] {
+  outline: 0;
+  border: 0;
+  border-radius: 500px;
+  width: 100%;
+  max-width: 100%;
+  transition: box-shadow 0.2s ease-in-out;
+  // Chrome
+  @media screen and (-webkit-min-device-pixel-ratio: 0) {
+    & {
+      overflow: hidden;
+      height: 20px;
+      -webkit-appearance: none;
+      background-color: #ddd;
+    }
+    &::-webkit-slider-runnable-track {
+      height: 20px;
+      -webkit-appearance: none;
+      color: #444;
+      transition: box-shadow 0.2s ease-in-out;
+    }
+    &::-webkit-slider-thumb {
+      width: 20px;
+      -webkit-appearance: none;
+      height: 20px;
+      cursor: ew-resize;
+      background: #fff;
+      box-shadow: -$slider-max 0 0 $slider-offset $slider-color,
+        inset 0 0 0 3px $slider-color;
+      border-radius: 50%;
+      transition: box-shadow 0.2s ease-in-out;
+      position: relative;
+      // top: 1px;
+    }
+    &:active::-webkit-slider-thumb {
+      background: #fff;
+      box-shadow: -$slider-max 0 0 $slider-offset $slider-color,
+        inset 0 0 0 20px $slider-color;
+    }
+  }
+  // Firefox
+  &::-moz-range-progress {
+    background-color: #43e5f7;
+  }
+  &::-moz-range-track {
+    background-color: #9a905d;
+  }
+  // IE
+  &::-ms-fill-lower {
+    background-color: #43e5f7;
+  }
+  &::-ms-fill-upper {
+    background-color: #9a905d;
+  }
+}
+
+.badgerIcon {
+  & > .badgerStripes {
+    fill: #1c2c42;
+  }
+  & > .badgerRightEye,
+  & > .badgerLeftEye {
+    fill: #1c2c42;
+  }
+
+  &.inverted {
+    & > .badgerStripes {
+      fill: #fff;
+    }
+    & > .badgerRightEye,
+    & > .badgerLeftEye {
+      fill: #fff;
+    }
+  }
+}
