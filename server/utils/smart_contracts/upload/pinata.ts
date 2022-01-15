@@ -5,7 +5,7 @@ import config from "../../../../config";
 import Bottleneck from "bottleneck";
 
 const limiter = new Bottleneck({
-  maxConcurrent: 5,
+  maxConcurrent: 10,
   minTime: 5000,
 });
 
