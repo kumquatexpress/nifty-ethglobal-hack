@@ -86,6 +86,22 @@ apiRouter.post("/livepeerStream", async (ctx, next) => {
     logger.error("Livepeer error", [e]);
   }
 });
+apiRouter.get("/livepeerStream/:streamId", async (ctx, next) => {
+  const { streamId } = ctx.params;
+  const streamResponse = await fetch(
+    `https://livepeer.com/api/stream/${streamId}`,
+    {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+        authorization: `Bearer ${config.livepeer.API_KEY}`,
+      },
+    }
+  );
+  const body = await streamResponse.json();
+  ctx.status = streamResponse.status;
+  ctx.body = body;
+});
 apiRouter.use(authRouter.routes(), authRouter.allowedMethods());
 
 export default apiRouter;

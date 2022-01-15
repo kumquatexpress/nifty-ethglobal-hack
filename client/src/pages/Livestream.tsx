@@ -48,9 +48,7 @@ export default function Livestream() {
         profiles: profiles,
       })
       .then((resp) => {
-        if (resp.status === 200) {
-          setIsLive(true);
-        }
+        setIsLive(resp.data.isActive);
         setPlaybackId(resp.data.playbackId);
         setStreamKey(resp.data.streamKey);
       });
@@ -73,7 +71,7 @@ export default function Livestream() {
         player.src(`https://cdn.livepeer.com/hls/${playbackId}/index.m3u8`);
       });
     }
-  });
+  }, [isLive, playbackId, videoEl]);
 
   return (
     <div className="container w-full flex flex-col items-center overflow-auto pb-14">

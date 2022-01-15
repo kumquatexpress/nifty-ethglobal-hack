@@ -200,8 +200,25 @@ const CollectionMutations = {
         Math.floor(price * GWEI_PER_ETH),
         badgeMetadata
       );
-
+      await redis.redisClient.rpush(
+        redis.WORKER_LISTEN_QUEUE,
+        JSON.stringify({
+          type: redis.WORKER_MSG_QUEUES.createItemsFromTemplate.name,
+          request: {
+            collectionId: collection.id,
+          },
+        })
+      );
       await collection.createMachine();
+      await redis.redisClient.rpush(
+        redis.WORKER_LISTEN_QUEUE,
+        JSON.stringify({
+          type: redis.WORKER_MSG_QUEUES.addItemsToMachine.name,
+          request: {
+            collectionId: collection.id,
+          },
+        })
+      );
       return collection;
     },
   },
