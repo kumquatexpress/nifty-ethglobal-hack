@@ -15,6 +15,7 @@ import Web3PublicKey from "../models/Web3PublicKey.model";
 import DiscordGuild from "../models/DiscordGuild.model";
 import redis from "../utils/redis";
 import logger from "../utils/logger";
+import { web3 } from "../utils/smart_contracts/web3";
 
 const authRouter = new Router({
   prefix: "/auth",
@@ -51,13 +52,7 @@ authRouter.post("/create", async (ctx, next) => {
   // password is a Buffer, key is a base58 encoded string
   const { password, key } = ctx.request.body;
   const enc = new TextEncoder();
-  if (
-    nacl.sign.detached.verify(
-      enc.encode(ENCRYPTED_MSG),
-      new Uint8Array(password.data),
-      Base58.decode(key)
-    )
-  ) {
+  if (web3.eth.personal.ecRecover(ENCRYPTED_MSG, password) === key) {
     try {
       return await Web3PublicKey.findByPk(key).then(async (account) => {
         if (account) {

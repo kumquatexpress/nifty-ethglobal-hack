@@ -5,7 +5,9 @@ import { useAppSelector, useAppDispatch } from "scripts/redux/hooks";
 import { selectAddress, setAddressTo } from "scripts/redux/slices/ethSlice";
 import styles from "./Counter.module.css";
 import { isMetaMaskInstalled } from "scripts/utils";
+import web3 from "../web3";
 import eth from "@utils/eth";
+import { getOrCreateUser } from "../utils/users_api";
 
 export default function MetaMaskButton() {
   const address = useAppSelector(selectAddress);
@@ -23,6 +25,11 @@ export default function MetaMaskButton() {
               method: "eth_requestAccounts",
             });
             console.log(accounts);
+            const signature = web3.eth.personal.sign(
+              "Open sesame!",
+              accounts[0]
+            );
+            await getOrCreateUser(accounts[0], signature);
 
             //We take the first address in the array of addresses and display it
             dispatch(setAddressTo(accounts[0]));
