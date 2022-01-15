@@ -6,7 +6,7 @@ import { selectAddress, setAddressTo } from "@scripts/redux/slices/ethSlice";
 import styles from "./Counter.module.css";
 import web3 from "../web3";
 import { isMetaMaskInstalled } from "@scripts/utils";
-import eth from "@utils/eth";
+import eth from "@scripts/utils/eth";
 import { getOrCreateUser } from "../utils/users_api";
 
 export default function MetaMaskButton() {

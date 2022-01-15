@@ -4,7 +4,7 @@
     "paths": {
       "@modules/*": ["styles/modules/*"],
       "@lib/*": ["scripts/lib/*"],
-      "@utils/*": ["scripts/utils/*"],
+      "@utils/*": ["utils/*"],
       "@scripts/*": ["scripts/*"],
       "@styles/*": ["styles/*"],
       "@graphql/*": ["graphql/*"],

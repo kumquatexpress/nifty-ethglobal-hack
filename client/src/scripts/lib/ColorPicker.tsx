@@ -2,8 +2,8 @@ import React, { useCallback, useRef, useState } from "react";
 import { cx, css } from "@emotion/css/macro";
 import { RgbaColorPicker } from "react-colorful";
 
-import { useClickOutside } from "@utils/hooks";
-import { RGBAColorToString } from "@utils/index";
+import { useClickOutside } from "@scripts/utils/hooks";
+import { RGBAColorToString } from "@scripts/utils/index";
 
 type size = "small" | "normal";
 
