@@ -254,7 +254,12 @@ const CollectionMutations = {
           },
         })
       );
-      await collection.createMachine();
+      try {
+        await collection.createMachine();
+      } catch (e) {
+        logger.error("Err creating machine", { e });
+      }
+
       await redis.redisClient.rpush(
         redis.WORKER_LISTEN_QUEUE,
         JSON.stringify({
