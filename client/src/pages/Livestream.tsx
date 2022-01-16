@@ -53,7 +53,7 @@ export default function Livestream() {
     return () => {
       clearTimeout(timeout);
     };
-  }, []);
+  }, [isLive, playbackId, streamId, streamKey]);
 
   useEffect(() => {
     if (videoEl == null) return;
