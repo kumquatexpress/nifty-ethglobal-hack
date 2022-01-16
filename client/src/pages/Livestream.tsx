@@ -7,42 +7,6 @@ import "video.js/dist/video-js.min.css";
 import { APIClient } from "../utils/api_client";
 import { useParams } from "react-router-dom";
 
-export async function startLivestream(
-  name: string,
-  collectionIds: string[]
-): Promise<any> {
-  const profiles = [
-    {
-      name: "720p",
-      bitrate: 2000000,
-      fps: 30,
-      width: 1280,
-      height: 720,
-    },
-    {
-      name: "480p",
-      bitrate: 1000000,
-      fps: 30,
-      width: 854,
-      height: 480,
-    },
-    {
-      name: "360p",
-      bitrate: 500000,
-      fps: 30,
-      width: 640,
-      height: 360,
-    },
-  ];
-
-  const resp = await APIClient().post("/livepeerStream", {
-    name: name,
-    profiles: profiles,
-    collectionIds,
-  });
-  return resp.data;
-}
-
 export default function Livestream() {
   let { streamId } = useParams<{ streamId: string }>();
   const [videoEl, setVideoEl] = useState(null);
@@ -54,22 +18,42 @@ export default function Livestream() {
     setVideoEl(el);
   }, []);
 
-  const interval = setInterval(() => {
-    if (isLive) {
-      clearInterval(interval);
-      return;
+  // query for status
+  useEffect(() => {
+    let timeout: ReturnType<typeof setTimeout>;
+    if (!isLive) {
+      pollStreamStatus();
     }
-    APIClient()
-      .get("/livepeerStream/" + streamId)
-      .then((resp) => {
-        if (resp.data.isActive) {
-          setIsLive(resp.data.isActive);
-          setPlaybackId(resp.data.playbackId);
-          setStreamKey(resp.data.streamKey);
-          clearInterval(interval);
-        }
-      });
-  }, 3000);
+    let timeToCheck = 1000;
+    function pollStreamStatus() {
+      APIClient()
+        .get("/livepeerStream/" + streamId)
+        .then((resp) => {
+          if (playbackId == null) {
+            setPlaybackId(resp.data.playbackId);
+          }
+          if (streamKey == null) {
+            setStreamKey(resp.data.streamKey);
+          }
+          if (resp.data.isActive) {
+            setIsLive(resp.data.isActive);
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching stream status:", error);
+        })
+        .finally(() => {
+          if (!isLive) {
+            // basic exponential backoff
+            timeToCheck *= 1.1;
+            timeout = setTimeout(pollStreamStatus, timeToCheck);
+          }
+        });
+    }
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, []);
 
   useEffect(() => {
     if (videoEl == null) return;
@@ -88,7 +72,7 @@ export default function Livestream() {
         player.src(`https://cdn.livepeer.com/hls/${playbackId}/index.m3u8`);
       });
     }
-  }, [isLive]);
+  }, [isLive, playbackId, videoEl]);
 
   return (
     <div className="container w-full flex flex-col items-center overflow-auto pb-14">

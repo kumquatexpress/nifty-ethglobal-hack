@@ -83,14 +83,15 @@ const CollectionType = new GraphQLObjectType({
       description: "Any livestreams associated with this collection",
       resolve: async (parent, args, ctx, info) => {
         const collection_id = await parent.id;
-        console.log("collectionid", collection_id);
         const livestreams = await LivepeerCollections.findAll({
           where: { collection_id: collection_id },
           limit: args.limit,
           order: args.order,
         });
 
-        return livestreams;
+        return livestreams
+          .map((livepeerStream) => livepeerStream.livepeer_stream_id)
+          .filter((x) => !!x);
       },
     },
   },

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Input from "@lib/inputs/Input";
 import { cx, css } from "@emotion/css/macro";
 import "@styles/App.scss";
 import { useQuery, useLazyQuery } from "@apollo/client";
@@ -38,6 +39,7 @@ function Mint() {
   const [currentOngoingStreams, setCurrentOngoingStreams] = useState<string[]>(
     []
   );
+  const [streamName, setStreamName] = useState<string>("");
   const [canJoinLiveStream, setCanJoinLiveStream] = useState<boolean>(false);
   const [isCreator, setIsCreator] = useState<boolean>(false);
   const userId = useAppSelector(selectUserId);
@@ -231,7 +233,6 @@ function Mint() {
       }
     );
   }
-  console.log(collection);
   return (
     <div className={cx(styles.container)}>
       <div className={cx(styles.badgeImage)}>
@@ -245,23 +246,41 @@ function Mint() {
           imgNumber={1}
           customBorderSVGUrl={BORDER_LEGENDARY_SVG_URL}
         />
-        {((canJoinLiveStream && currentOngoingStreams.length > 0) ||
-          isCreator) && (
-          <LivestreamButton
-            readyToLivestream={collectionLoaded}
-            creator={isCreator}
-            size="large"
-            className={cx(styles.mintButton)}
-          />
-        )}
-        {!isCreator && (
-          <MintButton
-            readyToMint={collectionLoaded}
-            contractAddress={contractAddress}
-            size="large"
-            className={cx(styles.mintButton)}
-          />
-        )}
+        <div className={styles.buttonContainer}>
+          {((canJoinLiveStream && currentOngoingStreams.length > 0) ||
+            isCreator) && (
+            <>
+              {isCreator && (
+                <Input
+                  className={cx(styles.streamNameInput)}
+                  size="large"
+                  placeholder="Stream Name"
+                  onChange={(e) => setStreamName(e.currentTarget.value)}
+                  value={streamName}
+                  id="badgeCreate-name"
+                />
+              )}
+              <LivestreamButton
+                disabled={isCreator && streamName === ""}
+                streamName={streamName}
+                streamId={currentOngoingStreams[0]}
+                collectionIds={[collection?.id]}
+                readyToLivestream={collectionLoaded}
+                creator={isCreator}
+                size="large"
+                className={cx(styles.streamButton)}
+              />
+            </>
+          )}
+          {!isCreator && (
+            <MintButton
+              readyToMint={collectionLoaded}
+              contractAddress={contractAddress}
+              size="large"
+              className={cx(styles.mintButton)}
+            />
+          )}
+        </div>
       </div>
 
       <div className={cx(styles.badgeMetadata)}>
@@ -392,9 +411,16 @@ const styles = {
     flex-direction: column;
     align-items: center;
   `,
+  streamNameInput: css`
+    width: 100%;
+    margin-bottom: 12px;
+  `,
+  streamButton: css`
+    width: 100%;
+    margin-bottom: 12px;
+  `,
   mintButton: css`
     width: 100%;
-    margin-top: 24px;
   `,
   badgeMetadata: css`
     display: flex;
@@ -427,6 +453,10 @@ const styles = {
   breakdown: css`
     display: flex;
     justify-content: space-between;
+  `,
+  buttonContainer: css`
+    width: 100%;
+    margin-top: 24px;
   `,
 };
 
