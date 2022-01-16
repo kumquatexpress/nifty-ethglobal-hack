@@ -130,7 +130,6 @@ const UserQueries = {
     },
     description: "Tries to join a livestream based on badges",
     resolve: async (parent, args, ctx, info) => {
-      let canJoin = false;
       const user = await User.findByPk(ctx.state.user.id, {
         include: Web3PublicKey,
       });
@@ -152,21 +151,31 @@ const UserQueries = {
         };
       }
       const ownedTokens = await user.getOwnedBadges();
-      collections.forEach(async (c) => {
-        const match = await c.getNFTsMatchingOwnedTokens(
-          ownedTokens.map((t) => t.token_address)
+      try {
+        await Promise.any(
+          collections.map((c) => {
+            return new Promise((resolve, reject) => {
+              c.getNFTsMatchingOwnedTokens(
+                ownedTokens.map((t) => t.token_address)
+              ).then((match) => {
+                if (match.length) {
+                  resolve(true);
+                }
+                reject(false);
+              });
+            });
+          })
         );
-        if (match.length) {
-          return {
-            canJoin: true,
-            collections,
-          };
-        }
-      });
-      return {
-        canJoin: false,
-        collections,
-      };
+        return {
+          canJoin: true,
+          collections,
+        };
+      } catch (e) {
+        return {
+          canJoin: false,
+          collections,
+        };
+      }
     },
   },
   hasCollectionToken: {
