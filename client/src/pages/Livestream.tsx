@@ -149,7 +149,7 @@ export default function Livestream() {
         {isLive ? "Live" : "Waiting for stream to begin..."}
       </div>
     </div>
-  ) : (
+  ) : !loading ? (
     <div className={cx("container", styles.sorry)}>
       <Text type="h1">Sorry! &#128542;</Text>
 
@@ -172,6 +172,8 @@ export default function Livestream() {
         )}
       </Text>
     </div>
+  ) : (
+    <Text type="h2">Loading...</Text>
   );
 }
 const styles = {
