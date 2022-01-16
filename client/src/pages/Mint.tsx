@@ -11,6 +11,13 @@ import { APIClient } from "../utils/api_client";
 import { COLLECTION } from "@graphql/collections.graphql";
 import { BORDER_LEGENDARY_SVG_URL } from "@utils/constants";
 
+import mintConfigContract, {
+  getBalance,
+  getTotalMined,
+  getAllCandidates,
+  priceWei,
+  mintRandom,
+} from "../components/config";
 import {
   Collection as CollectionType,
   CollectionVariables,
@@ -30,6 +37,22 @@ function Mint() {
     },
   });
   const collection = data?.collection;
+  let contractAddress = collection?.machine_address;
+  let [totalMined, setTotalMined] = useState<number>(0);
+  let [remainingUnmined, setRemainingUnmined] = useState<string[]>([]);
+  useEffect(() => {
+    async function fetchTotals(config: any) {
+      const allRemainingUnmined = await getAllCandidates(config);
+      const totalMined = await getTotalMined(config);
+      setTotalMined(parseInt(totalMined) || 0);
+      setRemainingUnmined(allRemainingUnmined);
+      console.log(allRemainingUnmined);
+    }
+    if (contractAddress) {
+      const config = mintConfigContract(contractAddress);
+      fetchTotals(config);
+    }
+  }, [contractAddress]);
   // query for status
   useEffect(() => {
     let timeout: ReturnType<typeof setTimeout>;
@@ -96,7 +119,7 @@ function Mint() {
   } = collection?.badge_metadata || {};
 
   const readyToMint = status === BadgerCollectionStatus.READY_TO_MINT;
-  let contractAddress = collection?.machine_address;
+
   return (
     <div className={cx(styles.container)}>
       <div className={cx(styles.badgeImage)}>
@@ -139,7 +162,8 @@ function Mint() {
         </div>
         <div className={cx(styles.remainder)}>
           <Text type="subtitle" className="badger-mint-remainder">
-            12 out of 100 remaining
+            {remainingUnmined.length} out of{" "}
+            {remainingUnmined.length + totalMined} remaining
           </Text>
           <div className={cx(styles.breakdown)}>
             <div>

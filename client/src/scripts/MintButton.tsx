@@ -14,7 +14,7 @@ import mintConfigContract, {
 type Props = {
   className?: ClassNamesArg;
   readyToMint: boolean;
-  contractAddress: string | null;
+  contractAddress: string | null | undefined;
 } & ButtonProps;
 export default function MintButton({
   readyToMint,
