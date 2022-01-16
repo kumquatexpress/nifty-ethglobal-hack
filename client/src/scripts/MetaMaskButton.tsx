@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { cx, css } from "@emotion/css/macro";
 import Button from "@lib/button";
 
 import { useAppSelector, useAppDispatch } from "@scripts/redux/hooks";
@@ -7,7 +8,6 @@ import {
   setAddressTo,
   setUserIdTo,
 } from "@scripts/redux/slices/ethSlice";
-import styles from "./Counter.module.css";
 import web3 from "../web3";
 import { isMetaMaskInstalled } from "@scripts/utils";
 import eth from "@scripts/utils/eth";
@@ -54,6 +54,7 @@ export default function MetaMaskButton() {
 
   return (
     <Button
+      className={cx(styles.button)}
       onClick={async () => {
         if (hasProvider) {
           try {
@@ -89,3 +90,14 @@ export default function MetaMaskButton() {
     </Button>
   );
 }
+
+const styles = {
+  button: css`
+    & > * {
+      max-width: 150px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+  `,
+};
