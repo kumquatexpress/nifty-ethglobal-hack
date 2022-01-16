@@ -24,6 +24,7 @@ import {
 } from "../utils/smart_contracts/toolbox/constants";
 import s3 from "../utils/s3";
 import config from "../../config";
+import { UserType } from "./user";
 
 const CollectionType = new GraphQLObjectType({
   name: "Collection",
@@ -69,9 +70,12 @@ const CollectionType = new GraphQLObjectType({
       type: GraphQLJSON,
       description: "The badge metadata of this collection",
     },
-    user_id: {
-      type: GraphQLJSON,
-      description: "The id of the owner of this collection",
+    owner: {
+      type: UserType,
+      description: "The owner of this collection",
+      resolve: async (parent, args, ctx, info) => {
+        return await parent.$get("user");
+      },
     },
   },
 });

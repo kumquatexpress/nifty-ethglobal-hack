@@ -31,6 +31,22 @@ export interface Collection_collection_items {
   status: number;
 }
 
+export interface Collection_collection_owner_profile {
+  __typename: "Profile";
+  /**
+   * The profile fullname
+   */
+  fullname: string | null;
+}
+
+export interface Collection_collection_owner {
+  __typename: "User";
+  /**
+   * The user's profile
+   */
+  profile: Collection_collection_owner_profile | null;
+}
+
 export interface Collection_collection {
   __typename: "Collection";
   /**
@@ -64,6 +80,10 @@ export interface Collection_collection {
    * The badge metadata of this collection
    */
   badge_metadata: any | null;
+  /**
+   * The owner of this collection
+   */
+  owner: Collection_collection_owner | null;
 }
 
 export interface Collection {

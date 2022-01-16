@@ -54,6 +54,11 @@ export const COLLECTION = gql`
       price_gwei
       template_s3_url
       badge_metadata
+      owner {
+        profile {
+          fullname
+        }
+      }
     }
   }
 `;
