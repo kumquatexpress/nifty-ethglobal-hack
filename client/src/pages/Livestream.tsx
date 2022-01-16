@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Text from "@lib/Text";
 import videojs from "video.js";
 import "videojs-contrib-hls";
 import "videojs-contrib-quality-levels";
@@ -6,6 +7,13 @@ import "videojs-hls-quality-selector";
 import "video.js/dist/video-js.min.css";
 import { APIClient } from "../utils/api_client";
 import { useParams } from "react-router-dom";
+import { cx, css } from "@emotion/css/macro";
+import { useQuery, useLazyQuery } from "@apollo/client";
+import { JOIN_LIVESTREAM } from "@graphql/users.graphql";
+import {
+  JoinLivestream,
+  JoinLivestreamVariables,
+} from "@graphql/__generated__/JoinLivestream";
 
 export default function Livestream() {
   let { streamId } = useParams<{ streamId: string }>();
@@ -17,6 +25,15 @@ export default function Livestream() {
   const onVideo = React.useCallback((el) => {
     setVideoEl(el);
   }, []);
+  const {
+    data: canJoinLiveStream,
+    loading,
+    error,
+  } = useQuery<JoinLivestream, JoinLivestreamVariables>(JOIN_LIVESTREAM, {
+    variables: {
+      streamId: streamId!,
+    },
+  });
 
   // query for status
   useEffect(() => {
@@ -74,14 +91,17 @@ export default function Livestream() {
     }
   }, [isLive, playbackId, videoEl]);
 
-  return (
-    <div className="container w-full flex flex-col items-center overflow-auto pb-14">
+  return !canJoinLiveStream ? (
+    <div className="w-full flex flex-col items-center overflow-auto">
       <div className="relative bg-black h-56 lg:h-96 w-full xl:w-3/5 overflow-hidden">
         <div data-vjs-player>
           <video
             id="video"
             ref={onVideo}
-            className="h-full w-full video-js vjs-theme-city"
+            className={cx(
+              "h-full w-full video-js vjs-theme-city",
+              styles.videoPlayer
+            )}
             controls
             playsInline
           />
@@ -92,7 +112,7 @@ export default function Livestream() {
               isLive ? "bg-green-700" : "bg-yellow-600"
             } h-2 w-2 mr-2 rounded-full`}
           ></div>
-          {isLive ? "Live" : "Waiting for Video"}
+          {isLive ? "Live" : "Waiting for stream to begin..."}
         </div>
       </div>
 
@@ -101,6 +121,7 @@ export default function Livestream() {
         please use a broadcaster software like OBS/Streamyard on desktop, or
         Larix on mobile
       </div>
+
       <div className="w-11/12 lg:w-full xl:w-3/5 border border-dashed p-2 m-4 flex flex-col text-sm">
         <div className="flex items-center justify-between mt-2 break-all">
           <span>
@@ -109,21 +130,27 @@ export default function Livestream() {
             rtmp://rtmp.livepeer.com/live/
           </span>
         </div>
-        <div className="flex items-center justify-between mt-2 break-all mb-6">
+        <div className="flex items-center justify-between mt-2 break-all">
           <span>
             Stream Key:
             <br />
             {streamKey}
           </span>
         </div>
-        <div className="flex items-center justify-between mt-2 break-all">
-          <span>
-            Playback URL:
-            <br />
-            https://cdn.livepeer.com/hls/{playbackId}/index.m3u8
-          </span>
-        </div>
       </div>
+    </div>
+  ) : (
+    <div className={cx("container")}>
+      <Text type="h1">Sorry!</Text>
+      <Text type="h3">
+        You need to be a badgeholder of COLLECTION to join this stream &#128542;
+      </Text>
     </div>
   );
 }
+const styles = {
+  videoPlayer: css`
+    width: 100%;
+    height: 100%;
+  `,
+};
