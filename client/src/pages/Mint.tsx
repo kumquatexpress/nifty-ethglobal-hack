@@ -125,31 +125,81 @@ function Mint() {
 
   // calculate the breakdown of item rarities left
 
-  // const {
-  //   commonLeft,
-  //   commonTotal,
-  //   uncommonLeft,
-  //   uncommonTotal,
-  //   rareLeft,
-  //   rareTotal,
-  //   legendaryLeft,
-  //   legendaryTotal,
-  // } = collection?.items?.reduce(
-  //   (memo, item) => {
-  //     if (item?.metadata?.)
-  //     return memo;
-  //   },
-  //   {
-  //     commonLeft: 0,
-  //     commonTotal: 0,
-  //     uncommonLeft: 0,
-  //     uncommonTotal: 0,
-  //     rareLeft: 0,
-  //     rareTotal: 0,
-  //     legendaryLeft: 0,
-  //     legendaryTotal: 0,
-  //   }
-  // );
+  const {
+    commonLeft,
+    commonTotal,
+    uncommonLeft,
+    uncommonTotal,
+    rareLeft,
+    rareTotal,
+    legendaryLeft,
+    legendaryTotal,
+  } = collection?.items?.reduce(
+    (memo: any, item) => {
+      const rarityAttr = item?.metadata?.attributes?.find((attr: any) => {
+        return attr.trait_type === "rarity";
+      });
+      const matchesUnminted = remainingUnmined.find((ipfsLink) => {
+        return ipfsLink === item?.ipfs_metadata?.link;
+      });
+      switch (rarityAttr?.value) {
+        case "rare":
+          memo.rareTotal += 1;
+          break;
+        case "legendary":
+          memo.legendaryTotal += 1;
+          break;
+        case "common":
+          memo.commonTotal += 1;
+          break;
+        case "uncommon":
+          memo.uncommonTotal += 1;
+          break;
+        default:
+          break;
+      }
+
+      if (matchesUnminted) {
+        switch (rarityAttr?.value) {
+          case "rare":
+            memo.rareLeft += 1;
+            break;
+          case "legendary":
+            memo.legendaryLeft += 1;
+            break;
+          case "common":
+            memo.commonLeft += 1;
+            break;
+          case "uncommon":
+            memo.uncommonLeft += 1;
+            break;
+          default:
+            break;
+        }
+      }
+      return memo;
+    },
+    {
+      commonLeft: 0,
+      commonTotal: 0,
+      uncommonLeft: 0,
+      uncommonTotal: 0,
+      rareLeft: 0,
+      rareTotal: 0,
+      legendaryLeft: 0,
+      legendaryTotal: 0,
+    }
+  );
+  console.log({
+    commonLeft,
+    commonTotal,
+    uncommonLeft,
+    uncommonTotal,
+    rareLeft,
+    rareTotal,
+    legendaryLeft,
+    legendaryTotal,
+  });
 
   return (
     <div className={cx(styles.container)}>
@@ -210,7 +260,15 @@ function Mint() {
                 paddingColor={common}
                 imgNumber={1}
               />
-              <Text>30 common</Text>
+              <Text>
+                {commonLeft > 0 ? (
+                  `
+                ${commonLeft}/${commonTotal} left
+                  `
+                ) : (
+                  <>0 left &#128542;</>
+                )}
+              </Text>
             </div>
             <div>
               <CanvasImage
@@ -223,7 +281,15 @@ function Mint() {
                 paddingColor={uncommon}
                 imgNumber={1}
               />
-              <Text>8 uncommon</Text>
+              <Text>
+                {uncommonLeft > 0 ? (
+                  `
+                ${uncommonLeft}/${uncommonTotal} left
+                  `
+                ) : (
+                  <>0 left &#128542;</>
+                )}
+              </Text>
             </div>
             <div>
               <CanvasImage
@@ -236,7 +302,15 @@ function Mint() {
                 paddingColor={rare}
                 imgNumber={1}
               />
-              <Text>3 rare</Text>
+              <Text>
+                {rareLeft > 0 ? (
+                  `
+                ${rareLeft}/${rareTotal} left
+                  `
+                ) : (
+                  <>0 left &#128542;</>
+                )}
+              </Text>
             </div>
             <div>
               <CanvasImage
@@ -249,7 +323,15 @@ function Mint() {
                 imgNumber={1}
                 customBorderSVGUrl={BORDER_LEGENDARY_SVG_URL}
               />
-              <Text>0 legendary</Text>
+              <Text>
+                {legendaryLeft > 0 ? (
+                  `
+                ${legendaryLeft}/${legendaryTotal} left
+                  `
+                ) : (
+                  <>0 left &#128542;</>
+                )}
+              </Text>
             </div>
           </div>
         </div>
