@@ -25,6 +25,7 @@ import {
 import s3 from "../utils/s3";
 import config from "../../config";
 import { UserType } from "./user";
+import LivepeerCollections from "../models/LivepeerCollections.model";
 
 const CollectionType = new GraphQLObjectType({
   name: "Collection",
@@ -75,6 +76,21 @@ const CollectionType = new GraphQLObjectType({
       description: "The owner of this collection",
       resolve: async (parent, args, ctx, info) => {
         return await parent.$get("user");
+      },
+    },
+    livestreams: {
+      type: new GraphQLList(GraphQLString),
+      description: "Any livestreams associated with this collection",
+      resolve: async (parent, args, ctx, info) => {
+        const collection_id = await parent.id;
+        console.log("collectionid", collection_id);
+        const livestreams = await LivepeerCollections.findAll({
+          where: { collection_id: collection_id },
+          limit: args.limit,
+          order: args.order,
+        });
+
+        return livestreams;
       },
     },
   },
