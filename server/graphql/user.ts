@@ -5,6 +5,7 @@ import {
   GraphQLObjectType,
   GraphQLString,
 } from "graphql";
+import fetch from "node-fetch";
 import { GraphQLJSONObject } from "graphql-type-json";
 import config from "../../config";
 import Web3PublicKey from "../models/Web3PublicKey.model";
@@ -90,10 +91,27 @@ const UserQueries = {
     type: new GraphQLList(GraphQLJSONObject),
     description: "Retrieves a list of all badge metadata for the user",
     resolve: async (parent, args, ctx, info) => {
+      const IPFS_GATEWAY = "https://cloudflare-ipfs.com/ipfs/";
+      function getGatewayURL(ipfsUrl: string): string {
+        return IPFS_GATEWAY + ipfsUrl.replace("ipfs://", "");
+      }
       const user = await User.findByPk(ctx.state.user.id, {
         include: Web3PublicKey,
       });
-      return await user.getOwnedBadges();
+      const badges = await user.getOwnedBadges();
+      const ret = [];
+      await Promise.all(
+        badges.map(async (t) => {
+          const resp = await fetch(t.token_uri);
+          const data = await resp.json();
+          ret.push({
+            ...t,
+            image_uri: getGatewayURL(data.image),
+          });
+          return;
+        })
+      );
+      return ret;
     },
   },
   joinLivestream: {

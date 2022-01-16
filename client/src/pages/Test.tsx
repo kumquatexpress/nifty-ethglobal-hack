@@ -11,7 +11,7 @@ import mintConfigContract, {
 } from "../components/config";
 
 const TO_GWEI = 10 ** 9;
-const CONTRACT_ADDR = "0x3f39abfa131b595b7604324091ab3c348463d9c2";
+const CONTRACT_ADDR = "0xba868e58d1a082135fe5fdb59b01254853224b4f";
 function Create() {
   const config = mintConfigContract(CONTRACT_ADDR);
 

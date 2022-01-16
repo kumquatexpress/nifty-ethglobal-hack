@@ -55,7 +55,7 @@ export default function MetaMaskButton() {
   return (
     <Button
       onClick={async () => {
-        if (hasProvider && !address) {
+        if (hasProvider) {
           try {
             // Will open the MetaMask UI
             // You should disable this button while the request is pending!

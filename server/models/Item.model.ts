@@ -18,7 +18,7 @@ import { NFTManifest } from "../utils/smart_contracts/toolbox/types";
 import Collection, { UPLOAD_ITEMS_PUBSUB_KEY } from "./Collection.model";
 import { createCanvas, Image } from "canvas";
 import redis from "../utils/redis";
-import { pl8 } from "../utils/helpers";
+import { pl13 } from "../utils/helpers";
 
 export enum ItemStatus {
   UNKNOWN = 0,
@@ -324,7 +324,7 @@ export default class Item extends Model {
 
     const uploadPromises = await Promise.allSettled(
       items.map((item, idx) =>
-        pl8(
+        pl13(
           async () =>
             await item.addToCloudStorage(provider, rarity[idx]).then((res) => {
               numUploaded += 1;

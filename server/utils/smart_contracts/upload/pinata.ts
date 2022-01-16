@@ -5,8 +5,8 @@ import config from "../../../../config";
 import Bottleneck from "bottleneck";
 
 const limiter = new Bottleneck({
-  maxConcurrent: 10,
-  minTime: 5000,
+  maxConcurrent: 2,
+  minTime: 100,
 });
 
 const pinata = pinataSDK(config.pinata.KEY, config.pinata.SECRET);
