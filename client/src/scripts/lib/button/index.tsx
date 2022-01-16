@@ -2,9 +2,13 @@ import React, { PropsWithChildren } from "react";
 import { cx, css, ClassNamesArg } from "@emotion/css/macro";
 
 type ButtonColor =
+  // Customs (see colors.module.scss)
+  | "twitch"
+  | "livepeer"
   | "badger"
   | "discord"
   | "twitter"
+  // Defaults
   | "white"
   | "light"
   | "dark"
