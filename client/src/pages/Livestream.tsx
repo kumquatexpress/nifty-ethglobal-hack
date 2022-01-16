@@ -101,7 +101,7 @@ export default function Livestream() {
     }
   }, [canJoinLiveStream]);
   console.log(collections);
-  return !streamKey ? (
+  return streamKey ? (
     <>
       <div className="w-11/12 lg:w-full xl:w-3/5 lg:p-0 mt-2 text-red-500 text-left text-sm">
         <span className="font-bold">Note:&nbsp;</span> To start a video stream,
