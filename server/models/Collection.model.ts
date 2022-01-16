@@ -242,16 +242,13 @@ export default class Collection extends Model {
         if (existingNums[num]) {
           return;
         }
-        return pl13(
-          async () =>
-            await Item.create({
-              collection_id: this.id,
-              s3_url: this.template_s3_url,
-              metadata: itemMetadata,
-              status: ItemStatus.NOT_IN_IPFS,
-              num: num,
-            })
-        );
+        return Item.create({
+          collection_id: this.id,
+          s3_url: this.template_s3_url,
+          metadata: itemMetadata,
+          status: ItemStatus.NOT_IN_IPFS,
+          num: num,
+        });
       })
     );
     redis.pubsub.publish(UPLOAD_ITEMS_PUBSUB_KEY(this.id), {
