@@ -143,6 +143,14 @@ apiRouter.get("/livepeerStream/:streamId", async (ctx, next) => {
     }
   );
   const body = await streamResponse.json();
+  const lc = await LivepeerCollections.findOne({
+    where: {
+      livepeer_stream_id: streamId,
+    },
+  });
+  if (lc.user_id !== ctx.state.user.id) {
+    body["streamKey"] = null;
+  }
   ctx.status = streamResponse.status;
   ctx.body = body;
 });
