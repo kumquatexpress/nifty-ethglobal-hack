@@ -35,8 +35,10 @@ import LivestreamButton from "@scripts/LivestreamButton";
 
 function Mint() {
   let { id } = useParams<{ id: string }>();
-  const [shouldShowLivestreamButton, setShouldShowLivestreamButton] =
-    useState<boolean>(false);
+  const [currentOngoingStreams, setCurrentOngoingStreams] = useState<string[]>(
+    []
+  );
+  const [canJoinLiveStream, setCanJoinLiveStream] = useState<boolean>(false);
   const [isCreator, setIsCreator] = useState<boolean>(false);
   const userId = useAppSelector(selectUserId);
   const [status, setStatus] = useState<BadgerCollectionStatus>(0);
@@ -112,6 +114,9 @@ function Mint() {
   }, [id, setStatus, status]);
   useEffect(() => {
     setIsCreator(collection?.owner?.id === userId);
+    if (collection?.livestreams && collection?.livestreams.length > 0) {
+      setCurrentOngoingStreams(collection?.livestreams);
+    }
   }, [collection, userId]);
 
   if (collection == null && !loading) {
@@ -222,7 +227,7 @@ function Mint() {
   if (!isCreator && collection?.id != null && !called) {
     loadHasCollectionToken().then(
       ({ data: { hasCollectionToken: tokensOwned } }: any) => {
-        setShouldShowLivestreamButton(tokensOwned.length > 0);
+        setCanJoinLiveStream(tokensOwned.length > 0);
       }
     );
   }
@@ -240,7 +245,8 @@ function Mint() {
           imgNumber={1}
           customBorderSVGUrl={BORDER_LEGENDARY_SVG_URL}
         />
-        {(shouldShowLivestreamButton || isCreator) && (
+        {((canJoinLiveStream && currentOngoingStreams.length > 0) ||
+          isCreator) && (
           <LivestreamButton
             readyToLivestream={collectionLoaded}
             creator={isCreator}
