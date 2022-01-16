@@ -101,31 +101,8 @@ export default function Livestream() {
     }
   }, [canJoinLiveStream]);
   console.log(collections);
-  return canJoin ? (
-    <div className="w-full flex flex-col items-center overflow-auto">
-      <div className="relative bg-black h-56 lg:h-96 w-full xl:w-3/5 overflow-hidden">
-        <div data-vjs-player>
-          <video
-            id="video"
-            ref={onVideo}
-            className={cx(
-              "h-full w-full video-js vjs-theme-city",
-              styles.videoPlayer
-            )}
-            controls
-            playsInline
-          />
-        </div>
-        <div className="bg-white rounded-xl flex items-center justify-center absolute right-2 top-2 p-1 text-xs">
-          <div
-            className={`animate-pulse ${
-              isLive ? "bg-green-700" : "bg-yellow-600"
-            } h-2 w-2 mr-2 rounded-full`}
-          ></div>
-          {isLive ? "Live" : "Waiting for stream to begin..."}
-        </div>
-      </div>
-
+  return streamKey ? (
+    <>
       <div className="w-11/12 lg:w-full xl:w-3/5 lg:p-0 mt-2 text-red-500 text-left text-sm">
         <span className="font-bold">Note:&nbsp;</span> To start a video stream,
         please use a broadcaster software like OBS/Streamyard on desktop, or
@@ -147,6 +124,29 @@ export default function Livestream() {
             {streamKey}
           </span>
         </div>
+      </div>
+    </>
+  ) : canJoin ? (
+    <div className="relative bg-black h-56 lg:h-96 w-full xl:w-3/5 overflow-hidden">
+      <div data-vjs-player>
+        <video
+          id="video"
+          ref={onVideo}
+          className={cx(
+            "h-full w-full video-js vjs-theme-city",
+            styles.videoPlayer
+          )}
+          controls
+          playsInline
+        />
+      </div>
+      <div className="bg-white rounded-xl flex items-center justify-center absolute right-2 top-2 p-1 text-xs">
+        <div
+          className={`animate-pulse ${
+            isLive ? "bg-green-700" : "bg-yellow-600"
+          } h-2 w-2 mr-2 rounded-full`}
+        ></div>
+        {isLive ? "Live" : "Waiting for stream to begin..."}
       </div>
     </div>
   ) : (
