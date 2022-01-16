@@ -4,6 +4,7 @@ import StickyHeader from "@lib/header/StickyHeader";
 import HeaderItem from "@lib/header/HeaderItem";
 import HeaderSpacer from "@lib/header/HeaderSpacer";
 import Logo from "@lib/logo/Logo";
+import { useNavigate } from "react-router-dom";
 
 type Props = PropsWithChildren<{
   className?: ClassNamesArg;
@@ -12,12 +13,13 @@ type Props = PropsWithChildren<{
 const baseHeaderClickEvent = "base-header-click";
 
 function BaseHeader({ children, className }: Props) {
+  const navigate = useNavigate();
   const headerRef = useRef<HTMLDivElement>(null);
   return (
     <StickyHeader ref={headerRef} className={className}>
       <HeaderItem
         onClick={() => {
-          window.history.pushState({}, "", "/");
+          navigate("/");
         }}
       >
         <Logo type="dynamic" />
