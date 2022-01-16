@@ -9,6 +9,7 @@ import Home from "./pages/Home";
 import Test from "./pages/Test";
 import Mint from "./pages/Mint";
 import Livestream from "./pages/Livestream";
+import Stash from "./pages/Stash";
 import { DiscordServerCallback, DiscordUserCallback } from "./pages/Discord";
 import Header from "@scripts/Header";
 
@@ -39,6 +40,7 @@ function App() {
                 element={<DiscordUserCallback />}
               />
               <Route path="/livestream/:streamId" element={<Livestream />} />
+              <Route path="/stash" element={<Stash />} />
             </Routes>
           </div>
         </div>
