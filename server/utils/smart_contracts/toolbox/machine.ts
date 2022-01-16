@@ -33,10 +33,13 @@ export async function createMachine(
     tx,
     account.privateKey
   );
+  console.log("asdf1", signed);
   const result = await web3.eth.sendSignedTransaction(signed.rawTransaction);
+  console.log("asdf2", result);
   const createEvent = MachineContract.options.jsonInterface.filter((token) => {
     return token.type === "event" && token.name == "Create";
   })[0];
+  console.log("asdf3", createEvent);
 
   let address;
   result.logs.forEach((l) => {
@@ -59,7 +62,7 @@ export async function createMachine(
       }
     }
   });
-
+  console.log("machine created", address);
   return {
     machineAddress: address,
   };
