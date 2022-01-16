@@ -11,7 +11,7 @@ export interface JoinLivestream {
   /**
    * Tries to join a livestream based on badges
    */
-  joinLivestream: boolean | null;
+  joinLivestream: any | null;
 }
 
 export interface JoinLivestreamVariables {

@@ -14,6 +14,7 @@ import Profile from "../models/Profile.model";
 import User from "../models/User.model";
 import LivepeerCollections from "../models/LivepeerCollections.model";
 import Collection from "../models/Collection.model";
+import { CollectionType } from "./collection";
 
 const ProfileType = new GraphQLObjectType({
   name: "Profile",
@@ -121,7 +122,7 @@ const UserQueries = {
     },
   },
   joinLivestream: {
-    type: GraphQLBoolean,
+    type: GraphQLJSONObject,
     args: {
       streamId: {
         type: new GraphQLNonNull(GraphQLString),
@@ -129,6 +130,7 @@ const UserQueries = {
     },
     description: "Tries to join a livestream based on badges",
     resolve: async (parent, args, ctx, info) => {
+      let canJoin = false;
       const user = await User.findByPk(ctx.state.user.id, {
         include: Web3PublicKey,
       });
@@ -138,17 +140,33 @@ const UserQueries = {
       const collections = await Collection.findAll({
         where: { id: livestreams.map((l) => l.collection_id) },
       });
+      // if user created the stream (i.e, owner)
+      if (
+        livestreams.find((stream) => {
+          return stream.user_id === user.id;
+        })
+      ) {
+        return {
+          canJoin: true,
+          collections: collections,
+        };
+      }
       const ownedTokens = await user.getOwnedBadges();
-      console.log("owned", ownedTokens);
       collections.forEach(async (c) => {
         const match = await c.getNFTsMatchingOwnedTokens(
           ownedTokens.map((t) => t.token_address)
         );
         if (match.length) {
-          return true;
+          return {
+            canJoin: true,
+            collections,
+          };
         }
       });
-      return false;
+      return {
+        canJoin: false,
+        collections,
+      };
     },
   },
   hasCollectionToken: {

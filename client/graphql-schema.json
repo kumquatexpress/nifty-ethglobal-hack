@@ -265,7 +265,7 @@
             ],
             "type": {
               "kind": "SCALAR",
-              "name": "Boolean",
+              "name": "JSONObject",
               "ofType": null
             },
             "isDeprecated": false,

@@ -21,6 +21,8 @@ export default function Livestream() {
   const [playbackId, setPlaybackId] = useState<string | null>(null);
   const [streamKey, setStreamKey] = useState<string | null>(null);
   const [isLive, setIsLive] = useState<boolean>(false);
+  const [collections, setCollections] = useState<any[]>([]);
+  const [canJoin, setCanJoin] = useState<boolean>(false);
 
   const onVideo = React.useCallback((el) => {
     setVideoEl(el);
@@ -38,7 +40,7 @@ export default function Livestream() {
   // query for status
   useEffect(() => {
     let timeout: ReturnType<typeof setTimeout>;
-    if (!isLive) {
+    if (!isLive && canJoin) {
       pollStreamStatus();
     }
     let timeToCheck = 1000;
@@ -60,7 +62,7 @@ export default function Livestream() {
           console.error("Error fetching stream status:", error);
         })
         .finally(() => {
-          if (!isLive) {
+          if (!isLive && canJoin) {
             // basic exponential backoff
             timeToCheck *= 1.1;
             timeout = setTimeout(pollStreamStatus, timeToCheck);
@@ -91,7 +93,15 @@ export default function Livestream() {
     }
   }, [isLive, playbackId, videoEl]);
 
-  return !canJoinLiveStream ? (
+  useEffect(() => {
+    const collections = canJoinLiveStream?.joinLivestream?.collections;
+    if (canJoinLiveStream?.joinLivestream != null) {
+      setCollections(collections);
+      setCanJoin(canJoinLiveStream?.joinLivestream?.canJoin);
+    }
+  }, [canJoinLiveStream]);
+  console.log(collections);
+  return canJoin ? (
     <div className="w-full flex flex-col items-center overflow-auto">
       <div className="relative bg-black h-56 lg:h-96 w-full xl:w-3/5 overflow-hidden">
         <div data-vjs-player>
@@ -140,10 +150,26 @@ export default function Livestream() {
       </div>
     </div>
   ) : (
-    <div className={cx("container")}>
-      <Text type="h1">Sorry!</Text>
-      <Text type="h3">
-        You need to be a badgeholder of COLLECTION to join this stream &#128542;
+    <div className={cx("container", styles.sorry)}>
+      <Text type="h1">Sorry! &#128542;</Text>
+
+      <Text className="badger-livestream-sorry2" type="h3">
+        To join this stream, you need to be a badgeholder of{" "}
+        {collections.length > 1 ? (
+          `one of these collections: ${collections.reduce(
+            (memo, collection) => {
+              return memo + collection.name;
+            },
+            ""
+          )}`
+        ) : (
+          <>
+            this collection:{" "}
+            <a href={`/collection/${collections[0]?.id}/mint`}>
+              {collections[0]?.name}
+            </a>
+          </>
+        )}
       </Text>
     </div>
   );
@@ -152,5 +178,14 @@ const styles = {
   videoPlayer: css`
     width: 100%;
     height: 100%;
+  `,
+  sorry: css`
+    & .badger-livestream-sorry2 {
+      margin-top: 32px;
+      line-height: 56px;
+    }
+    & a {
+      text-decoration: underline;
+    }
   `,
 };
