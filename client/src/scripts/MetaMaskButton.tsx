@@ -19,15 +19,36 @@ export default function MetaMaskButton() {
   const [hasProvider, setHasProvider] = useState(false);
 
   useEffect(() => {
-    isMetaMaskInstalled().then((i) => {
+    async function updateAddressAndUserIfAvailable() {
+      // @ts-ignore
+      const accounts = await eth!.request({
+        method: "eth_requestAccounts",
+      });
+      if (accounts[0]) {
+        dispatch(setAddressTo(accounts[0]));
+        const user = await currentUser();
+        //We take the first address in the array of addresses and display it
+        dispatch(setUserIdTo(user?.id));
+      }
+    }
+    isMetaMaskInstalled().then(async (i) => {
+      let ethListener: EventListener;
       if (i) {
         setHasProvider(i);
+        await updateAddressAndUserIfAvailable();
       } else {
         // @ts-ignore
-        window.addEventListener("ethereum#initialized", setHasProvider(true), {
+        ethListener = async () => {
+          setHasProvider(true);
+          await updateAddressAndUserIfAvailable();
+        };
+        window.addEventListener("ethereum#initialized", ethListener, {
           once: true,
         });
       }
+      return () => {
+        window.removeEventListener("ethereum#initialized", ethListener);
+      };
     });
   }, [hasProvider]);
 
