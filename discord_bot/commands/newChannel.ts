@@ -63,7 +63,7 @@ export default async function newChannelForGuild(
     }
   }
 
-  const channel = await guild.channels.create(name, {
+  const channel = await guild.channels.create(`🦡┃${name}`, {
     type: options.channelType,
     permissionOverwrites: permissions,
     parent: options.parentCategoryId,
