@@ -30,8 +30,8 @@ function AllCollections() {
         return (
           <div className={styles.gridItem} key={collection?.id}>
             <a
-              href="#"
-              onClick={() => {
+              onClick={(e) => {
+                e.preventDefault();
                 navigate(`/collection/${collection?.id}/mint`);
               }}
             >
