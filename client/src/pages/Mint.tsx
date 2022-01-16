@@ -41,18 +41,21 @@ function Mint() {
   let [totalMined, setTotalMined] = useState<number>(0);
   let [remainingUnmined, setRemainingUnmined] = useState<string[]>([]);
   useEffect(() => {
-    async function fetchTotals(config: any) {
-      const allRemainingUnmined = await getAllCandidates(config);
-      const totalMined = await getTotalMined(config);
-      setTotalMined(parseInt(totalMined) || 0);
-      setRemainingUnmined(allRemainingUnmined);
-      console.log(allRemainingUnmined);
+    if (status === 3) {
+      async function fetchTotals(config: any) {
+        const allRemainingUnmined = await getAllCandidates(config);
+        const totalMined = await getTotalMined(config);
+        setTotalMined(parseInt(totalMined) || 0);
+        setRemainingUnmined(allRemainingUnmined);
+        console.log(allRemainingUnmined);
+      }
+      if (contractAddress) {
+        console.log(contractAddress);
+        const config = mintConfigContract(contractAddress);
+        fetchTotals(config);
+      }
     }
-    if (contractAddress) {
-      const config = mintConfigContract(contractAddress);
-      fetchTotals(config);
-    }
-  }, [contractAddress]);
+  }, [contractAddress, status]);
   // query for status
   useEffect(() => {
     let timeout: ReturnType<typeof setTimeout>;
@@ -120,6 +123,34 @@ function Mint() {
 
   const readyToMint = status === BadgerCollectionStatus.READY_TO_MINT;
 
+  // calculate the breakdown of item rarities left
+
+  // const {
+  //   commonLeft,
+  //   commonTotal,
+  //   uncommonLeft,
+  //   uncommonTotal,
+  //   rareLeft,
+  //   rareTotal,
+  //   legendaryLeft,
+  //   legendaryTotal,
+  // } = collection?.items?.reduce(
+  //   (memo, item) => {
+  //     if (item?.metadata?.)
+  //     return memo;
+  //   },
+  //   {
+  //     commonLeft: 0,
+  //     commonTotal: 0,
+  //     uncommonLeft: 0,
+  //     uncommonTotal: 0,
+  //     rareLeft: 0,
+  //     rareTotal: 0,
+  //     legendaryLeft: 0,
+  //     legendaryTotal: 0,
+  //   }
+  // );
+
   return (
     <div className={cx(styles.container)}>
       <div className={cx(styles.badgeImage)}>
@@ -162,8 +193,10 @@ function Mint() {
         </div>
         <div className={cx(styles.remainder)}>
           <Text type="subtitle" className="badger-mint-remainder">
-            {remainingUnmined.length} out of{" "}
-            {remainingUnmined.length + totalMined} remaining
+            {remainingUnmined.length > 0 && totalMined > 0
+              ? "`Collection loading"
+              : `${remainingUnmined.length} out of${" "}
+              ${remainingUnmined.length + totalMined} remaining`}
           </Text>
           <div className={cx(styles.breakdown)}>
             <div>
