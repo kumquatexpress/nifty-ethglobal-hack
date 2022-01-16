@@ -127,7 +127,7 @@ export default function Livestream() {
       </div>
     </>
   ) : canJoin ? (
-    <div className="relative bg-black h-56 lg:h-96 w-full xl:w-3/5 overflow-hidden">
+    <div className="">
       <div data-vjs-player>
         <video
           id="video"
@@ -140,7 +140,7 @@ export default function Livestream() {
           playsInline
         />
       </div>
-      <div className="bg-white rounded-xl flex items-center justify-center absolute right-2 top-2 p-1 text-xs">
+      <div className="">
         <div
           className={`animate-pulse ${
             isLive ? "bg-green-700" : "bg-yellow-600"
@@ -176,7 +176,7 @@ export default function Livestream() {
 }
 const styles = {
   videoPlayer: css`
-    width: 100%;
+    width: 720px;
     height: 100%;
   `,
   sorry: css`
