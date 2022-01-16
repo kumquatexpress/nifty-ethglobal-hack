@@ -280,10 +280,13 @@ export default class Item extends Model {
       provider
     );
     this.ipfs_metadata = result;
-    this.metadata.attributes = [
-      ...this.metadata.attributes,
-      { trait_type: "rarity", value: rarity },
-    ];
+    this.metadata = {
+      ...this.metadata,
+      attributes: [
+        ...this.metadata.attributes,
+        { trait_type: "rarity", value: rarity },
+      ],
+    };
     this.status = ItemStatus.UPLOADED_TO_IPFS;
     await this.save();
     return this;
