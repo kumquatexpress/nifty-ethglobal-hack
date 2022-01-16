@@ -6,6 +6,7 @@ import {
   GraphQLString,
 } from "graphql";
 import fetch from "node-fetch";
+import { URL } from "url";
 import { GraphQLJSONObject } from "graphql-type-json";
 import config from "../../config";
 import Web3PublicKey from "../models/Web3PublicKey.model";
@@ -103,6 +104,7 @@ const UserQueries = {
       await Promise.all(
         badges.map(async (t) => {
           try {
+            new URL(t.token_uri);
             const resp = await fetch(t.token_uri);
             const data = await resp.json();
             ret.push({
