@@ -243,7 +243,7 @@ function Mint() {
         </div>
         <div className={cx(styles.remainder)}>
           <Text type="subtitle" className="badger-mint-remainder">
-            {remainingUnmined.length > 0 && totalMined > 0
+            {remainingUnmined.length === 0 && totalMined === 0
               ? "`Collection loading"
               : `${remainingUnmined.length} out of${" "}
               ${remainingUnmined.length + totalMined} remaining`}
