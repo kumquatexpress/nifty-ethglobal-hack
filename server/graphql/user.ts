@@ -102,13 +102,16 @@ const UserQueries = {
       const ret = [];
       await Promise.all(
         badges.map(async (t) => {
-          console.log("t", t);
-          const resp = await fetch(t.token_uri);
-          const data = await resp.json();
-          ret.push({
-            ...t,
-            image_uri: getGatewayURL(data.image),
-          });
+          try {
+            const resp = await fetch(t.token_uri);
+            const data = await resp.json();
+            ret.push({
+              ...t,
+              image_uri: getGatewayURL(data.image),
+            });
+          } catch (e) {
+            return;
+          }
           return;
         })
       );
