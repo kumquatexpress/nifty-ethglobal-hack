@@ -130,8 +130,8 @@ apiRouter.post("/livepeerStream", async (ctx, next) => {
     logger.error("Livepeer error", [e]);
   }
 });
-apiRouter.get("/livepeerStream/:streamId", async (ctx, next) => {
-  const { streamId } = ctx.params;
+apiRouter.post("/livepeerStream/fetch", async (ctx, next) => {
+  const { streamId } = ctx.request.body;
   const streamResponse = await fetch(
     `https://livepeer.com/api/stream/${streamId}`,
     {

@@ -44,7 +44,7 @@ export default function Livestream() {
     let timeToCheck = 1000;
     function pollStreamStatus() {
       APIClient()
-        .get("/livepeerStream/" + streamId)
+        .post("/livepeerStream/fetch", { streamId })
         .then((resp) => {
           if (playbackId == null) {
             setPlaybackId(resp.data.playbackId);
