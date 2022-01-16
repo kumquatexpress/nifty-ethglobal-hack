@@ -1,6 +1,8 @@
 // Shared color values between css and js
 $badger-blue: rgb(28, 44, 66);
 $discord: rgb(88, 101, 242);
+$livepeer: #00eb88;
+$twitch: #9146ff;
 
 $custom-colors: (
   "discord": (
@@ -10,6 +12,14 @@ $custom-colors: (
   "badger": (
     $badger-blue,
     #ffffff,
+  ),
+  "twitch": (
+    $twitch,
+    #ffffff,
+  ),
+  "livepeer": (
+    $livepeer,
+    $badger-blue,
   ),
 );
 
