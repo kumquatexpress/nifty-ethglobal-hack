@@ -3,10 +3,12 @@ import { RootState, AppThunk } from "scripts/redux/store";
 
 export interface EthState {
   address: string;
+  user_id: string;
 }
 
 const initialState: EthState = {
   address: "",
+  user_id: "",
 };
 
 export const ethSlice = createSlice({
@@ -18,11 +20,16 @@ export const ethSlice = createSlice({
     setAddressTo: (state, action: PayloadAction<string>) => {
       state.address = action.payload;
     },
+    // Use the PayloadAction type to declare the contents of `action.payload`
+    setUserIdTo: (state, action: PayloadAction<string>) => {
+      state.user_id = action.payload;
+    },
   },
 });
 
 export const selectAddress = (state: RootState) => state.eth.address;
+export const selectUserId = (state: RootState) => state.eth.user_id;
 
-export const { setAddressTo } = ethSlice.actions;
+export const { setAddressTo, setUserIdTo } = ethSlice.actions;
 
 export default ethSlice.reducer;

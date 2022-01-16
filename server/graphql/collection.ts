@@ -69,6 +69,10 @@ const CollectionType = new GraphQLObjectType({
       type: GraphQLJSON,
       description: "The badge metadata of this collection",
     },
+    user_id: {
+      type: GraphQLJSON,
+      description: "The id of the owner of this collection",
+    },
   },
 });
 
@@ -97,6 +101,30 @@ const CollectionQueries = {
     },
     resolve: async (parent, args, ctx, info) => {
       return await Collection.findAll({
+        limit: args.limit,
+        order: args.order,
+      });
+    },
+  },
+  collections_by_user: {
+    type: new GraphQLList(CollectionType),
+    args: {
+      id: {
+        description: "uuid of the collection",
+        type: new GraphQLNonNull(GraphQLString),
+      },
+      limit: {
+        type: GraphQLInt,
+      },
+      order: {
+        type: GraphQLString,
+      },
+    },
+    resolve: async (parent, args, ctx, info) => {
+      return await Collection.findAll({
+        where: {
+          user_id: args.id,
+        },
         limit: args.limit,
         order: args.order,
       });
