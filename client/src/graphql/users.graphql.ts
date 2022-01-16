@@ -11,3 +11,9 @@ export const HAS_COLLECTION_TOKEN = gql`
     hasCollectionToken(collectionId: $id)
   }
 `;
+
+export const JOIN_LIVESTREAM = gql`
+  query JoinLivestream($streamId: String!) {
+    joinLivestream(streamId: $streamId)
+  }
+`;
