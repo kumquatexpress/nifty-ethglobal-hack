@@ -237,21 +237,21 @@ export default class Collection extends Model {
     existingItems.forEach((i) => (existingNums[i.num] = true));
 
     const itemPromises = await Promise.allSettled(
-      itemMetadatas.map(async (itemMetadata, idx) => {
+      itemMetadatas.map((itemMetadata, idx) => {
         const num = idx + 1;
         if (existingNums[num]) {
           return;
         }
-        await Item.create({
+        return Item.create({
           collection_id: this.id,
           s3_url: this.template_s3_url,
           metadata: itemMetadata,
           status: ItemStatus.NOT_IN_IPFS,
           num: num,
         });
-        return;
       })
     );
+    console.log("itempromises", itemPromises.length);
     redis.pubsub.publish(UPLOAD_ITEMS_PUBSUB_KEY(this.id), {
       statusMessage: "Created all items, now uploading...",
     });
