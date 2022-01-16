@@ -34,7 +34,7 @@ function Mint() {
   useEffect(() => {
     let timeout: ReturnType<typeof setTimeout>;
     if (id != null) {
-      timeout = setTimeout(pollCollectionStatus, 1000);
+      pollCollectionStatus();
     }
     let timeToCheck = 1000;
     function pollCollectionStatus() {
