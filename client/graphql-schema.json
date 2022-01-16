@@ -502,18 +502,6 @@
             "deprecationReason": null
           },
           {
-            "name": "user_id",
-            "description": "The id of the owner of this collection",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "JSON",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "owner",
             "description": "The owner of this collection",
             "args": [],

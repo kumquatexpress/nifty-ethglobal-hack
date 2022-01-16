@@ -6,6 +6,7 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import Create from "./pages/Create";
 import Home from "./pages/Home";
+import All from "./pages/All";
 import Test from "./pages/Test";
 import Mint from "./pages/Mint";
 import Livestream from "./pages/Livestream";
@@ -27,7 +28,8 @@ function App() {
           </Header>
           <div className="container badger-page">
             <Routes>
-              <Route path="/" element={<Home />} />
+              <Route path="/" element={<All />} />
+              <Route path="/me" element={<Home />} />
               <Route path="/test" element={<Test />} />
               <Route path="collection/create" element={<Create />} />
               <Route path="collection/:id/mint" element={<Mint />} />

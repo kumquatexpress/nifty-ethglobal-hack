@@ -67,7 +67,39 @@ export const COLLECTIONS_BY_USER = gql`
   query CollectionsByUser($id: String!) {
     collections_by_user(id: $id) {
       name
-      user_id
+      owner {
+        profile {
+          fullname
+        }
+      }
+      id
+      metadata
+      status
+      machine_address
+      items {
+        id
+        ipfs_metadata
+        metadata
+        s3_url
+        status
+      }
+      mint_start_time
+      price_gwei
+      template_s3_url
+      badge_metadata
+    }
+  }
+`;
+
+export const COLLECTIONS = gql`
+  query Collections {
+    collections {
+      name
+      owner {
+        profile {
+          fullname
+        }
+      }
       id
       metadata
       status

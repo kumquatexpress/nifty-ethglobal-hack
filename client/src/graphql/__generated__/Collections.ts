@@ -4,10 +4,10 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: CollectionsByUser
+// GraphQL query operation: Collections
 // ====================================================
 
-export interface CollectionsByUser_collections_by_user_owner_profile {
+export interface Collections_collections_owner_profile {
   __typename: "Profile";
   /**
    * The profile fullname
@@ -15,15 +15,15 @@ export interface CollectionsByUser_collections_by_user_owner_profile {
   fullname: string | null;
 }
 
-export interface CollectionsByUser_collections_by_user_owner {
+export interface Collections_collections_owner {
   __typename: "User";
   /**
    * The user's profile
    */
-  profile: CollectionsByUser_collections_by_user_owner_profile | null;
+  profile: Collections_collections_owner_profile | null;
 }
 
-export interface CollectionsByUser_collections_by_user_items {
+export interface Collections_collections_items {
   __typename: "Item";
   /**
    * The uuid of this item
@@ -47,7 +47,7 @@ export interface CollectionsByUser_collections_by_user_items {
   status: number;
 }
 
-export interface CollectionsByUser_collections_by_user {
+export interface Collections_collections {
   __typename: "Collection";
   /**
    * The name of this collection
@@ -56,7 +56,7 @@ export interface CollectionsByUser_collections_by_user {
   /**
    * The owner of this collection
    */
-  owner: CollectionsByUser_collections_by_user_owner | null;
+  owner: Collections_collections_owner | null;
   /**
    * The uuid of this collection
    */
@@ -73,7 +73,7 @@ export interface CollectionsByUser_collections_by_user {
    * The machine address on the blockchain
    */
   machine_address: string | null;
-  items: (CollectionsByUser_collections_by_user_items | null)[] | null;
+  items: (Collections_collections_items | null)[] | null;
   mint_start_time: any | null;
   price_gwei: number | null;
   /**
@@ -86,10 +86,6 @@ export interface CollectionsByUser_collections_by_user {
   badge_metadata: any | null;
 }
 
-export interface CollectionsByUser {
-  collections_by_user: (CollectionsByUser_collections_by_user | null)[] | null;
-}
-
-export interface CollectionsByUserVariables {
-  id: string;
+export interface Collections {
+  collections: (Collections_collections | null)[] | null;
 }

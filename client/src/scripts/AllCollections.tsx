@@ -2,38 +2,22 @@ import React, { useEffect, useState } from "react";
 import { cx, css } from "@emotion/css/macro";
 import "@styles/App.scss";
 import { useQuery } from "@apollo/client";
-import { COLLECTIONS_BY_USER } from "@graphql/collections.graphql";
-import { BORDER_LEGENDARY_SVG_URL } from "@utils/constants";
-import { currentUser } from "@utils/users_api";
+import { COLLECTIONS } from "@graphql/collections.graphql";
+
 import CanvasImage from "@scripts/CanvasImage";
 import Text from "@lib/Text";
 import { BADGER_BLUE_RGBA } from "@utils/constants";
 import { useNavigate } from "react-router-dom";
+import { Collections } from "@graphql/__generated__/Collections";
 
-import {
-  CollectionsByUser as CollectionsByUserType,
-  CollectionsByUserVariables,
-} from "@gqlt/CollectionsByUser";
-
-type Props = {
-  userId: string;
-};
-
-function CollectionsByUser({ userId }: Props) {
+function AllCollections() {
   const navigate = useNavigate();
-  const { data, loading, error } = useQuery<
-    CollectionsByUserType,
-    CollectionsByUserVariables
-  >(COLLECTIONS_BY_USER, {
-    variables: {
-      id: userId,
-    },
-  });
+  const { data, loading, error } = useQuery<Collections>(COLLECTIONS);
   console.log(data);
 
   return (
     <div className={cx(styles.grid)}>
-      {data?.collections_by_user?.map((collection) => {
+      {data?.collections?.map((collection) => {
         console.log(collection);
         const {
           fontStrokeColor: fontStroke,
@@ -80,4 +64,4 @@ const styles = {
   `,
 };
 
-export default CollectionsByUser;
+export default AllCollections;
