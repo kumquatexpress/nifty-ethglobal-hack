@@ -6,7 +6,7 @@ import Bottleneck from "bottleneck";
 
 const limiter = new Bottleneck({
   maxConcurrent: 2,
-  minTime: 100,
+  minTime: 200,
 });
 
 const pinata = pinataSDK(config.pinata.KEY, config.pinata.SECRET);

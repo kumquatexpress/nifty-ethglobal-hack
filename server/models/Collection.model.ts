@@ -262,6 +262,7 @@ export default class Collection extends Model {
     const toUpload = items
       .concat(existingItems)
       .filter((item) => item && item.status === ItemStatus.NOT_IN_IPFS);
+    console.log("about to upload", toUpload.length);
     return await Item.addForCollectionWithRarity("pinata", toUpload, this);
   }
 
