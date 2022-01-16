@@ -13,11 +13,18 @@ function All() {
   return (
     <div>
       <AllCollections />
-      <Button onClick={onClickCreate}>Create new Collection</Button>
+      <Button className={cx(styles.create)} onClick={onClickCreate}>
+        Create your next Collection
+      </Button>
     </div>
   );
 }
 
-const styles = {};
+const styles = {
+  create: css`
+    font-weight: 500;
+    font-size: 18px;
+  `,
+};
 
 export default All;
