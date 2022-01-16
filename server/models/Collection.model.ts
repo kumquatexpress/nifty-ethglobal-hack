@@ -323,7 +323,7 @@ export default class Collection extends Model {
     // Set collection status
     this.machine_address = machineResp.machineAddress;
     this.status = CollectionStatus.ON_BLOCKCHAIN_ITEMS_NOT_CREATED;
-    this.save();
+    await this.save();
     return;
   }
 
