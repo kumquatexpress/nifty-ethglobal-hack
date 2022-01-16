@@ -20,7 +20,11 @@ function Home() {
       {userId ? (
         <>
           <CollectionsByUser userId={userId} />
-          <Button className={cx(styles.create)} onClick={onClickCreate}>
+          <Button
+            color="badger"
+            className={cx(styles.create)}
+            onClick={onClickCreate}
+          >
             Create your next Collection
           </Button>
         </>

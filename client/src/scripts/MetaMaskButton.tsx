@@ -54,7 +54,8 @@ export default function MetaMaskButton() {
 
   return (
     <Button
-      className={cx(styles.button)}
+      color="badger"
+      className={cx(address !== "" && styles.button)}
       onClick={async () => {
         if (hasProvider) {
           try {
@@ -94,7 +95,7 @@ export default function MetaMaskButton() {
 const styles = {
   button: css`
     & > * {
-      max-width: 150px;
+      max-width: 100px;
       text-overflow: ellipsis;
       overflow: hidden;
       white-space: nowrap;

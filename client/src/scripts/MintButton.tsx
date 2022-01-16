@@ -36,7 +36,12 @@ export default function MintButton({
     config = mintConfigContract(contractAddress);
   }
   return (
-    <Button {...props} onClick={onClickMint} disabled={!readyToMint}>
+    <Button
+      color="badger"
+      {...props}
+      onClick={onClickMint}
+      disabled={!readyToMint}
+    >
       {readyToMint ? "Mint" : "Not yet ready to mint!"}
     </Button>
   );

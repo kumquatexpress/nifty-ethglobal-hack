@@ -1,5 +1,19 @@
 // Shared color values between css and js
 $badger-blue: rgb(28, 44, 66);
+$discord: rgb(88, 101, 242);
+
+$custom-colors: (
+  "discord": (
+    $discord,
+    #ffffff,
+  ),
+  "badger": (
+    $badger-blue,
+    #ffffff,
+  ),
+);
+
 :export {
   badgerBlue: $badger-blue;
+  discord: $discord;
 }

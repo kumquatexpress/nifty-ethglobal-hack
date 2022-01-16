@@ -13,6 +13,7 @@ import Livestream from "./pages/Livestream";
 import Stash from "./pages/Stash";
 import { DiscordServerCallback, DiscordUserCallback } from "./pages/Discord";
 import Header from "@scripts/Header";
+import DiscordButton from "@scripts/DiscordButton";
 
 import { ApolloProvider } from "@apollo/client";
 import GraphQLClient from "@graphql/GraphQLClient";
@@ -24,6 +25,7 @@ function App() {
       <DndProvider backend={HTML5Backend}>
         <div className={cx("App", styles.container)}>
           <Header>
+            <DiscordButton />
             <MetaMaskButton />
           </Header>
           <div className="container badger-page">

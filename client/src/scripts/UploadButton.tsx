@@ -36,6 +36,7 @@ export default function UploadButton({ onSuccess, ...props }: Props) {
 
   return (
     <Button
+      color="badger"
       {...props}
       onClick={async () => {
         if (collection.badgeData.imgFile != null && collection.cost > 0) {

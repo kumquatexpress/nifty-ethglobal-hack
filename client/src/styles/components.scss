@@ -59,3 +59,23 @@ input[type="range"] {
     background-color: #9a905d;
   }
 }
+
+.badgerIcon {
+  & > .badgerStripes {
+    fill: #1c2c42;
+  }
+  & > .badgerRightEye,
+  & > .badgerLeftEye {
+    fill: #1c2c42;
+  }
+
+  &.inverted {
+    & > .badgerStripes {
+      fill: #fff;
+    }
+    & > .badgerRightEye,
+    & > .badgerLeftEye {
+      fill: #fff;
+    }
+  }
+}

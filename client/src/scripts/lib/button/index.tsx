@@ -2,6 +2,7 @@ import React, { PropsWithChildren } from "react";
 import { cx, css, ClassNamesArg } from "@emotion/css/macro";
 
 type ButtonColor =
+  | "badger"
   | "discord"
   | "twitter"
   | "white"
