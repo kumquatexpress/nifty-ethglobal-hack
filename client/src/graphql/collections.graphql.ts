@@ -60,6 +60,7 @@ export const COLLECTION = gql`
           fullname
         }
       }
+      livestreams
     }
   }
 `;

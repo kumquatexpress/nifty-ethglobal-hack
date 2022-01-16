@@ -88,6 +88,10 @@ export interface Collection_collection {
    * The owner of this collection
    */
   owner: Collection_collection_owner | null;
+  /**
+   * Any livestreams associated with this collection
+   */
+  livestreams: string[] | null;
 }
 
 export interface Collection {

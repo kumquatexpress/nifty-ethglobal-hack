@@ -79,7 +79,7 @@ const CollectionType = new GraphQLObjectType({
       },
     },
     livestreams: {
-      type: new GraphQLList(GraphQLString),
+      type: new GraphQLList(new GraphQLNonNull(GraphQLString)),
       description: "Any livestreams associated with this collection",
       resolve: async (parent, args, ctx, info) => {
         const collection_id = await parent.id;
