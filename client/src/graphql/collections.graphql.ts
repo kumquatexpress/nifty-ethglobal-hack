@@ -55,6 +55,7 @@ export const COLLECTION = gql`
       template_s3_url
       badge_metadata
       owner {
+        id
         profile {
           fullname
         }

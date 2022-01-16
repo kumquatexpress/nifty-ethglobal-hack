@@ -42,6 +42,10 @@ export interface Collection_collection_owner_profile {
 export interface Collection_collection_owner {
   __typename: "User";
   /**
+   * The uuid of this user
+   */
+  id: string;
+  /**
    * The user's profile
    */
   profile: Collection_collection_owner_profile | null;
