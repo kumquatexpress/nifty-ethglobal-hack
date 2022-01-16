@@ -32,10 +32,13 @@ export default async function newChannelForGuild(
     : [Permissions.FLAGS.VIEW_CHANNEL];
   const permissions: any = [
     {
+      id: guild.me,
+      allow: [Permissions.FLAGS.VIEW_CHANNEL, Permissions.FLAGS.SEND_MESSAGES],
+    },
+    {
       id: guild.id,
       deny: perms,
     },
-    { id: guild.me, allow: [Permissions.FLAGS.SEND_MESSAGES] },
   ];
   // If a collection or event we add perms for messages or voice to a given role
   if (options.type !== "INITIAL") {

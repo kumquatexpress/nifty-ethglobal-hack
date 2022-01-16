@@ -98,12 +98,21 @@ const CollectionQueries = {
       order: {
         type: GraphQLString,
       },
+      onlyMine: {
+        type: GraphQLBoolean,
+      },
     },
     resolve: async (parent, args, ctx, info) => {
-      return await Collection.findAll({
+      const params = {
         limit: args.limit,
         order: args.order,
-      });
+      };
+      if (args.onlyMine) {
+        params["where"] = {
+          user_id: ctx.state.user.id,
+        };
+      }
+      return await Collection.findAll(params);
     },
   },
   collections_by_user: {

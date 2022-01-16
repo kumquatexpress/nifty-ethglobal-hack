@@ -6,6 +6,7 @@ import config from "../../config";
 import logger from "../utils/logger";
 import Collection from "../models/Collection.model";
 import LivepeerCollections from "../models/LivepeerCollections.model";
+import redis from "../utils/redis";
 
 const apiRouter = new Router({
   prefix: "/api",
@@ -107,7 +108,19 @@ apiRouter.post("/livepeerStream", async (ctx, next) => {
           return LivepeerCollections.create({
             livepeer_stream_id: body.id,
             collection_id: c.id,
+            user_id: ctx.state.user.id,
           });
+        })
+      );
+      await redis.redisClient.rpush(
+        redis.WORKER_LISTEN_QUEUE,
+        JSON.stringify({
+          type: redis.WORKER_MSG_QUEUES.hypeLivestreamToDiscord.name,
+          request: {
+            collectionIds: collections.map((c) => c.id),
+            userId: ctx.state.user.id,
+            livestreamId: body.id,
+          },
         })
       );
       ctx.status = 200;

@@ -9,7 +9,8 @@ import createItemsFromTemplateTask from "./tasks/createItemsFromTemplate";
 import addItemsToMachineTask from "./tasks/addItemsToMachine";
 import syncCollectionToDiscordTask from "./tasks/syncCollectionToDiscord";
 import initializeDiscordServerTask from "./tasks/initializeDiscordServer";
-import CheckAndJoinDiscordChannelsTask from "./tasks/checkAndJoinDiscordChannels";
+import checkAndJoinDiscordChannelsTask from "./tasks/checkAndJoinDiscordChannels";
+import hypeLivestreamToDiscordTask from "./tasks/hypeLivestreamToDiscord";
 
 Sentry.init({
   dsn: "https://5504983dab14488ea98faa202ce94ec6@o1099620.ingest.sentry.io/6124364",
@@ -24,7 +25,8 @@ const tasks = {
   [queues.addItemsToMachine.name]: addItemsToMachineTask,
   [queues.syncCollectionToDiscord.name]: syncCollectionToDiscordTask,
   [queues.initializeDiscordServer.name]: initializeDiscordServerTask,
-  [queues.checkAndJoinDiscordChannels.name]: CheckAndJoinDiscordChannelsTask,
+  [queues.checkAndJoinDiscordChannels.name]: checkAndJoinDiscordChannelsTask,
+  [queues.hypeLivestreamToDiscord.name]: hypeLivestreamToDiscordTask,
 };
 
 async function main() {

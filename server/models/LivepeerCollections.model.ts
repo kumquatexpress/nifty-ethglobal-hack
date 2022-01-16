@@ -25,6 +25,9 @@ export default class LivepeerCollections extends Model {
   livepeer_stream_id: string;
   @Column(DataType.UUID)
   collection_id: string;
+  @Column(DataType.UUID)
+  user_id: string;
+
   @CreatedAt
   created_at!: Date;
   @UpdatedAt

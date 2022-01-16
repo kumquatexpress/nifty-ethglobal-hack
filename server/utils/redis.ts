@@ -29,6 +29,10 @@ const WORKER_MSG_QUEUES = {
     name: "syncEventToDiscord",
     receive: "recv_sync_event_to_discord",
   },
+  hypeLivestreamToDiscord: {
+    name: "hypeLivestreamToDiscord",
+    receive: "recv_hype_livestream_to_discord",
+  },
 };
 
 const redisOptions = config.redis.URL || {
