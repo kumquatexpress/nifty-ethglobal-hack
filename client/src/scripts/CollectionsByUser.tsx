@@ -25,6 +25,7 @@ function CollectionsByUser({ userId }: Props) {
     CollectionsByUserType,
     CollectionsByUserVariables
   >(COLLECTIONS_BY_USER, {
+    fetchPolicy: "network-only",
     variables: {
       id: userId,
     },

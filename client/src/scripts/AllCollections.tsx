@@ -12,7 +12,9 @@ import { Collections } from "@graphql/__generated__/Collections";
 
 function AllCollections() {
   const navigate = useNavigate();
-  const { data, loading, error } = useQuery<Collections>(COLLECTIONS);
+  const { data, loading, error } = useQuery<Collections>(COLLECTIONS, {
+    fetchPolicy: "network-only",
+  });
   console.log(data);
 
   return (
