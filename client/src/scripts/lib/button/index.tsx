@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from "react";
+import React, { EventHandler, PropsWithChildren } from "react";
 import { cx, css, ClassNamesArg } from "@emotion/css/macro";
 
 type ButtonColor =
@@ -50,7 +50,7 @@ export type ButtonProps = {
   className?: ClassNamesArg;
   href?: string;
   target?: string;
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent) => void;
 };
 
 function Button({

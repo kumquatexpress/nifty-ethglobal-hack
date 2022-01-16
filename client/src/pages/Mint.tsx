@@ -247,6 +247,14 @@ function Mint() {
           customBorderSVGUrl={BORDER_LEGENDARY_SVG_URL}
         />
         <div className={styles.buttonContainer}>
+          {
+            <MintButton
+              readyToMint={collectionLoaded}
+              contractAddress={contractAddress}
+              size="large"
+              className={cx(styles.mintButton)}
+            />
+          }
           {((canJoinLiveStream && currentOngoingStreams.length > 0) ||
             isCreator) && (
             <>
@@ -271,14 +279,6 @@ function Mint() {
                 className={cx(styles.streamButton)}
               />
             </>
-          )}
-          {!isCreator && (
-            <MintButton
-              readyToMint={collectionLoaded}
-              contractAddress={contractAddress}
-              size="large"
-              className={cx(styles.mintButton)}
-            />
           )}
         </div>
       </div>
@@ -421,6 +421,7 @@ const styles = {
   `,
   mintButton: css`
     width: 100%;
+    margin-bottom: 12px;
   `,
   badgeMetadata: css`
     display: flex;
@@ -453,6 +454,9 @@ const styles = {
   breakdown: css`
     display: flex;
     justify-content: space-between;
+    & > div:not(:last-child) {
+      margin-right: 24px;
+    }
   `,
   buttonContainer: css`
     width: 100%;

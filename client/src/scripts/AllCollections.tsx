@@ -15,7 +15,6 @@ function AllCollections() {
   const { data, loading, error } = useQuery<Collections>(COLLECTIONS, {
     fetchPolicy: "network-only",
   });
-  console.log(data);
 
   return (
     <div className={cx(styles.grid)}>
@@ -30,6 +29,7 @@ function AllCollections() {
         return (
           <div className={styles.gridItem} key={collection?.id}>
             <a
+              href={`/collection/${collection?.id}/mint`}
               onClick={(e) => {
                 e.preventDefault();
                 navigate(`/collection/${collection?.id}/mint`);

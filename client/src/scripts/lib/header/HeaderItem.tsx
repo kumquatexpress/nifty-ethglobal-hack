@@ -4,22 +4,11 @@ import { cx, css, ClassNamesArg } from "@emotion/css/macro";
 type Props = PropsWithChildren<{
   className?: ClassNamesArg;
   href?: string;
-  onClick: () => void;
+  onClick?: () => void;
 }>;
 
 function HeaderItem({ children, className, onClick, href }: Props) {
-  return (
-    <a
-      href={href || "#"}
-      className={cx(styles.view, className)}
-      onClick={(e) => {
-        e.preventDefault();
-        onClick();
-      }}
-    >
-      {children}
-    </a>
-  );
+  return <div className={cx(styles.view, className)}>{children}</div>;
 }
 
 const styles = {

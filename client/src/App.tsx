@@ -18,6 +18,7 @@ import DiscordButton from "@scripts/DiscordButton";
 import { ApolloProvider } from "@apollo/client";
 import GraphQLClient from "@graphql/GraphQLClient";
 import { Routes, Route, Link } from "react-router-dom";
+import MeButton from "@scripts/MeButton";
 
 function App() {
   return (
