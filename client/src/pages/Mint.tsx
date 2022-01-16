@@ -124,7 +124,7 @@ function Mint() {
             <Text>Mint Price: </Text>
             <Text type="h3">
               {collection?.price_gwei ? gweiToMatic(collection?.price_gwei) : 0}{" "}
-              MATIC
+              $MATIC
             </Text>
           </div>
           <div className={cx(styles.owner)}>

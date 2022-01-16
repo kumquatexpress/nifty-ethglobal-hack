@@ -3,6 +3,8 @@ import newChannelForGuild from "../../discord_bot/commands/newChannel";
 import sendInitialMessage from "../../discord_bot/commands/sendInitialMessage";
 import newCategoryForGuild from "../../discord_bot/commands/newCategory";
 import logger from "../../server/utils/logger";
+import Collection from "../../server/models/Collection.model";
+import redis from "../../server/utils/redis";
 
 export interface InitializeDiscordServerRequest {
   guildId: string;
@@ -51,10 +53,28 @@ export default async function InitializeDiscordServerTask(
     );
     guild.collections_category_id = collectionsCategory.id;
   }
-
   guild.save();
   try {
     await sendInitialMessage(guild.guild_id, guild.main_channel_id);
+    const collections = await Collection.findAll({
+      where: { user_id: data.userId },
+    });
+    console.log("collections", collections);
+    await Promise.all(
+      collections.map((c) => {
+        if (!c.discord_guild_id) {
+          redis.redisClient.rpush(
+            redis.WORKER_LISTEN_QUEUE,
+            JSON.stringify({
+              type: redis.WORKER_MSG_QUEUES.syncCollectionToDiscord.name,
+              request: {
+                collectionId: c.id,
+              },
+            })
+          );
+        }
+      })
+    );
     return {
       guildId: guild.guild_id,
       channelId: guild.main_channel_id,

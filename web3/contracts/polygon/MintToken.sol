@@ -87,6 +87,15 @@ contract MintToken is ERC721URIStorage {
         return candidates;
     }
 
+    function getBalance() public view returns (uint256) {
+        for (uint256 i = 0; i < creators.length; i += 1) {
+            if (creators[i] == msg.sender) {
+                return amounts[i];
+            }
+        }
+        return 0;
+    }
+
     function mintRandom() public payable {
         require(msg.value >= priceWei, "Insufficient price");
 
