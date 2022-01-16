@@ -102,6 +102,7 @@ const UserQueries = {
       const ret = [];
       await Promise.all(
         badges.map(async (t) => {
+          console.log("t", t);
           const resp = await fetch(t.token_uri);
           const data = await resp.json();
           ret.push({
