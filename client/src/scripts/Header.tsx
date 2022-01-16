@@ -18,6 +18,7 @@ function BaseHeader({ children, className }: Props) {
   return (
     <StickyHeader ref={headerRef} className={className}>
       <HeaderItem
+        href="/"
         onClick={() => {
           navigate("/");
         }}

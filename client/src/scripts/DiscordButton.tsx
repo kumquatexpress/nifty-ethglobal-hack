@@ -4,11 +4,8 @@ import Button from "@lib/button";
 import BadgerIcon from "@lib/icons/BadgerIcon";
 
 import { useAppSelector, useAppDispatch } from "@scripts/redux/hooks";
-import {
-  selectAddress,
-  setAddressTo,
-  setUserIdTo,
-} from "@scripts/redux/slices/ethSlice";
+import { selectAddress, setAddressTo } from "@scripts/redux/slices/ethSlice";
+import { setUserIdTo } from "@scripts/redux/slices/userSlice";
 import web3 from "../web3";
 import { isMetaMaskInstalled } from "@scripts/utils";
 import eth from "@scripts/utils/eth";

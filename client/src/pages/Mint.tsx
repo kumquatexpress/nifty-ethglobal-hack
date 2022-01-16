@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { cx, css } from "@emotion/css/macro";
 import "@styles/App.scss";
-import { useQuery } from "@apollo/client";
+import { useQuery, useLazyQuery } from "@apollo/client";
 import { useParams } from "react-router-dom";
 import MintButton from "@scripts/MintButton";
 import CanvasImage from "@scripts/CanvasImage";
 import Text from "@lib/Text";
 import { APIClient } from "../utils/api_client";
+import { selectUserId } from "@scripts/redux/slices/userSlice";
+import { useAppSelector } from "@scripts/redux/hooks";
 
 import { COLLECTION } from "@graphql/collections.graphql";
+import { HAS_COLLECTION_TOKEN } from "@graphql/users.graphql";
 import { BORDER_LEGENDARY_SVG_URL } from "@utils/constants";
 
 import mintConfigContract, {
@@ -22,12 +25,37 @@ import {
   Collection as CollectionType,
   CollectionVariables,
 } from "@gqlt/Collection";
+import {
+  HasCollectionToken,
+  HasCollectionTokenVariables,
+} from "@gqlt/HasCollectionToken";
 import { gweiToMatic } from "@utils/mint";
 import { BadgerCollectionStatus } from "@scripts/types";
+import LivestreamButton from "@scripts/LivestreamButton";
 
 function Mint() {
   let { id } = useParams<{ id: string }>();
+  const [shouldShowLivestreamButton, setShouldShowLivestreamButton] =
+    useState<boolean>(false);
+  const [isCreator, setIsCreator] = useState<boolean>(false);
+  const userId = useAppSelector(selectUserId);
   const [status, setStatus] = useState<BadgerCollectionStatus>(0);
+  const [
+    loadHasCollectionToken,
+    {
+      data: dataForHasToken,
+      called,
+      loading: loadingForHasToken,
+      error: errorForHasToken,
+    },
+  ] = useLazyQuery<HasCollectionToken, HasCollectionTokenVariables>(
+    HAS_COLLECTION_TOKEN,
+    {
+      variables: {
+        id: id!,
+      },
+    }
+  );
   const { data, loading, error } = useQuery<
     CollectionType,
     CollectionVariables
@@ -47,10 +75,8 @@ function Mint() {
         const totalMined = await getTotalMined(config);
         setTotalMined(parseInt(totalMined) || 0);
         setRemainingUnmined(allRemainingUnmined);
-        console.log(allRemainingUnmined);
       }
       if (contractAddress) {
-        console.log(contractAddress);
         const config = mintConfigContract(contractAddress);
         fetchTotals(config);
       }
@@ -67,7 +93,6 @@ function Mint() {
       APIClient()
         .get(`/collection/${id}/status`)
         .then((resp) => {
-          console.log("success", resp.data.status);
           setStatus(resp.data.status);
         })
         .catch((error) => {
@@ -85,8 +110,10 @@ function Mint() {
       clearTimeout(timeout);
     };
   }, [id, setStatus, status]);
+  useEffect(() => {
+    setIsCreator(collection?.owner?.id === userId);
+  }, [collection, userId]);
 
-  console.log("collection", collection);
   if (collection == null && !loading) {
     return <div>No collection found with id: {id}</div>;
   }
@@ -121,7 +148,7 @@ function Mint() {
     },
   } = collection?.badge_metadata || {};
 
-  const readyToMint = status === BadgerCollectionStatus.READY_TO_MINT;
+  const collectionLoaded = status === BadgerCollectionStatus.READY_TO_MINT;
 
   // calculate the breakdown of item rarities left
 
@@ -190,17 +217,16 @@ function Mint() {
       legendaryTotal: 0,
     }
   );
-  console.log({
-    commonLeft,
-    commonTotal,
-    uncommonLeft,
-    uncommonTotal,
-    rareLeft,
-    rareTotal,
-    legendaryLeft,
-    legendaryTotal,
-  });
 
+  // can only check should show after collection loaded
+  if (!isCreator && collection?.id != null && !called) {
+    loadHasCollectionToken().then(
+      ({ data: { hasCollectionToken: tokensOwned } }: any) => {
+        setShouldShowLivestreamButton(tokensOwned.length > 0);
+      }
+    );
+  }
+  console.log(collection);
   return (
     <div className={cx(styles.container)}>
       <div className={cx(styles.badgeImage)}>
@@ -214,12 +240,22 @@ function Mint() {
           imgNumber={1}
           customBorderSVGUrl={BORDER_LEGENDARY_SVG_URL}
         />
-        <MintButton
-          readyToMint={readyToMint}
-          contractAddress={contractAddress}
-          size="large"
-          className={cx(styles.mintButton)}
-        />
+        {(shouldShowLivestreamButton || isCreator) && (
+          <LivestreamButton
+            readyToLivestream={collectionLoaded}
+            creator={isCreator}
+            size="large"
+            className={cx(styles.mintButton)}
+          />
+        )}
+        {!isCreator && (
+          <MintButton
+            readyToMint={collectionLoaded}
+            contractAddress={contractAddress}
+            size="large"
+            className={cx(styles.mintButton)}
+          />
+        )}
       </div>
 
       <div className={cx(styles.badgeMetadata)}>
@@ -244,7 +280,7 @@ function Mint() {
         <div className={cx(styles.remainder)}>
           <Text type="subtitle" className="badger-mint-remainder">
             {remainingUnmined.length === 0 && totalMined === 0
-              ? "`Collection loading"
+              ? "Collection loading..."
               : `${remainingUnmined.length} out of${" "}
               ${remainingUnmined.length + totalMined} remaining`}
           </Text>

@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { cx, css } from "@emotion/css/macro";
 import "@styles/App.scss";
-import { useAppSelector } from "@scripts/redux/hooks";
 import CreateCollection from "@scripts/CreateCollection";
 import PreviewCollection from "@scripts/PreviewCollection";
-import { selectUserId } from "@scripts/redux/slices/ethSlice";
+import { selectUserId } from "@scripts/redux/slices/userSlice";
 import CollectionsByUser from "@scripts/CollectionsByUser";
 import Button from "@lib/button";
+import { useAppSelector } from "@scripts/redux/hooks";
 
 import { useNavigate } from "react-router-dom";
 function Home() {

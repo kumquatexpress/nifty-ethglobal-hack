@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { CreateCollection as CreateCollectionType } from "@gqlt/CreateCollection";
 import { useAppSelector } from "@scripts/redux/hooks";
 import MetaMaskButton from "@scripts/MetaMaskButton";
-import { selectUserId } from "@scripts/redux/slices/ethSlice";
+import { selectUserId } from "@scripts/redux/slices/userSlice";
 
 function Create() {
   const userId = useAppSelector(selectUserId);

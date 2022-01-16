@@ -3,7 +3,7 @@ import { cx, css } from "@emotion/css/macro";
 import "@styles/App.scss";
 import Text from "@lib/Text";
 import { useAppSelector } from "@scripts/redux/hooks";
-import { selectUserId } from "@scripts/redux/slices/ethSlice";
+import { selectUserId } from "@scripts/redux/slices/userSlice";
 import { GET_BADGES } from "@graphql/users.graphql";
 import { useQuery } from "@apollo/client";
 
