@@ -49,7 +49,9 @@ export default async function CheckAndJoinDiscordChannelsTask(
       const collection = collectionsById[collId];
       return pl13(async () => ({
         id: collection.id,
-        data: await collection.getNFTsMatchingOwnedTokens(ownedTokens),
+        data: await collection.getNFTsMatchingOwnedTokens(
+          ownedTokens.map((t) => t.token_address)
+        ),
       }));
     })
   );

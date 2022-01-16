@@ -151,6 +151,21 @@ const UserQueries = {
       return false;
     },
   },
+  hasCollectionToken: {
+    type: new GraphQLList(GraphQLJSONObject),
+    args: {
+      collectionId: {
+        type: new GraphQLNonNull(GraphQLString),
+      },
+    },
+    resolve: async (parent, args, ctx, info) => {
+      const collection = await Collection.findByPk(args.collectionId);
+      const user = await User.findByPk(ctx.state.user.id, {
+        include: Web3PublicKey,
+      });
+      return await collection.getNFTsInWallet(user.public_key.key);
+    },
+  },
   getQRCode: {
     type: new GraphQLNonNull(GraphQLString),
     description: "Retrieves the QR code for this user's public wallet",
