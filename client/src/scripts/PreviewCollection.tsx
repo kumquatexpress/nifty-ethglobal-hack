@@ -22,6 +22,7 @@ import { BORDER_LEGENDARY_SVG_URL } from "@utils/constants";
 
 import { until } from "@styles/mediaQueries";
 import { BadgeDataType } from "@scripts/types";
+import { getPercentagesBasedOffCommon } from "./utils";
 type Props = {};
 
 function draw(context: CanvasRenderingContext2D, frameCount: number) {}
@@ -31,7 +32,7 @@ function CollectionPreview() {
   const dispatch = useAppDispatch();
   const onPercentCommonChanged = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      dispatch(setPercentCommon(Math.min(e.target.valueAsNumber, 50)));
+      dispatch(setPercentCommon(Math.min(e.target.valueAsNumber, 99)));
     },
     []
   );
@@ -40,10 +41,9 @@ function CollectionPreview() {
   const { fontStroke, fontFill, background, rare, common, uncommon } =
     collection.badgeData.colors;
   const hugImage = collection.badgeData.hugImage;
-  const percentCommon = collection.percentCommon;
-  const percentUncommon = (100 - percentCommon) / 2 || 0;
-  const percentRare = ((100 - percentCommon - percentUncommon) * 3) / 4 || 0;
-  const percentLegendary = (100 - percentCommon - percentUncommon) / 4 || 0;
+
+  const { percentCommon, percentUncommon, percentRare, percentLegendary } =
+    getPercentagesBasedOffCommon(collection.percentCommon);
   const numBadges = collection.numBadges;
 
   const numberCommon = Math.floor((numBadges * percentCommon) / 100) || 0;
@@ -181,8 +181,8 @@ function CollectionPreview() {
               <InlineInput
                 value={percentCommon}
                 onChange={onPercentCommonChanged}
-                min={0}
-                max={50}
+                min={50}
+                max={100}
                 afterContent="%"
               />
               of your fans ({numberCommon}) will get <b>common</b> badges

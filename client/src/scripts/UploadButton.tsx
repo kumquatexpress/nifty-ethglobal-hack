@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Button, { ButtonProps } from "@lib/button";
 import { ClassNamesArg } from "@emotion/css";
 
+import { getPercentagesBasedOffCommon } from "./utils";
 import { useAppSelector, useAppDispatch } from "@scripts/redux/hooks";
 import { selectAddress, setAddressTo } from "@scripts/redux/slices/ethSlice";
 import styles from "./Counter.module.css";
@@ -46,6 +47,12 @@ export default function UploadButton({ onSuccess, ...props }: Props) {
                   type: "image/png",
                 })
             );
+          const {
+            percentCommon,
+            percentUncommon,
+            percentRare,
+            percentLegendary,
+          } = getPercentagesBasedOffCommon(collection.percentCommon);
           const collectionResp = await createCollection({
             variables: {
               name: collection.name,
@@ -63,15 +70,18 @@ export default function UploadButton({ onSuccess, ...props }: Props) {
                 rarityMapping: {
                   common: {
                     color: collection.badgeData.colors.common,
-                    pct: collection.percentCommon,
+                    pct: percentCommon,
                   },
                   uncommon: {
                     color: collection.badgeData.colors.rare,
-                    pct: collection.percentCommon / 2,
+                    pct: percentUncommon,
                   },
                   rare: {
                     color: collection.badgeData.colors.uncommon,
-                    pct: collection.percentCommon / 4,
+                    pct: percentRare,
+                  },
+                  legendary: {
+                    pct: percentLegendary,
                   },
                 },
               },

@@ -40,7 +40,7 @@ function TextArea({
           )}
           value={`${value}`}
           max={max}
-          min={0}
+          min={min}
           onChange={onChange}
         />
       </span>
