@@ -8,6 +8,7 @@ import { currentUser } from "@utils/users_api";
 import CanvasImage from "@scripts/CanvasImage";
 import Text from "@lib/Text";
 import { BADGER_BLUE_RGBA } from "@utils/constants";
+import { useNavigate } from "react-router-dom";
 
 import {
   CollectionsByUser as CollectionsByUserType,
@@ -19,6 +20,7 @@ type Props = {
 };
 
 function CollectionsByUser({ userId }: Props) {
+  const navigate = useNavigate();
   const { data, loading, error } = useQuery<
     CollectionsByUserType,
     CollectionsByUserVariables
@@ -40,18 +42,25 @@ function CollectionsByUser({ userId }: Props) {
           bgColor: background,
         } = collection?.badge_metadata || {};
         return (
-          <div className={styles.gridItem}>
-            <CanvasImage
-              fontStrokeColor={fontStroke}
-              size={200}
-              hugImage={hugImage}
-              customImgSrc={collection?.template_s3_url}
-              fontFillColor={fontFill}
-              bgColor={background}
-              imgNumber={1}
-              paddingColor={BADGER_BLUE_RGBA}
-            />
-            <Text>{collection?.name}</Text>
+          <div className={styles.gridItem} key={collection?.id}>
+            <a
+              href="#"
+              onClick={() => {
+                navigate(`/collection/${collection?.id}/mint`);
+              }}
+            >
+              <CanvasImage
+                fontStrokeColor={fontStroke}
+                size={200}
+                hugImage={hugImage}
+                customImgSrc={collection?.template_s3_url}
+                fontFillColor={fontFill}
+                bgColor={background}
+                imgNumber={1}
+                paddingColor={BADGER_BLUE_RGBA}
+              />
+              <Text>{collection?.name}</Text>
+            </a>
           </div>
         );
       })}

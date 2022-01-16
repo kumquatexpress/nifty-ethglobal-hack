@@ -48,10 +48,11 @@ function Mint() {
           console.error("Error fetching status:", error);
         })
         .finally(() => {
-          if (status !== BadgerCollectionStatus.READY_TO_MINT)
+          if (status !== BadgerCollectionStatus.READY_TO_MINT) {
             // basic exponential backoff
             timeToCheck *= 1.1;
-          timeout = setTimeout(pollCollectionStatus, timeToCheck);
+            timeout = setTimeout(pollCollectionStatus, timeToCheck);
+          }
         });
     }
     return () => {
@@ -95,6 +96,7 @@ function Mint() {
   } = collection?.badge_metadata || {};
 
   const readyToMint = status === BadgerCollectionStatus.READY_TO_MINT;
+  let contractAddress = collection?.machine_address;
   return (
     <div className={cx(styles.container)}>
       <div className={cx(styles.badgeImage)}>
@@ -110,6 +112,7 @@ function Mint() {
         />
         <MintButton
           readyToMint={readyToMint}
+          contractAddress={contractAddress}
           size="large"
           className={cx(styles.mintButton)}
         />
@@ -129,7 +132,9 @@ function Mint() {
           </div>
           <div className={cx(styles.owner)}>
             <Text>Creator </Text>
-            <Text type="h3">kumquatexpress</Text>
+            <Text type="h3">
+              {collection?.owner?.profile?.fullname || "Anonymous"}
+            </Text>
           </div>
         </div>
         <div className={cx(styles.remainder)}>

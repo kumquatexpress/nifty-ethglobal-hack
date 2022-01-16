@@ -75,7 +75,7 @@ export default function CanvasImage({
       });
       img.src = previewImgSrc;
     }
-  }, [previewImgSrc]);
+  }, [previewImgSrc, customImgSrc]);
 
   // setup border svg
   useEffect(() => {
@@ -224,7 +224,6 @@ export default function CanvasImage({
     canvasRef,
     svgBorder,
     renderedImg,
-    size,
     fontFillColor,
     paddingColor,
     bgColor,
