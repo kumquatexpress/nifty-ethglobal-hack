@@ -101,7 +101,7 @@ export default function Livestream() {
     }
   }, [canJoinLiveStream]);
   console.log(collections);
-  return streamKey ? (
+  return !streamKey ? (
     <>
       <div className="w-11/12 lg:w-full xl:w-3/5 lg:p-0 mt-2 text-red-500 text-left text-sm">
         <span className="font-bold">Note:&nbsp;</span> To start a video stream,
@@ -127,7 +127,7 @@ export default function Livestream() {
       </div>
     </>
   ) : canJoin ? (
-    <div className="">
+    <div className={cx(styles.container)}>
       <div data-vjs-player>
         <video
           id="video"
@@ -137,10 +137,11 @@ export default function Livestream() {
             styles.videoPlayer
           )}
           controls
+          autoPlay
           playsInline
         />
       </div>
-      <div className="">
+      <div className="badger-waiting">
         <div
           className={`animate-pulse ${
             isLive ? "bg-green-700" : "bg-yellow-600"
@@ -191,7 +192,7 @@ export default function Livestream() {
 const styles = {
   videoPlayer: css`
     width: 720px;
-    height: 100%;
+    height: 360px;
   `,
   sorry: css`
     & .badger-livestream-sorry2 {
@@ -200,6 +201,11 @@ const styles = {
     }
     & a {
       text-decoration: underline;
+    }
+  `,
+  container: css`
+    & > .badger-waiting {
+      margin-top: 24px;
     }
   `,
 };
