@@ -2,12 +2,16 @@ import React, { useEffect, useState } from "react";
 import Button from "@lib/button";
 
 import { useAppSelector, useAppDispatch } from "@scripts/redux/hooks";
-import { selectAddress, setAddressTo } from "@scripts/redux/slices/ethSlice";
+import {
+  selectAddress,
+  setAddressTo,
+  setUserIdTo,
+} from "@scripts/redux/slices/ethSlice";
 import styles from "./Counter.module.css";
 import web3 from "../web3";
 import { isMetaMaskInstalled } from "@scripts/utils";
 import eth from "@scripts/utils/eth";
-import { getOrCreateUser } from "../utils/users_api";
+import { getOrCreateUser, currentUser } from "../utils/users_api";
 
 export default function MetaMaskButton() {
   const address = useAppSelector(selectAddress);
@@ -44,8 +48,11 @@ export default function MetaMaskButton() {
             );
             await getOrCreateUser(accounts[0], signature);
 
+            const user = await currentUser();
+
             //We take the first address in the array of addresses and display it
             dispatch(setAddressTo(accounts[0]));
+            dispatch(setUserIdTo(user?.id));
           } catch (error) {
             console.error(error);
           }

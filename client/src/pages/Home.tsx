@@ -1,14 +1,28 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { cx, css } from "@emotion/css/macro";
 import "@styles/App.scss";
+import { useAppSelector } from "@scripts/redux/hooks";
 import CreateCollection from "@scripts/CreateCollection";
 import PreviewCollection from "@scripts/PreviewCollection";
+import { selectUserId } from "@scripts/redux/slices/ethSlice";
+import CollectionsByUser from "@scripts/CollectionsByUser";
+import Button from "@lib/button";
 
+import { useNavigate } from "react-router-dom";
 function Home() {
+  const userId = useAppSelector(selectUserId);
+  const navigate = useNavigate();
+  const onClickCreate = useCallback(() => {
+    navigate(`/collection/create`);
+  }, []);
   return (
-    <div className="container badger-page">
-      This is actuallly home page, go to{" "}
-      <a href="/collection/create">create collection</a>
+    <div>
+      {userId ? (
+        <>
+          <CollectionsByUser userId={userId} />
+          <Button onClick={onClickCreate}>Create new Collection</Button>
+        </>
+      ) : null}
     </div>
   );
 }
