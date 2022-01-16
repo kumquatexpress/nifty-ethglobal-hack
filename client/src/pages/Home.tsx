@@ -6,6 +6,7 @@ import PreviewCollection from "@scripts/PreviewCollection";
 import { selectUserId } from "@scripts/redux/slices/userSlice";
 import CollectionsByUser from "@scripts/CollectionsByUser";
 import Button from "@lib/button";
+import Text from "@lib/Text";
 import { useAppSelector } from "@scripts/redux/hooks";
 
 import { useNavigate } from "react-router-dom";
@@ -20,10 +21,12 @@ function Home() {
       {userId ? (
         <>
           <CollectionsByUser userId={userId} />
+          <Text type="h3">or</Text>
           <Button
             color="badger"
             className={cx(styles.create)}
             onClick={onClickCreate}
+            size="large"
           >
             Create your next Collection
           </Button>
@@ -35,6 +38,7 @@ function Home() {
 
 const styles = {
   create: css`
+    margin-top: 24px;
     font-weight: 500;
     font-size: 18px;
   `,

@@ -156,12 +156,24 @@ export default function Livestream() {
       <Text className="badger-livestream-sorry2" type="h3">
         To join this stream, you need to be a badgeholder of{" "}
         {collections.length > 1 ? (
-          `one of these collections: ${collections.reduce(
-            (memo, collection) => {
-              return memo + collection.name;
-            },
-            ""
-          )}`
+          <>
+            one of these collections:
+            {collections.map((collection, idx) => {
+              if (collections.length - 1 !== idx) {
+                return (
+                  <a href={`/collection/${collections[0]?.id}/mint`}>
+                    {collection.name},
+                  </a>
+                );
+              } else {
+                return (
+                  <a href={`/collection/${collections[0]?.id}/mint`}>
+                    collection.name.
+                  </a>
+                );
+              }
+            })}
+          </>
         ) : (
           <>
             this collection:{" "}
